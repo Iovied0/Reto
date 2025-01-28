@@ -3,7 +3,7 @@
 session_start();
 
 // Datu baserako konexioko parametroak
-$servername = "localhost";
+$servername = "localhost:3307";
 $username = "root";
 $password = "";
 $dbname = "reto2_g2_dam1";
@@ -32,11 +32,11 @@ if ($result->num_rows > 0) {
         $_SESSION['agentzia'] = $row['Izena']; // Agentziaren izena gordeko dugu, gero goiburuan erakusteko 
     }
     // Aurkitu badugu erregistroa, logeatzen gara eta aurrera jo: menua.php orrira eraman
-    header("Location: menua.php");
+    header("Location: ../php/menua.php");
     exit();
 } else {
     // Ez bada existitzen, errore mezua (url bidez resolbitzen dut)
-    header("Location: ../PaginaWeb/index.html?errorea=1");
+    header("Location: ../html/index.html?errorea=1");
     exit();
 }
 
