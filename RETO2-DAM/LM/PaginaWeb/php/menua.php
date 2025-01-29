@@ -30,23 +30,24 @@ if (isset($_SESSION['mensaje'])) {
 <body>
     <div class="background">
     <!-- <header>
-            <h4><?php echo $_SESSION['agentzia']; ?></h4>
+            <h4><?php echo $_SESSION['agencia']; ?></h4>
         </header> -->
-    
-        <div class="cajaCentro">
-        <main>
-            <h2>Bienvenido a la página principal de <?php echo $_SESSION['agentzia']; ?>!</h2>
-            <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
-            
-            <nav>
-                <ul>
-                    <li><a href="">Mi Perfil</a></li>
-                    <li><a href="../html/registrarViaje.html">Registrar Viaje</a></li>
+        <div class="login">
+            <div class="cajaCentro">
+                <main>
+                    <h2>Bienvenido a la página principal de <?php echo $_SESSION['agencia']; ?>!</h2>
+                    <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
                     
-                    <li><a href="">Mis Viajes</a></li>
-                </ul>
-            </nav>
-        </main>
+                    <nav>
+                        <ul>
+                            <li><a href="">Mi Perfil</a></li>
+                            <li><a href="../php/bidaia.php">Registrar Viaje</a></li>
+                            <li><a href="../html/registrarViaje.html">Registrar Evento</a></li>      
+                            <li><a href="">Mis Viajes</a></li>
+                        </ul>
+                    </nav>
+                </main>
+            <div>
         <div>
         <footer>
             <ul>

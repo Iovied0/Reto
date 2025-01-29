@@ -34,7 +34,7 @@ session_start();
             <option value="">--Aukeratu--</option>
                 <!-- DATU BASETIK -->
                 <?php
-                $conn = new mysqli("localhost", "root", "", "db_turismo");
+                $conn = new mysqli("localhost", "root", "", "reto2_g2_dam1");
                 if ($conn->connect_error) {
                     die("Conexión fallida: " . $conn->connect_error);
                 }

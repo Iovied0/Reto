@@ -17,11 +17,11 @@ if ($conn->connect_error) {
 }
 
 // Formularioko datuak berreskuratu
-$erabiltzailea = $_POST['erabiltzailea'];
-$pasahitza = $_POST['pasahitza'];
+$usuario = $_POST['usuario'];
+$contraseña = $_POST['contraseña'];
 
 // SQL kontsulta
-$sql = "SELECT * FROM agentzia WHERE Erabiltzailea = '$erabiltzailea' AND Pasahitza = '$pasahitza'";
+$sql = "SELECT * FROM agencia WHERE Usuario = '$usuario' AND Contraseña = '$contraseña'";
 
 // Kontsulta exekutatu
 $result = $conn->query($sql);
@@ -29,7 +29,7 @@ $result = $conn->query($sql);
 // Erabiltzailea existitzen den egiaztatu
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $_SESSION['agentzia'] = $row['Izena']; // Agentziaren izena gordeko dugu, gero goiburuan erakusteko 
+        $_SESSION['agencia'] = $row['usuario']; // Agentziaren izena gordeko dugu, gero goiburuan erakusteko 
     }
     // Aurkitu badugu erregistroa, logeatzen gara eta aurrera jo: menua.php orrira eraman
     header("Location: ../php/menua.php");
