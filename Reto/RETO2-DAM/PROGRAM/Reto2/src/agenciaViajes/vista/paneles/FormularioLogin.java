@@ -1,7 +1,7 @@
 package agenciaViajes.vista.paneles;
 
 import java.awt.Color;
-
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -11,11 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-
 import javax.swing.JTextField;
-
-import com.mysql.cj.x.protobuf.MysqlxSession.Reset;
-
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Agencia;
 import agenciaViajes.controlador.Controlador;
@@ -53,6 +49,35 @@ public class FormularioLogin {
 		textPassword.setBounds(450, 300, 150, 25);
 		panel.add(textPassword);
 
+		/////////////////////// MOSTRAR/OCULTAR CONTRASEÑA \\\\\\\\\\\\\\\\\\\\\\\
+		ImageIcon ojoAbierto = new ImageIcon("src/agenciaViajes/vista/img/abierto.png");
+		ImageIcon ojoCerrado = new ImageIcon("src/agenciaViajes/vista/img/cerrado.png");
+		JButton mostrarOcultarContrasenya = new JButton();
+		Image abiertoEscalado = ojoAbierto.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		Image cerradoEscalado = ojoCerrado.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+
+		mostrarOcultarContrasenya.setBounds(600, 300, 27, 25);
+		mostrarOcultarContrasenya.setIcon(new ImageIcon(cerradoEscalado));
+		mostrarOcultarContrasenya.setFocusPainted(false); // Quitar el borde de foco
+		mostrarOcultarContrasenya.setContentAreaFilled(false); // Quitar el fondo del botón
+		mostrarOcultarContrasenya.setBorderPainted(false);
+		panel.add(mostrarOcultarContrasenya);
+
+//		********************** ACTION LISTENERS MOSTRAR/OCULTAR CONTRASEÑA **********************
+		mostrarOcultarContrasenya.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (textPassword.getEchoChar() == '•') { // contraseña oculta
+					mostrarOcultarContrasenya.setIcon(new ImageIcon(abiertoEscalado));
+					textPassword.setEchoChar((char) 0); // muestra la contraseña
+				} else {// contraseña visible
+					mostrarOcultarContrasenya.setIcon(new ImageIcon(cerradoEscalado));
+					textPassword.setEchoChar('•'); // oculta la contraseña
+				}
+
+			}
+		});
+
 		//////////////////// BOTON PARA INICIAR SESIÓN \\\\\\\\\\\\\\\\\\\\
 		JButton btnLogin = new JButton("Iniciar Sesión");
 		btnLogin.setBounds(300, 365, 120, 25);
@@ -70,7 +95,8 @@ public class FormularioLogin {
 					if (agencia.getNombre().equalsIgnoreCase(textUsuario.getText())
 							&& agencia.getContraseña().equals(contraseña)) {
 						login = true;
-						frame.gotoViajes(agencia);
+						frame.setAgenciaLogin(agencia);
+						frame.gotoViajes();
 						reset(textUsuario, textPassword);
 					}
 				}
@@ -78,7 +104,7 @@ public class FormularioLogin {
 					JOptionPane.showMessageDialog(null, "Credenciales incorrectas.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					
+
 				}
 			}
 		});
@@ -115,7 +141,8 @@ public class FormularioLogin {
 	//////////////////////////// FUNCIONES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 	public void reset(JTextField textUsuario, JPasswordField contrasenya) {
-		
+		textUsuario.setText("");
+		contrasenya.setText("");
 	}
 
 	/**

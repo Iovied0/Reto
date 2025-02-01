@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import agenciaViajes.bbdd.pojos.Agencia;
 import agenciaViajes.vista.paneles.*;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -16,6 +18,7 @@ public class ViajesErrekamari extends JFrame {
 	private ArrayList<JPanel> paneles = null;
 	private JFrame frame;
 	JMenuBar menuBar = new JMenuBar();
+	Agencia agenciaLogin = null;
 
 	/**
 	 * Launch the application.
@@ -47,6 +50,7 @@ public class ViajesErrekamari extends JFrame {
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 		frame.setTitle("Viajes Errekamari");
+		frame.setResizable(false);
 
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,40 +108,6 @@ public class ViajesErrekamari extends JFrame {
 		paneles.add(panelNuevaAgencia);
 		frame.getContentPane().add(panelNuevaAgencia);
 
-//		JMenuItem miRojo = new JMenuItem("Cerrar Sesion");
-//		miRojo.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("GoTo -> panel1 (Rojo)");
-//				paneles.get(0).setVisible(true);
-//				paneles.get(1).setVisible(false);
-//				paneles.get(2).setVisible(false);
-//				
-//			}
-//		});
-//		mnMenu.add(miRojo);
-
-//		JMenuItem miVerde = new JMenuItem("Ver Fichero");
-//		miVerde.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("GoTo -> panel2 (Verde)");
-//				paneles.get(0).setVisible(false);
-//				paneles.get(1).setVisible(true);
-//				paneles.get(2).setVisible(false);
-//			}
-//		});
-//		mnMenu.add(miVerde);
-
-//		JMenuItem miAzul = new JMenuItem("Añadir Texto");
-//		miAzul.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("GoTo -> panel3 (Azul)");
-//				paneles.get(0).setVisible(false);
-//				paneles.get(1).setVisible(false);
-//				paneles.get(2).setVisible(true);
-//			}
-//		});
-//		mnMenu.add(miAzul);
-
 	}
 
 	////////////////////// Cambio de panel por función \\\\\\\\\\\\\\\\\\\\\\
@@ -148,6 +118,7 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(2).setVisible(false);
 		paneles.get(3).setVisible(false);
 		menuBar.setVisible(false);
+		agenciaLogin = null;
 	}
 
 	public void gotoFormLogin() {
@@ -171,6 +142,13 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(1).setVisible(false);
 		paneles.get(2).setVisible(false);
 		paneles.get(3).setVisible(true);
+	}
+	
+	
+	
+	
+	public void setAgenciaLogin(Agencia agencia) {
+		agenciaLogin = agencia;
 	}
 
 }

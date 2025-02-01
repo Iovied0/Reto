@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import agenciaViajes.bbdd.DBUtils;
 import agenciaViajes.bbdd.SQLQuerys;
-import agenciaViajes.bbdd.pojos.NumeroEmpleados;
 import agenciaViajes.bbdd.pojos.TiposAgencia;
 
 public class GestorTiposAgencia {
