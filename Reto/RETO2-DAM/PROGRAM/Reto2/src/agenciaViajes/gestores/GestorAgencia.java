@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import agenciaViajes.bbdd.DBUtils;
 import agenciaViajes.bbdd.SQLQuerys;
 import agenciaViajes.bbdd.pojos.Agencia;
+import agenciaViajes.bbdd.pojos.NumeroEmpleados;
 import agenciaViajes.bbdd.pojos.Pais;
+import agenciaViajes.bbdd.pojos.TiposAgencia;
+import agenciaViajes.controlador.Controlador;
 
 public class GestorAgencia {
 
@@ -62,19 +65,26 @@ public class GestorAgencia {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_AGENCIA);
-			//Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-				if(null == ret)
+				if (null == ret)
 					ret = new ArrayList<Agencia>();
-				
+
 				Agencia agencia = new Agencia();
+				TiposAgencia tipoagencia = new TiposAgencia();
+				NumeroEmpleados numeroEmpleados = new NumeroEmpleados();
+				Controlador controlador = new Controlador();
 				agencia.setId(resultSet.getInt("id"));
 				agencia.setNombre(resultSet.getString("nombre"));
 				agencia.setLogo(resultSet.getString("logo"));
 				agencia.setColor(resultSet.getString("color"));
 				agencia.setContraseña(resultSet.getString("contraseña"));
+				numeroEmpleados = controlador.getNumeroEmpleadosObjetoPorCodigo(resultSet.getString("numero_empleados"));
+				agencia.setNumeroEmpleados(numeroEmpleados);
+				tipoagencia = controlador.getTipoAgenciaObjetoPorCodigo(resultSet.getString("tipo_agencia"));
+				agencia.setTipoAgencia(tipoagencia);
 				ret.add(agencia);
 			}
 		} catch (SQLException sqle) {
@@ -104,7 +114,5 @@ public class GestorAgencia {
 		}
 		return ret;
 	}
-	
-
 
 }

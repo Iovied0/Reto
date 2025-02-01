@@ -63,7 +63,7 @@ public class GestorTiposAgencia {
 		return ret;
 	}
 
-	public TiposAgencia getTiposAgenciaDescripcion(String descripcion) {
+	public TiposAgencia getTipoAgenciaDescripcion(String descripcion) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -109,4 +109,50 @@ public class GestorTiposAgencia {
 		return ret;
 	}
 
+	public TiposAgencia getTipoAgenciaCodigo(String codigo) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		TiposAgencia ret = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_TIPOS_AGENCIA_WHERE_CODIGO);
+			preparedStatement.setString(1, codigo);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				ret = new TiposAgencia();
+				ret.setCodigo(resultSet.getString("codigo"));
+				ret.setDescripcion(resultSet.getString("descripcion"));
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+		return ret;
+	}
+	
 }

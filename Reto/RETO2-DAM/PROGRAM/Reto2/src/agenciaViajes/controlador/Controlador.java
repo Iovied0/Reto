@@ -58,10 +58,17 @@ public class Controlador {
 		return ret;
 	}
 
-	public NumeroEmpleados getNumeroEmpleadosObjeto(String descripcion) {
+	public NumeroEmpleados getNumeroEmpleadosObjetoPorDescripcion(String descripcion) {
 		NumeroEmpleados ret = new NumeroEmpleados();
 		GestorNumeroEmpleados gestorNumeroEmpleados = new GestorNumeroEmpleados();
 		ret = gestorNumeroEmpleados.getNumeroEmpleadosDescripcion(descripcion);
+		return ret;
+	}
+	
+	public NumeroEmpleados getNumeroEmpleadosObjetoPorCodigo(String codigo) {
+		NumeroEmpleados ret = new NumeroEmpleados();
+		GestorNumeroEmpleados gestorNumeroEmpleados = new GestorNumeroEmpleados();
+		ret = gestorNumeroEmpleados.getNumeroEmpleadosCodigo(codigo);
 		return ret;
 	}
 
@@ -73,12 +80,18 @@ public class Controlador {
 		return ret;
 	}
 
-	public TiposAgencia getTipoAgenciaObjeto(String descripcion) {
+	public TiposAgencia getTipoAgenciaObjetoPorDescripcion(String descripcion) {
 		TiposAgencia ret = new TiposAgencia();
 		GestorTiposAgencia gestorTiposAgencia = new GestorTiposAgencia();
-		ret = gestorTiposAgencia.getTiposAgenciaDescripcion(descripcion);
+		ret = gestorTiposAgencia.getTipoAgenciaDescripcion(descripcion);
 		return ret;
 
+	}
+	public TiposAgencia getTipoAgenciaObjetoPorCodigo(String codigo) {
+		TiposAgencia ret = new TiposAgencia();
+		GestorTiposAgencia gestorTiposAgencia = new GestorTiposAgencia();
+		ret = gestorTiposAgencia.getTipoAgenciaCodigo(codigo);
+		return ret;
 	}
 
 //////////////////////////// FUNCIONES GESTOR AGENCIA \\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -98,4 +111,6 @@ public class Controlador {
 		
 
 	}
+
+	
 }

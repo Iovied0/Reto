@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Agencia {
 	private int id;
-	private String nombre, logo, color, usuario, contraseña;
+	private String nombre, logo, color, contraseña;
 	private NumeroEmpleados numeroEmpleados;
 	private TiposAgencia tipoAgencia;
 
@@ -12,8 +12,8 @@ public class Agencia {
 
 	}
 
-	public Agencia(int id, String nombre, String logo, String color, String contraseña,
-			NumeroEmpleados numeroEmpleados, TiposAgencia tipoAgencia) {
+	public Agencia(int id, String nombre, String logo, String color, String contraseña, NumeroEmpleados numeroEmpleados,
+			TiposAgencia tipoAgencia) {
 
 		this.id = id;
 		this.nombre = nombre;
@@ -56,14 +56,6 @@ public class Agencia {
 		this.color = color;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
 	public String getContraseña() {
 		return contraseña;
 	}
@@ -90,7 +82,7 @@ public class Agencia {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(color, contraseña, id, numeroEmpleados, logo, nombre, tipoAgencia, usuario);
+		return Objects.hash(color, contraseña, id, numeroEmpleados, logo, nombre, tipoAgencia);
 	}
 
 	@Override
@@ -104,15 +96,13 @@ public class Agencia {
 		Agencia other = (Agencia) obj;
 		return Objects.equals(color, other.color) && Objects.equals(contraseña, other.contraseña) && id == other.id
 				&& Objects.equals(numeroEmpleados, other.numeroEmpleados) && Objects.equals(logo, other.logo)
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(tipoAgencia, other.tipoAgencia)
-				&& Objects.equals(usuario, other.usuario);
+				&& Objects.equals(nombre, other.nombre) && Objects.equals(tipoAgencia, other.tipoAgencia);
 	}
 
 	@Override
 	public String toString() {
-		return "Agencia [id=" + id + ", nombre=" + nombre + ", logo=" + logo + ", color=" + color + ", usuario="
-				+ usuario + ", contraseña=" + contraseña + ", numeroEmpleados=" + numeroEmpleados + ", tipoAgencia="
-				+ tipoAgencia + "]";
+		return "Agencia [id=" + id + ", nombre=" + nombre + ", logo=" + logo + ", color=" + color + ", contraseña="
+				+ contraseña + ", numeroEmpleados=" + numeroEmpleados + ", tipoAgencia=" + tipoAgencia + "]";
 	}
 
 }

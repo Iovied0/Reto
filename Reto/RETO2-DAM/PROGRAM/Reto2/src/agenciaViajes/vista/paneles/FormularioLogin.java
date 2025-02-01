@@ -67,18 +67,18 @@ public class FormularioLogin {
 				agencias = controlador.getAgencias();
 
 				for (Agencia agencia : agencias) {
-
 					if (agencia.getNombre().equalsIgnoreCase(textUsuario.getText())
 							&& agencia.getContraseña().equals(contraseña)) {
 						login = true;
+						frame.gotoViajes(agencia);
+						reset(textUsuario, textPassword);
 					}
 				}
-				if (login = false) {
+				if (login == false) {
 					JOptionPane.showMessageDialog(null, "Credenciales incorrectas.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					frame.gotoViajes();
-					reset();
+					
 				}
 			}
 		});
@@ -114,8 +114,8 @@ public class FormularioLogin {
 	}
 	//////////////////////////// FUNCIONES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-	public void reset() {
-
+	public void reset(JTextField textUsuario, JPasswordField contrasenya) {
+		
 	}
 
 	/**
