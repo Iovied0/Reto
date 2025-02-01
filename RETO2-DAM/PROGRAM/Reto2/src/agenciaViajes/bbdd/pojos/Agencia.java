@@ -5,25 +5,22 @@ import java.util.Objects;
 public class Agencia {
 	private int id;
 	private String nombre, logo, color, usuario, contraseña;
-	private int numeroEmpleados;
-	private NumeroEmpleados limiteEmpleados;
+	private NumeroEmpleados numeroEmpleados;
 	private TiposAgencia tipoAgencia;
 
 	public Agencia() {
 
 	}
 
-	public Agencia(int id, String nombre, String logo, String color, int numeroEmpleados, String usuario,
-			String contraseña, NumeroEmpleados limiteEmpleados, TiposAgencia tipoAgencia) {
+	public Agencia(int id, String nombre, String logo, String color, String contraseña,
+			NumeroEmpleados numeroEmpleados, TiposAgencia tipoAgencia) {
 
 		this.id = id;
 		this.nombre = nombre;
 		this.logo = logo;
 		this.color = color;
-		this.numeroEmpleados = numeroEmpleados;
-		this.usuario = usuario;
 		this.contraseña = contraseña;
-		this.limiteEmpleados = limiteEmpleados;
+		this.numeroEmpleados = numeroEmpleados;
 		this.tipoAgencia = tipoAgencia;
 	}
 
@@ -75,20 +72,12 @@ public class Agencia {
 		this.contraseña = contraseña;
 	}
 
-	public int getNumeroEmpleados() {
+	public NumeroEmpleados getNumeroEmpleados() {
 		return numeroEmpleados;
 	}
 
-	public void setNumeroEmpleados(int numeroEmpleados) {
-		this.numeroEmpleados = numeroEmpleados;
-	}
-
-	public NumeroEmpleados getLimiteEmpleados() {
-		return limiteEmpleados;
-	}
-
-	public void setLimiteEmpleados(NumeroEmpleados limiteEmpleados) {
-		this.limiteEmpleados = limiteEmpleados;
+	public void setNumeroEmpleados(NumeroEmpleados limiteEmpleados) {
+		this.numeroEmpleados = limiteEmpleados;
 	}
 
 	public TiposAgencia getTipoAgencia() {
@@ -101,8 +90,7 @@ public class Agencia {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(color, contraseña, id, limiteEmpleados, logo, nombre, numeroEmpleados, tipoAgencia,
-				usuario);
+		return Objects.hash(color, contraseña, id, numeroEmpleados, logo, nombre, tipoAgencia, usuario);
 	}
 
 	@Override
@@ -115,16 +103,16 @@ public class Agencia {
 			return false;
 		Agencia other = (Agencia) obj;
 		return Objects.equals(color, other.color) && Objects.equals(contraseña, other.contraseña) && id == other.id
-				&& Objects.equals(limiteEmpleados, other.limiteEmpleados) && Objects.equals(logo, other.logo)
-				&& Objects.equals(nombre, other.nombre) && numeroEmpleados == other.numeroEmpleados
-				&& Objects.equals(tipoAgencia, other.tipoAgencia) && Objects.equals(usuario, other.usuario);
+				&& Objects.equals(numeroEmpleados, other.numeroEmpleados) && Objects.equals(logo, other.logo)
+				&& Objects.equals(nombre, other.nombre) && Objects.equals(tipoAgencia, other.tipoAgencia)
+				&& Objects.equals(usuario, other.usuario);
 	}
 
 	@Override
 	public String toString() {
 		return "Agencia [id=" + id + ", nombre=" + nombre + ", logo=" + logo + ", color=" + color + ", usuario="
-				+ usuario + ", contraseña=" + contraseña + ", numeroEmpleados=" + numeroEmpleados + ", limiteEmpleados="
-				+ limiteEmpleados + ", tipoAgencia=" + tipoAgencia + "]";
+				+ usuario + ", contraseña=" + contraseña + ", numeroEmpleados=" + numeroEmpleados + ", tipoAgencia="
+				+ tipoAgencia + "]";
 	}
 
 }

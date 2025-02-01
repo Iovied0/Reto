@@ -3,18 +3,16 @@ package agenciaViajes.bbdd.pojos;
 import java.util.Objects;
 
 public class NumeroEmpleados {
-	private String codigo;
-	private int minEmpleados, maxEmpleados;
+	private String codigo, numeroEmpleados;
 	private Agencia agencia;
 
 	public NumeroEmpleados() {
 
 	}
 
-	public NumeroEmpleados(String codigo, int minEmpleados, int maxEmpleados, Agencia agencia) {
+	public NumeroEmpleados(String codigo,String numeroEmpleados, Agencia agencia) {
 		this.codigo = codigo;
-		this.minEmpleados = minEmpleados;
-		this.maxEmpleados = maxEmpleados;
+		this.numeroEmpleados = numeroEmpleados;
 		this.agencia = agencia;
 	}
 
@@ -26,20 +24,12 @@ public class NumeroEmpleados {
 		this.codigo = codigo;
 	}
 
-	public int getMinEmpleados() {
-		return minEmpleados;
+	public String getNumeroEmpleados() {
+		return numeroEmpleados;
 	}
 
-	public void setMinEmpleados(int minEmpleados) {
-		this.minEmpleados = minEmpleados;
-	}
-
-	public int getMaxEmpleados() {
-		return maxEmpleados;
-	}
-
-	public void setMaxEmpleados(int maxEmpleados) {
-		this.maxEmpleados = maxEmpleados;
+	public void setNumeroEmpleados(String numeroEmpleados) {
+		this.numeroEmpleados = numeroEmpleados;
 	}
 
 	public Agencia getAgencia() {
@@ -52,7 +42,7 @@ public class NumeroEmpleados {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(agencia, codigo, maxEmpleados, minEmpleados);
+		return Objects.hash(agencia, codigo, numeroEmpleados);
 	}
 
 	@Override
@@ -65,13 +55,15 @@ public class NumeroEmpleados {
 			return false;
 		NumeroEmpleados other = (NumeroEmpleados) obj;
 		return Objects.equals(agencia, other.agencia) && Objects.equals(codigo, other.codigo)
-				&& maxEmpleados == other.maxEmpleados && minEmpleados == other.minEmpleados;
+				&& Objects.equals(numeroEmpleados, other.numeroEmpleados);
 	}
 
 	@Override
 	public String toString() {
-		return "NumeroEmpleados [codigo=" + codigo + ", minEmpleados=" + minEmpleados + ", maxEmpleados=" + maxEmpleados
-				+ ", agencia=" + agencia + "]";
+		return "NumeroEmpleados [codigo=" + codigo + ", numeroEmpleados=" + numeroEmpleados + ", agencia=" + agencia
+				+ "]";
 	}
+
+	
 	
 }

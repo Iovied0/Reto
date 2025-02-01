@@ -10,7 +10,7 @@ public class Actividad {
 	private Viaje viaje;
 
 	public Actividad() {
-
+		
 	}
 
 	public Actividad(String nombre, String descripcion, Date fecha, double precio, Viaje viaje) {

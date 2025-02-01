@@ -27,6 +27,7 @@ public class GestorActividad {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
+		//Viaje viaje = null;
 
 		try {
 			Class.forName(DBUtils.DRIVER);
@@ -44,7 +45,6 @@ public class GestorActividad {
 				actividad.setDescripcion(resultSet.getString("descripcion"));
 				actividad.setFecha(resultSet.getDate("fecha"));
 				actividad.setPrecio(resultSet.getDouble("precio"));
-				actividad.setId(resultSet.getInt("id_evento"));
 				ret.add(actividad);
 			}
 		} catch (SQLException sqle) {
@@ -76,27 +76,78 @@ public class GestorActividad {
 	}
 
 	/**
-	 * Inserta un alumno en BBDD
+	 * Inserta una actividad alumno en BBDD
 	 * 
 	 * @param alumno
 	 */
-	public void insertarActividad(Actividad actividad) {
+//	public void insertarActividad(Actividad actividad) {
+//
+//		Connection connection = null;
+//		Statement statement = null;
+//
+//		try {
+//			Class.forName(DBUtils.DRIVER);
+//			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+//			statement = connection.createStatement();
+//
+//			String sql = SQLQuerys.INSERT_NEW_ACTIVIDAD + actividad.getNombre() + SQLQuerys.SEPARATOR
+//					+ actividad.getDescripcion() + SQLQuerys.SEPARATOR + actividad.getFecha() + SQLQuerys.SEPARATOR
+//					+ actividad.getPrecio() + SQLQuerys.SEPARATOR + actividad.getId() + SQLQuerys.END_BLOCK;
+//
+//			statement.executeUpdate(sql);
+//
+//		} catch (SQLException sqle) {
+//			System.out.println("Error con la BBDD - " + sqle.getMessage());
+//		} catch (Exception e) {
+//			System.out.println("Error generico - " + e.getMessage());
+//		} finally {
+//			// Cerramos al reves de como las abrimos
+//			try {
+//				if (statement != null)
+//					statement.close();
+//			} catch (Exception e) {
+//				// No hace falta
+//			}
+//			try {
+//				if (connection != null)
+//					connection.close();
+//			} catch (Exception e) {
+//				// No hace falta
+//			}
+//		}
+//	}
 
+	/**
+	 * Recoge todas las actividades asignadas a un id_viaje
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ArrayList<Actividad> getActividades(int id) {
+
+		ArrayList<Actividad> ret = null;
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			statement = connection.createStatement();
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_ACTIVIDAD_ID);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			resultSet = preparedStatement.executeQuery();
 
-			String sql = SQLQuerys.INSERT_NEW_ACTIVIDAD + actividad.getNombre() + SQLQuerys.SEPARATOR + actividad.getDescripcion()
-					+ SQLQuerys.SEPARATOR + actividad.getFecha()
-					+ SQLQuerys.SEPARATOR + actividad.getPrecio() + SQLQuerys.SEPARATOR + actividad.getId()
-					+ SQLQuerys.END_BLOCK;
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Actividad>();
 
-			statement.executeUpdate(sql);
-
+				Actividad actividad = new Actividad();
+				actividad.setNombre(resultSet.getString("nombre"));
+				actividad.setDescripcion(resultSet.getString("descripcion"));
+				actividad.setFecha(resultSet.getDate("fecha"));
+				actividad.setPrecio(resultSet.getDouble("precio"));
+				ret.add(actividad);
+			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
 		} catch (Exception e) {
@@ -104,8 +155,14 @@ public class GestorActividad {
 		} finally {
 			// Cerramos al reves de como las abrimos
 			try {
-				if (statement != null)
-					statement.close();
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
 			} catch (Exception e) {
 				// No hace falta
 			}
@@ -116,6 +173,7 @@ public class GestorActividad {
 				// No hace falta
 			}
 		}
+		return ret;
 	}
 
 //		/**
