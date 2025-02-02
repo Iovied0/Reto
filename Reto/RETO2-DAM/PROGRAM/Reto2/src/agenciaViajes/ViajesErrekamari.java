@@ -86,7 +86,7 @@ public class ViajesErrekamari extends JFrame {
 		FormularioLogin login = new FormularioLogin(paneles, this);
 		JPanel panelLogin = login.getPanel();
 		panelLogin.setVisible(false);
-
+		
 		Viajes viaje = new Viajes(paneles, this);
 		JPanel panelViaje = viaje.getPanel();
 		panelViaje.setVisible(false);

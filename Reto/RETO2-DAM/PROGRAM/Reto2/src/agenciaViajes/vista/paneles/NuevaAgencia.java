@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
@@ -24,6 +26,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 public class NuevaAgencia {
 
@@ -165,6 +173,41 @@ public class NuevaAgencia {
 			}
 		});
 
+//		=====================================================================================================
+//		================================ FILTRO PARA TEXTFIELD HEXADECIMAL ==================================
+//		=====================================================================================================
+
+		((AbstractDocument) textoColorHexadecimal.getDocument()).setDocumentFilter(new DocumentFilter() {
+			@Override
+			//para cuando simplemente añades texto
+			public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+					throws BadLocationException {
+				if (offset == 0 && string.equals("#")) {
+					super.insertString(fb, offset, string, attr);
+				} else if (offset > 0 && fb.getDocument().getLength() < 7) {
+					// Permitir solo letras (a -> f && A -> F) y números después del '#'
+					if (string.matches("[a-fA-F0-9]")) {
+						super.insertString(fb, offset, string, attr);
+					}
+				}
+			}
+
+			@Override
+			//para cuando seleccionas y cambias por otro texto
+			public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+					throws BadLocationException {
+				if (offset == 0 && text.equals("#")) {
+					// Si el primer carácter es '#', lo permite
+					super.replace(fb, offset, length, text, attrs);
+				} else if (offset > 0 && fb.getDocument().getLength() < 7) {
+					// Permitir solo letras y números después del '#'
+					if (text.matches("[a-fA-F0-9]")) {
+						super.replace(fb, offset, length, text, attrs);
+					}
+				}
+			}
+		});
+
 		//////////////////////////// NÚMERO DE EMPLEADOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelNumeroEmpleados = new JLabel("Numero de empleados");
 		labelNumeroEmpleados.setBounds(30, 240, 150, 25);
@@ -242,10 +285,10 @@ public class NuevaAgencia {
 			public void actionPerformed(ActionEvent e) {
 
 				NumeroEmpleados numeroEmpleados = controlador
-						.getNumeroEmpleadosObjeto(numeroEmpleadosCombo.getSelectedItem().toString());
+						.getNumeroEmpleadosObjetoPorDescripcion(numeroEmpleadosCombo.getSelectedItem().toString());
 
 				TiposAgencia tipoAgencia = controlador
-						.getTipoAgenciaObjeto(tipoAgenciaCombo.getSelectedItem().toString());
+						.getTipoAgenciaObjetoPorCodigo(tipoAgenciaCombo.getSelectedItem().toString());
 
 				controlador.insertarAgencia(textUsuario.getText(), textoContrasenya.getPassword().toString(),
 						textoColorHexadecimal.getText(), numeroEmpleados, tipoAgencia, textLogo.getText());

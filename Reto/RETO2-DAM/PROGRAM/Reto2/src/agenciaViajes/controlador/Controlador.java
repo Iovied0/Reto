@@ -34,11 +34,6 @@ public class Controlador {
 		return ret;
 	}
 
-//	public void insertarActividad (Actividad actividad) {
-//		GestorActividad gestorActividad = new GestorActividad();
-//		gestorActividad.insertarActividad(actividad);
-//	}
-
 	public void dbInsertActividadesEnViaje(Viaje viaje) {
 		// Llama a la DB y consulta todas las Actividades en forma de ArrayList.
 		GestorActividad gestorActividad = new GestorActividad();
