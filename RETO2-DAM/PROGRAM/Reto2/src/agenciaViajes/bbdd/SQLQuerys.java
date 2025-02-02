@@ -41,7 +41,7 @@ public class SQLQuerys {
 
 	public static final String END_BLOCK = "')";
 
-	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?)";
+	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
 
 //	public static final String INSERT_NEW_ALUMNO = "insert into alumnos (dni, nombre, apellidos, grupo) VALUES ('";
 //

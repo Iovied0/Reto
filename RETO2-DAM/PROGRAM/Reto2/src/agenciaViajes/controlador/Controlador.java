@@ -102,6 +102,9 @@ public class Controlador {
 			TiposAgencia tipoAgencia, String logo) {
 		GestorAgencia gestorAgencia = new GestorAgencia();
 		
+		gestorAgencia.insertAgencia(nombre, contrasenya, color, numeroEmpleados, tipoAgencia, logo);
+		
+		
 		//NO ESTÁ TERMINADO PERO SOLO ES PARA CREAR EN EL FORMULARIO ASIQUE LO HAGO YO (YERAY)
 		
 

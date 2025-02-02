@@ -1,6 +1,7 @@
 package agenciaViajes.vista.paneles;
 
 import agenciaViajes.ViajesErrekamari;
+import agenciaViajes.bbdd.pojos.Agencia;
 import agenciaViajes.bbdd.pojos.NumeroEmpleados;
 import agenciaViajes.bbdd.pojos.TiposAgencia;
 import agenciaViajes.controlador.Controlador;
@@ -11,7 +12,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,8 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
 
 public class NuevaAgencia {
 
@@ -135,7 +136,7 @@ public class NuevaAgencia {
 				// actualizar el color del label con fondo
 				try {
 					colorSeleccionado.setBackground(Color.decode(textoColorHexadecimal.getText()));
-				} catch (Exception NumberFormatException) {
+				} catch (NumberFormatException a) {
 					// NO HACEMOS NADA
 				}
 			}
@@ -164,15 +165,7 @@ public class NuevaAgencia {
 					String colorHexadecimal = String.format("#%02X%02X%02X", selectedColor.getRed(),
 							selectedColor.getGreen(), selectedColor.getBlue());
 
-					try {
-						// Obtener el documento del JTextField
-						AbstractDocument doc = (AbstractDocument) textoColorHexadecimal.getDocument();
-
-						// Llamamos al DocumentFilter para insertar el texto
-						 doc.replace(0, doc.getLength(), colorHexadecimal, null);
-					} catch (BadLocationException ex) {
-						ex.printStackTrace();
-					}
+					textoColorHexadecimal.setText(colorHexadecimal);
 				}
 			}
 		});
@@ -252,21 +245,66 @@ public class NuevaAgencia {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				char[] contraseñaChar = textoContrasenya.getPassword();
+				ArrayList<Agencia> agencias = controlador.getAgencias();
+
+//				**************************** VALIDACIONES DE CAMPOS ****************************
+
+				if (textUsuario.getText().replace(" ", "").length() == 0) {
+					JOptionPane.showMessageDialog(null, "El nombre de agencia no puede estar en blanco", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				for (Agencia agencia : agencias) {
+					if (textUsuario.getText().equalsIgnoreCase(agencia.getNombre())) {
+						JOptionPane.showMessageDialog(null, "El nombre de agencia ya se encuentra en uso", "ERROR",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
+				if (String.valueOf(contraseñaChar).replace(" ", "").length() == 0) {
+					JOptionPane.showMessageDialog(null, "La contraseña no puede estar vacía o ser únicamente espacios",
+							"ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (colorSeleccionado.getText().equalsIgnoreCase("#RRGGBB")) {
+					JOptionPane.showMessageDialog(null, "Color no válido", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (!colorSeleccionado.getText().equalsIgnoreCase("#RRGGBB")) {
+					try {
+						colorSeleccionado.setBackground(Color.decode(textoColorHexadecimal.getText()));
+					} catch (NumberFormatException a) {
+						JOptionPane.showMessageDialog(null, "Color no válido", "ERROR", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
+				if (!rutaValida(textLogo.getText())) {
+					JOptionPane.showMessageDialog(null, "Logo no válido", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
 				NumeroEmpleados numeroEmpleados = controlador
 						.getNumeroEmpleadosObjetoPorDescripcion(numeroEmpleadosCombo.getSelectedItem().toString());
 
 				TiposAgencia tipoAgencia = controlador
-						.getTipoAgenciaObjetoPorCodigo(tipoAgenciaCombo.getSelectedItem().toString());
+						.getTipoAgenciaObjetoPorDescripcion(tipoAgenciaCombo.getSelectedItem().toString());
 
-				controlador.insertarAgencia(textUsuario.getText(), textoContrasenya.getPassword().toString(),
+				controlador.insertarAgencia(textUsuario.getText(), String.valueOf(contraseñaChar),
 						textoColorHexadecimal.getText(), numeroEmpleados, tipoAgencia, textLogo.getText());
 
-				reset(textUsuario, textoContrasenya, textoColorHexadecimal, labelColorMarca, numeroEmpleadosCombo,
+				JOptionPane.showMessageDialog(null, "Agencia creada con exito", "Nueva agencia",
+						JOptionPane.INFORMATION_MESSAGE);
+				reset(textUsuario, textoContrasenya, textoColorHexadecimal, colorSeleccionado, numeroEmpleadosCombo,
 						tipoAgenciaCombo, textLogo);
-
 				frame.gotoFormLogin();
 			}
+
 		});
 		panel.add(btnConfirmar);
 
@@ -290,16 +328,43 @@ public class NuevaAgencia {
 	}
 
 	private void reset(JTextField textUsuario, JPasswordField textoContrasenya, JTextField textoColorHexadecimal,
-			JLabel labelColorMarca, JComboBox<String> numeroEmpleadosCombo, JComboBox<String> tipoAgenciaCombo,
+			JLabel colorSeleccionado, JComboBox<String> numeroEmpleadosCombo, JComboBox<String> tipoAgenciaCombo,
 			JTextField textLogo) {
 		textUsuario.setText("");
 		textoContrasenya.setText("");
 		textoColorHexadecimal.setText("#RRGGBB");
-		labelColorMarca.setBackground(Color.white);
+		colorSeleccionado.setBackground(Color.white);
 		textoColorHexadecimal.setForeground(Color.LIGHT_GRAY);
 		numeroEmpleadosCombo.setSelectedIndex(0);
 		tipoAgenciaCombo.setSelectedIndex(0);
 		textLogo.setText("");
+	}
+
+	private boolean rutaValida(String ruta) {
+		try {
+			if (!ruta.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$")) {
+				return false; // No es una imagen por la extensión
+			}
+
+			// URI: identifica de manera unica e inequivoca un recurso en la red (definicion
+			// de internet)
+			URI uri = URI.create(ruta);
+			URL url = uri.toURL(); // Convertir URI a URL
+
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("HEAD"); // Usamos "HEAD" para solo obtener los headers
+			connection.setConnectTimeout(5000); // 5 segundos de espera
+			connection.setReadTimeout(5000);
+
+			// Obtener el tipo de contenido de la URL
+			String contentType = connection.getContentType();
+
+			// Verificar si el tipo de contenido es una imagen
+			return contentType != null && contentType.startsWith("image/");
+		} catch (Exception e) {
+			return false; // no es una url valida
+		}
+
 	}
 }
 

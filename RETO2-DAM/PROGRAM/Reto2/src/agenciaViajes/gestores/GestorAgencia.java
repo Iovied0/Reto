@@ -16,27 +16,33 @@ import agenciaViajes.controlador.Controlador;
 
 public class GestorAgencia {
 
-	public void insertEjemplo(Agencia agencia) {
+	public void insertAgencia(String nombre, String contrasenya, String color, NumeroEmpleados numeroEmpleados, TiposAgencia tipoAgencia, String logo) {
 		Connection connection = null;
-		PreparedStatement stmt = null;
+		PreparedStatement statement = null;
 
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-			stmt = connection.prepareStatement(SQLQuerys.INSERT_NEW_AGENCIA);
-			stmt.setString(1, agencia.getNombre());
-			stmt.setString(2, agencia.getLogo());
-			stmt.setString(3, agencia.getColor());
-			stmt.setString(4, agencia.getNumeroEmpleados().getCodigo());
+			statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_AGENCIA);
+			statement.setString(1, nombre);
+			statement.setString(2, logo);
+			statement.setString(3, color);
+			statement.setString(4, contrasenya);
+			statement.setString(5, numeroEmpleados.getCodigo());
+			statement.setString(6, tipoAgencia.getCodigo());
+			
+			
+			
+			
+			
+//			if (tipoAgencia != null) {
+//				statement.setString(5, agencia.getTipoAgencia().getCodigo());
+//			} else {
+//				statement.setNull(5, java.sql.Types.VARCHAR);
+//			}
 
-			if (agencia.getTipoAgencia() != null) {
-				stmt.setString(5, agencia.getTipoAgencia().getCodigo());
-			} else {
-				stmt.setNull(5, java.sql.Types.VARCHAR);
-			}
-
-			stmt.executeUpdate();
+			statement.executeUpdate();
 
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
@@ -44,8 +50,8 @@ public class GestorAgencia {
 			System.out.println("Error generico - " + e.getMessage());
 		} finally {
 			try {
-				if (stmt != null)
-					stmt.close();
+				if (statement != null)
+					statement.close();
 				if (connection != null)
 					connection.close();
 			} catch (Exception e) {
