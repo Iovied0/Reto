@@ -59,7 +59,7 @@ public class Controlador {
 		ret = gestorNumeroEmpleados.getNumeroEmpleadosDescripcion(descripcion);
 		return ret;
 	}
-	
+
 	public NumeroEmpleados getNumeroEmpleadosObjetoPorCodigo(String codigo) {
 		NumeroEmpleados ret = new NumeroEmpleados();
 		GestorNumeroEmpleados gestorNumeroEmpleados = new GestorNumeroEmpleados();
@@ -82,6 +82,7 @@ public class Controlador {
 		return ret;
 
 	}
+
 	public TiposAgencia getTipoAgenciaObjetoPorCodigo(String codigo) {
 		TiposAgencia ret = new TiposAgencia();
 		GestorTiposAgencia gestorTiposAgencia = new GestorTiposAgencia();
@@ -93,22 +94,29 @@ public class Controlador {
 	public ArrayList<Agencia> getAgencias() {
 		ArrayList<Agencia> ret = new ArrayList<Agencia>();
 		GestorAgencia gestorAgencia = new GestorAgencia();
-		
+
 		ret = gestorAgencia.getAgencias();
 		return ret;
 	}
-	
+
 	public void insertarAgencia(String nombre, String contrasenya, String color, NumeroEmpleados numeroEmpleados,
 			TiposAgencia tipoAgencia, String logo) {
 		GestorAgencia gestorAgencia = new GestorAgencia();
-		
+
 		gestorAgencia.insertAgencia(nombre, contrasenya, color, numeroEmpleados, tipoAgencia, logo);
-		
-		
-		//NO ESTÁ TERMINADO PERO SOLO ES PARA CREAR EN EL FORMULARIO ASIQUE LO HAGO YO (YERAY)
-		
+
+		// NO ESTÁ TERMINADO PERO SOLO ES PARA CREAR EN EL FORMULARIO ASIQUE LO HAGO YO
+		// (YERAY)
 
 	}
+////////////////////////////FUNCIONES GESTOR TIPOS VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-	
+    public ArrayList<TipoViaje> getTipoViajePorDescripcion(String descripcion) {
+        ArrayList<TipoViaje> ret = null;
+        GestorTipoViaje gestorTipoViaje = new GestorTipoViaje();
+        ret = gestorTipoViaje.getTipoViajePorDescripcion(descripcion);
+        return ret;
+    }
+
+
 }
