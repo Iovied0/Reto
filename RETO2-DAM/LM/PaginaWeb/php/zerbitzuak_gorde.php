@@ -2,9 +2,9 @@
 session_start();
 
 $servername = "localhost";
-$username = "root";        
-$password = "";         
-$dbname = "reto2_g2_dam1";    
+$username = "root";
+$password = "";
+$dbname = "reto2_g2_dam1";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -15,7 +15,6 @@ if ($conn->connect_error) {
 // Formularioko datuak
 $izena = $_POST['izena'];
 $mota = $_POST['mota'];
-<!-- etc etc -->
 
 
 $sql = "INSERT INTO XXXXXXXXXXXXXXXXXXXXXX
@@ -37,4 +36,3 @@ $conn->close();
 header("Location: ../php/menua.php");
 exit();
 ?>
-

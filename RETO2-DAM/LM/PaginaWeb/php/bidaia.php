@@ -1,113 +1,86 @@
 <?php
-session_start();
+// Conectar a la base de datos
+$conn = new mysqli("localhost", "root", "", "reto2_g2_dam1");
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
 ?>
 
-
 <!DOCTYPE html>
-<html lang="eu">
-  <head>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Formulario para registrar viajes">
     <title>Registrar Viaje</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <script src=".../script.js"></script>
+    <script src="../js/script.js"></script>
 </head>
 <body>
-<div class="background">
-    <header>
-        <h4><?php echo $_SESSION['agentzia']; ?></h4>
-    </header>
-    <main>
-    <nav>
-        <ul>
-            <li><a href="../php/menua.php">Menu</a></li>
-        </ul>
-    </nav> 
-    <form id="XXXXXXX" XXXXXXX>
-            <label for="XXXXXXX">Aukeratu bidaia</label>
-            <select id="XXXXXXX" name="XXXXXXX" required>
-                <option value="">--Aukeratu--</option>
-                <?php
-                //DATU BASETIK
-                $conn = new mysqli("localhost", "root", "", "db_turismo");
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-                $sql = "SELECT id, izena FROM bidaia";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['izena'] . "</option>";
-                    }
-                }
-                $conn->close();
-                ?>
-            </select><br><br>
-            
-            <!-- Mas formulario -->
-            XXXXXXX
-            XXXXXXX
-            XXXXXXX
-            XXXXXXX
-            XXXXXXX
+    <div class="background">
+        <div class="cajaCentro">
+            <h1>Registrar Viaje</h1>
+            <form action="/registrar_viaje" method="POST">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre del viaje" required>
 
-            <!-- SECCIONES -->
-            <div id="XXXXXXX" style="display:none;">
-                <h5>Vuelo</h5>
-                
-            </div>
-
-            <div id="ostatua-section" style="display:none;">
-                <h5>Ostatua</h5>
-                XXXXXXX
-                XXXXXXX
-                XXXXXXX
-                XXXXXXX
-                XXXXXXX
-
-                <select id="logela_mota" name="logela_mota" required>
-                    <option value="">--Aukeratu --</option>
+                <label for="tipoViaje">Tipo de viaje:</label>
+                <select id="tipoViaje" name="tipoViaje" required>
+                    <option value="">--Seleccionar--</option>
                     <?php
-                    // DATU BASETIK
-                    $conn = new mysqli("localhost", "root", "", "db_turismo");
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-                    $sql = "SELECT IdLogelaMota, LogelaMota FROM logelamota"; 
+                    $sql = "SELECT descripcion FROM tipoviaje";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                            echo "<option value='" . $row['IdLogelaMota'] . "'>" . $row['LogelaMota'] . "</option>";
+                            echo "<option value='" . $row['id'] . "'>" . $row['descripcion'] . "</option>";
                         }
                     }
-                    $conn->close();
                     ?>
-                </select><br><br>
+                </select>
 
-            </div>
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" required onchange="calcularDias()">
 
-            <div id="XXXXXXX" style="display:none;">
-                <h5>Beste Batzuk</h5>
+                <label for="fechaFin">Fecha de finalización:</label>
+                <input type="date" id="fechaFin" name="fechaFin" required onchange="calcularDias()">
 
+                <label for="dias">Días:</label>
+                <input type="number" id="dias" name="dias" placeholder="Número de días" readonly>
 
-            </div>
-<br>
-            <input type="submit" value="Gorde Zerbitzua">
-        </form>
+                <label for="territorio">País:</label>
+                <select id="territorio" name="territorio" required>
+                    <option value="">--Seleccionar--</option>
+                    <?php
+                    $sql = "SELECT nombre FROM pais";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value='" . $row['id'] . "'>" . $row['nombre'] . "</option>";
+                        }
+                    }
+                    ?>
+                </select>
 
-        XXXXXXX
-        XXXXXXX
-        XXXXXXX
-          
-    </main>
-    <footer>
-        <ul>
-            <li><a href="#">Sobre nosotros</a></li>
-            <li><a href="#">Política de privacidad</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </footer>
-<div>
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Descripción del viaje" rows="4"></textarea>
+
+                <label>Servicios excluidos:</label>
+                <textarea id="serviciosExcluidos" name="serviciosExcluidos" placeholder="Servicios no incluidos" rows="4"></textarea>
+
+                <button type="submit">Guardar</button>
+            </form>
+            <footer>
+                <ul>
+                    <li><a href="#">Sobre nosotros</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>

@@ -4,6 +4,7 @@ body, html {
     font-family: Arial;
     color: white;
     height: 100%;
+    width: 100%;
 }
 
 /* Estilos para el fondo */
@@ -70,9 +71,23 @@ body, html {
     border-color: #007BFF; /* Color de foco azul */
     outline: none;
 }
+.botonRegistro {
+    padding: 12px 20px;
+    background: #555;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.botonRegistro:hover{
+    background: grey;
+}
 
 /* Estilo del botón */
-.cajaCentro button {
+.botonLogin {
     padding: 12px 20px;
     background: #007BFF;
     color: white;
@@ -84,7 +99,7 @@ body, html {
     font-size: 16px;
 }
 
-.cajaCentro button:hover {
+.botonLogin:hover {
     background: #0056b3; /* Cambio de color al pasar el raton */
 }
 

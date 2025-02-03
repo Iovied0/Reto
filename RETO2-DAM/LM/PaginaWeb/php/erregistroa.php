@@ -13,7 +13,7 @@ session_start();
   </head>
 <body>
     <header>
-        <h4><?php echo $_SESSION['agentzia']; ?></h4>
+        <h4><?php echo $_SESSION['agencia']; ?></h4>
 
     </header>
     <main>
