@@ -164,7 +164,7 @@ public class NuevoEvento {
                 frame.gotoViajes();
             }
         });
-        panel.add(btnCancelar);
+        panel.add(btnCancelar); 
     }
 
     public JPanel getPanel() {
