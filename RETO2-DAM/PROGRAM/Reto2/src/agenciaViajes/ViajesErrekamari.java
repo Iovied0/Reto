@@ -87,13 +87,21 @@ public class ViajesErrekamari extends JFrame {
 		JPanel panelLogin = login.getPanel();
 		panelLogin.setVisible(false);
 		
-		Viajes viaje = new Viajes(paneles, this);
-		JPanel panelViaje = viaje.getPanel();
-		panelViaje.setVisible(false);
+		ViajesyEventos viajesyEventos = new ViajesyEventos(paneles, this);
+		JPanel panelViajesyEventos = viajesyEventos.getPanel();
+		panelViajesyEventos.setVisible(false);
 
 		NuevaAgencia nuevaAgencia = new NuevaAgencia(paneles, this);
 		JPanel panelNuevaAgencia = nuevaAgencia.getPanel();
 		panelNuevaAgencia.setVisible(false);
+
+		NuevoViaje nuevoViaje = new NuevoViaje(paneles, this);
+		JPanel panelNuevoViaje = nuevoViaje.getPanel();
+		panelNuevoViaje.setVisible(false);
+		
+		NuevoEvento nuevoEvento = new NuevoEvento(paneles, this);
+		JPanel panelnuevoEvento = nuevoEvento.getPanel();
+		panelnuevoEvento.setVisible(false);
 
 		// lo metemos en el array y en la ventana
 		paneles.add(panelBienvenida);
@@ -102,11 +110,17 @@ public class ViajesErrekamari extends JFrame {
 		paneles.add(panelLogin);
 		frame.getContentPane().add(panelLogin);
 
-		paneles.add(panelViaje);
-		frame.getContentPane().add(panelViaje);
+		paneles.add(panelViajesyEventos);
+		frame.getContentPane().add(panelViajesyEventos);
 
 		paneles.add(panelNuevaAgencia);
 		frame.getContentPane().add(panelNuevaAgencia);
+		
+		paneles.add(panelNuevoViaje);
+		frame.getContentPane().add(panelNuevoViaje);
+		
+		paneles.add(panelnuevoEvento);
+		frame.getContentPane().add(panelnuevoEvento);
 
 	}
 
@@ -117,6 +131,7 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(1).setVisible(false);
 		paneles.get(2).setVisible(false);
 		paneles.get(3).setVisible(false);
+		paneles.get(4).setVisible(false);
 		menuBar.setVisible(false);
 		agenciaLogin = null;
 	}
@@ -126,6 +141,8 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(1).setVisible(true);
 		paneles.get(2).setVisible(false);
 		paneles.get(3).setVisible(false);
+		paneles.get(4).setVisible(false);
+
 	}
 
 	public void gotoViajes() {
@@ -133,6 +150,8 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(1).setVisible(false);
 		paneles.get(2).setVisible(true);
 		paneles.get(3).setVisible(false);
+		paneles.get(4).setVisible(false);
+
 		
 		menuBar.setVisible(true);
 	}
@@ -142,6 +161,27 @@ public class ViajesErrekamari extends JFrame {
 		paneles.get(1).setVisible(false);
 		paneles.get(2).setVisible(false);
 		paneles.get(3).setVisible(true);
+		paneles.get(4).setVisible(false);
+
+	}
+	
+	
+	public void gotoNuevoViaje() {
+		paneles.get(0).setVisible(false);
+		paneles.get(1).setVisible(false);
+		paneles.get(2).setVisible(false);
+		paneles.get(3).setVisible(false);
+		paneles.get(4).setVisible(true);
+	}
+	
+
+	public void gotoNuevoEvento() {
+		paneles.get(0).setVisible(false);
+		paneles.get(1).setVisible(false);
+		paneles.get(2).setVisible(false);
+		paneles.get(3).setVisible(false);
+		paneles.get(4).setVisible(false);
+		paneles.get(5).setVisible(true);
 	}
 	
 	

@@ -13,18 +13,17 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Pais;
@@ -33,8 +32,8 @@ import agenciaViajes.controlador.Controlador;
 
 public class NuevoViaje {
 
-    private JPanel panel;
-    private Controlador controlador;
+    public JPanel panel;
+    public Controlador controlador;
 
     public NuevoViaje(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
         panel = new JPanel();
@@ -162,7 +161,7 @@ public class NuevoViaje {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Boton de cancelar que lleve a donde haga falta
-                frame.gotoFormLogin();
+                frame.gotoViajes();
             }
         });
         panel.add(btnCancelar);
@@ -192,16 +191,16 @@ public class NuevoViaje {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Nuevo Viaje Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 700);
-
-        ArrayList<JPanel> paneles = new ArrayList<>();
-        ViajesErrekamari viajesErrekamari = new ViajesErrekamari();
-        NuevoViaje nuevoViaje = new NuevoViaje(paneles, viajesErrekamari);
-
-        frame.add(nuevoViaje.getPanel());
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Nuevo Viaje Test");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(900, 700);
+//
+//        ArrayList<JPanel> paneles = new ArrayList<>();
+//        ViajesErrekamari viajesErrekamari = new ViajesErrekamari();
+//        NuevoViaje nuevoViaje = new NuevoViaje(paneles, viajesErrekamari);
+//
+//        frame.add(nuevoViaje.getPanel());
+//        frame.setVisible(true);
+//    }
 }
