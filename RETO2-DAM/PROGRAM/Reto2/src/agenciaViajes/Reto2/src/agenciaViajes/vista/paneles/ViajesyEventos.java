@@ -1,4 +1,3 @@
-
 package agenciaViajes.vista.paneles;
 
 import java.awt.*;

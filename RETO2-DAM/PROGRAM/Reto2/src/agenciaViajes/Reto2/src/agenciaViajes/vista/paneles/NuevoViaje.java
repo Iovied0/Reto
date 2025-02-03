@@ -37,7 +37,7 @@ public class NuevoViaje {
 
     public NuevoViaje(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
         panel = new JPanel();
-        panel.setBounds(0, 0, 900, 700);
+        panel.setBounds(0, 0, 900, 1200);
         panel.setLayout(null);
 
         controlador = new Controlador();
