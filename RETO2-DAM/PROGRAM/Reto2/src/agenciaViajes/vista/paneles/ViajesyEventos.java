@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Agencia;
+import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 
 public class ViajesyEventos {
@@ -55,17 +56,29 @@ public class ViajesyEventos {
 			System.out.println("Error" + e.getMessage());
 		}
 
+		controlador = Controlador.getInstanceControlador();
+		ArrayList<Viaje> viajes = controlador.getViajesId(agencia);
+
 		// Initialize travelModel and travelTable
 		travelModel = new DefaultTableModel(
 				new Object[] { "Nombre", "Tipo", "Días", "Fecha Inicio", "Fecha Fin", "País" }, 0);
 		JTable travelTable;
 		travelTable = new JTable(travelModel);
+
 		JScrollPane travelScrollPane = new JScrollPane(travelTable);
+		if (viajes != null) {
+			for (Viaje viaje : viajes) {
+				Object[] newRow = { viaje.getNombreViaje(), viaje.getTipoViaje().getDescripcion(),
+						viaje.getNumeroDias(), viaje.getInicioViaje(), viaje.getFinViaje(),
+						viaje.getPais().getNombre() };
+				travelModel.addRow(newRow);
+
+			}
+		}
+
 		travelScrollPane.setBounds(200, 230, 860, 200);
 		panel.add(travelScrollPane);
-		
-		controlador = Controlador.getInstanceControlador();
-		controlador.getViajesId(agencia);
+
 		// Initialize eventModel and eventTable
 		eventModel = new DefaultTableModel(new Object[] { "Nombre", "Fecha", "Hora", "Lugar", "Descripción" }, 0);
 		JTable eventTable;

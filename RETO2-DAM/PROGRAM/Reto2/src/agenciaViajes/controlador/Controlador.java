@@ -7,7 +7,7 @@ import agenciaViajes.gestores.*;
 
 public class Controlador {
 	private static Controlador controlador = null;
-	
+
 	private Agencia instanceAgencia = null;
 
 	public static Controlador getInstanceControlador() {
@@ -19,28 +19,37 @@ public class Controlador {
 	}
 
 //////////////////////////// FUNCIONES GESTOR PAISES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	public ArrayList<Pais> mostrarPaises() {
 		ArrayList<Pais> ret = null;
 		GestorPaises gestorPaises = new GestorPaises();
 		ret = gestorPaises.mostrarPaises();
 		return ret;
 	}
+//
+//	public Pais mostrarPaisArray(int posicionArray) {
+//		ArrayList<Pais> paises = mostrarPaises();
+//		String codigoPais;
+//		Pais ret = null;
+//		GestorPaises gestorPaises = new GestorPaises();
+//
+//		codigoPais = paises.get(posicionArray).getCodigo();
+//		ret = gestorPaises.getPaisPorCodigo(codigoPais);
+//		return ret;
+//	}
 
-	public Pais mostrarPaisArray(int posicionArray) {
-		ArrayList<Pais> paises = mostrarPaises();
-		String codigoPais;
+	public Pais getPaisPorCodigo(String codigo) {
 		Pais ret = null;
 		GestorPaises gestorPaises = new GestorPaises();
-
-		codigoPais = paises.get(posicionArray).getCodigo();
-		ret = gestorPaises.mostrarPaisViaje(codigoPais);
+		ret = gestorPaises.getPaisPorCodigo(codigo);
 		return ret;
 	}
-	
+
 ////////////////////////////FUNCIONES GESTOR VIAJES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	public ArrayList<Viaje>getViajesId(Agencia agencia){
-		ArrayList<Viaje>ret = null;
-		
+	public ArrayList<Viaje> getViajesId(Agencia agencia) {
+		ArrayList<Viaje> ret = null;
+		GestorViajes gestorViajes = new GestorViajes();
+		ret = gestorViajes.getViajesId(agencia);
 		return ret;
 	}
 
@@ -146,6 +155,13 @@ public class Controlador {
 		ArrayList<TipoViaje> ret = null;
 		GestorTipoViaje gestorTipoViaje = new GestorTipoViaje();
 		ret = gestorTipoViaje.getTipoViajePorDescripcion(descripcion);
+		return ret;
+	}
+
+	public TipoViaje getTipoViajeObjetoPorCodigo(String codigo) {
+		TipoViaje ret = new TipoViaje();
+		GestorTipoViaje gestorTiposAgencia = new GestorTipoViaje();
+		ret = gestorTiposAgencia.getTipoViajePorCodigo(codigo);
 		return ret;
 	}
 
