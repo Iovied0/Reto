@@ -37,10 +37,10 @@ public class NuevoViaje {
 
     public NuevoViaje(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
         panel = new JPanel();
-        panel.setBounds(0, 0, 900, 700);
+        panel.setBounds(0, 0, 1300, 900);
         panel.setLayout(null);
 
-        controlador = new Controlador();
+        controlador = Controlador.getInstanceControlador();
 
         JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO VIAJE");
         labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));

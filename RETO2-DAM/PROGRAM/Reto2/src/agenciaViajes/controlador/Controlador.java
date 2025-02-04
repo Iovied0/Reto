@@ -6,6 +6,17 @@ import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.gestores.*;
 
 public class Controlador {
+	private static Controlador controlador = null;
+	
+	private Agencia instanceAgencia = null;
+
+	public static Controlador getInstanceControlador() {
+
+		if (null == controlador) {
+			controlador = new Controlador();
+		}
+		return controlador;
+	}
 
 //////////////////////////// FUNCIONES GESTOR PAISES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public ArrayList<Pais> mostrarPaises() {
@@ -23,6 +34,13 @@ public class Controlador {
 
 		codigoPais = paises.get(posicionArray).getCodigo();
 		ret = gestorPaises.mostrarPaisViaje(codigoPais);
+		return ret;
+	}
+	
+////////////////////////////FUNCIONES GESTOR VIAJES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public ArrayList<Viaje>getViajesId(Agencia agencia){
+		ArrayList<Viaje>ret = null;
+		
 		return ret;
 	}
 
@@ -105,18 +123,30 @@ public class Controlador {
 
 		gestorAgencia.insertAgencia(nombre, contrasenya, color, numeroEmpleados, tipoAgencia, logo);
 
-		// NO ESTÁ TERMINADO PERO SOLO ES PARA CREAR EN EL FORMULARIO ASIQUE LO HAGO YO
-		// (YERAY)
-
 	}
+
+	public void setInstanceAgencia(Agencia agencia) {
+		instanceAgencia = agencia;
+	}
+
+	public Agencia getInstanceAgencia() {
+		if (null == instanceAgencia) {
+			instanceAgencia = new Agencia();
+		}
+		return instanceAgencia;
+	}
+
+	public void deleteInstanceAgencia() {
+		instanceAgencia = null;
+	}
+
 ////////////////////////////FUNCIONES GESTOR TIPOS VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public ArrayList<TipoViaje> getTipoViajePorDescripcion(String descripcion) {
-        ArrayList<TipoViaje> ret = null;
-        GestorTipoViaje gestorTipoViaje = new GestorTipoViaje();
-        ret = gestorTipoViaje.getTipoViajePorDescripcion(descripcion);
-        return ret;
-    }
-
+	public ArrayList<TipoViaje> getTipoViajePorDescripcion(String descripcion) {
+		ArrayList<TipoViaje> ret = null;
+		GestorTipoViaje gestorTipoViaje = new GestorTipoViaje();
+		ret = gestorTipoViaje.getTipoViajePorDescripcion(descripcion);
+		return ret;
+	}
 
 }

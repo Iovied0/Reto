@@ -16,7 +16,8 @@ import agenciaViajes.controlador.Controlador;
 
 public class GestorAgencia {
 
-	public void insertAgencia(String nombre, String contrasenya, String color, NumeroEmpleados numeroEmpleados, TiposAgencia tipoAgencia, String logo) {
+	public void insertAgencia(String nombre, String contrasenya, String color, NumeroEmpleados numeroEmpleados,
+			TiposAgencia tipoAgencia, String logo) {
 		Connection connection = null;
 		PreparedStatement statement = null;
 
@@ -31,17 +32,6 @@ public class GestorAgencia {
 			statement.setString(4, contrasenya);
 			statement.setString(5, numeroEmpleados.getCodigo());
 			statement.setString(6, tipoAgencia.getCodigo());
-			
-			
-			
-			
-			
-//			if (tipoAgencia != null) {
-//				statement.setString(5, agencia.getTipoAgencia().getCodigo());
-//			} else {
-//				statement.setNull(5, java.sql.Types.VARCHAR);
-//			}
-
 			statement.executeUpdate();
 
 		} catch (SQLException sqle) {
@@ -86,7 +76,8 @@ public class GestorAgencia {
 				agencia.setLogo(resultSet.getString("logo"));
 				agencia.setColor(resultSet.getString("color"));
 				agencia.setContraseña(resultSet.getString("contraseña"));
-				numeroEmpleados = controlador.getNumeroEmpleadosObjetoPorCodigo(resultSet.getString("numero_empleados"));
+				numeroEmpleados = controlador
+						.getNumeroEmpleadosObjetoPorCodigo(resultSet.getString("numero_empleados"));
 				agencia.setNumeroEmpleados(numeroEmpleados);
 				tipoagencia = controlador.getTipoAgenciaObjetoPorCodigo(resultSet.getString("tipo_agencia"));
 				agencia.setTipoAgencia(tipoagencia);

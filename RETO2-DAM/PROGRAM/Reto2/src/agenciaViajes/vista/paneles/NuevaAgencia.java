@@ -41,7 +41,7 @@ public class NuevaAgencia {
 	 */
 	public NuevaAgencia(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 		panel = new JPanel();
-		panel.setBounds(0, 0, 900, 700);
+		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
 
 		//////////////////////////// LABEL TÍTULO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -177,7 +177,7 @@ public class NuevaAgencia {
 
 		JComboBox<String> numeroEmpleadosCombo;
 		ArrayList<NumeroEmpleados> arrayNumeroEmpleados;
-		controlador = new Controlador();
+		controlador = Controlador.getInstanceControlador();
 
 		arrayNumeroEmpleados = controlador.getNumeroEmpleados();
 		numeroEmpleadosCombo = new JComboBox<String>();
@@ -195,7 +195,7 @@ public class NuevaAgencia {
 
 		JComboBox<String> tipoAgenciaCombo;
 		ArrayList<TiposAgencia> arrayTipoAgencia;
-		controlador = new Controlador();
+//		controlador = new Controlador();
 
 		arrayTipoAgencia = controlador.getTipoAgencia();
 		tipoAgenciaCombo = new JComboBox<String>();

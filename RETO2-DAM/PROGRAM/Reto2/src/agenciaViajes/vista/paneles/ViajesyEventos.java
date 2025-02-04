@@ -3,83 +3,89 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import agenciaViajes.ViajesErrekamari;
+import agenciaViajes.bbdd.pojos.Agencia;
+import agenciaViajes.controlador.Controlador;
 
 public class ViajesyEventos {
 
 	private JPanel panel;
-	private JTable travelTable, eventTable;
+
 	private DefaultTableModel travelModel, eventModel;
-	private JButton newTravelButton, newEventButton, generateOfferButton, disconnectButton;
+	private JButton generateOfferButton;
 
 	public ViajesyEventos(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 		panel = new JPanel();
-		panel.setBounds(0, 0, 900, 700);
+		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
+		Controlador controlador = Controlador.getInstanceControlador();
+		Agencia agencia = controlador.getInstanceAgencia();
+		JLabel labelTitulo = new JLabel("Viajes y Eventos de " + agencia.getNombre());
 
-		JLabel labelTitulo = new JLabel("GESTIÓN DE VIAJES Y EVENTOS");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(15, 20, 600, 25);
+		labelTitulo.setBounds(200, 65, 600, 27);
 		panel.add(labelTitulo);
+
+		JLabel labelViajes = new JLabel("Viajes");
+		labelViajes.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 20));
+		labelViajes.setBounds(570, 180, 600, 27);
+		panel.add(labelViajes);
+
+		JLabel labelEventos = new JLabel("Eventos");
+		labelEventos.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 20));
+		labelEventos.setBounds(570, 490, 600, 27);
+		panel.add(labelEventos);
+
+		JLabel labelLogo = new JLabel();
+		try {
+			URI uriLogo = new URI(agencia.getLogo());
+			URL urlLogo = uriLogo.toURL();
+			ImageIcon logo = new ImageIcon(urlLogo);
+			Image logoReescalado = logo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+			labelLogo.setIcon(new ImageIcon(logoReescalado));
+			labelLogo.setBounds(50, 50, 100, 100);
+			panel.add(labelLogo);
+		} catch (Exception e) {
+			System.out.println("Error" + e.getMessage());
+		}
 
 		// Initialize travelModel and travelTable
 		travelModel = new DefaultTableModel(
 				new Object[] { "Nombre", "Tipo", "Días", "Fecha Inicio", "Fecha Fin", "País" }, 0);
+		JTable travelTable;
 		travelTable = new JTable(travelModel);
 		JScrollPane travelScrollPane = new JScrollPane(travelTable);
-		travelScrollPane.setBounds(10, 60, 860, 200);
+		travelScrollPane.setBounds(200, 230, 860, 200);
 		panel.add(travelScrollPane);
-
+		
+		controlador = Controlador.getInstanceControlador();
+		controlador.getViajesId(agencia);
 		// Initialize eventModel and eventTable
 		eventModel = new DefaultTableModel(new Object[] { "Nombre", "Fecha", "Hora", "Lugar", "Descripción" }, 0);
+		JTable eventTable;
 		eventTable = new JTable(eventModel);
 		JScrollPane eventScrollPane = new JScrollPane(eventTable);
-		eventScrollPane.setBounds(10, 280, 860, 200);
+		eventScrollPane.setBounds(200, 530, 860, 200);
 		panel.add(eventScrollPane);
 
 		// Buttons
-		newTravelButton = new JButton("Nuevo Viaje");
-		newTravelButton.setBounds(10, 500, 150, 25);
-		panel.add(newTravelButton);
-
-		newEventButton = new JButton("Nuevo Evento");
-		newEventButton.setBounds(180, 500, 150, 25);
-		panel.add(newEventButton);
-
 		generateOfferButton = new JButton("Generar oferta cliente");
-		generateOfferButton.setBounds(350, 500, 200, 25);
+		generateOfferButton.setBounds(350, 800, 200, 25);
 		panel.add(generateOfferButton);
 
-		disconnectButton = new JButton("Desconectar");
-		disconnectButton.setBounds(570, 500, 150, 25);
-		panel.add(disconnectButton);
-
 		// Action Listeners
-		newTravelButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.gotoNuevoViaje();
-			}
-		});
-
-		newEventButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.gotoNuevoEvento();
-
-			}
-		});
-
 		generateOfferButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = travelTable.getSelectedRow();
 				if (selectedRow != -1) {
-					// Implementar lógica para generar oferta el txt 
+					// Implementar lógica para generar oferta el txt
 					JOptionPane.showMessageDialog(null, "Funcionalidad de generar oferta no implementada.");
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, selecciona un viaje primero.");
@@ -87,16 +93,7 @@ public class ViajesyEventos {
 			}
 		});
 
-		disconnectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Desconectado correctamente.");
-				frame.gotoFormLogin();
-			}
-		});
-
 		// Mouse Listener for eventTable
-
 		travelTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -131,7 +128,7 @@ public class ViajesyEventos {
 							travelTable.setValueAt(diasField.getText(), selectedRow, 2);
 							travelTable.setValueAt(fechaInicioField.getText(), selectedRow, 3);
 							travelTable.setValueAt(fechaFinField.getText(), selectedRow, 4);
-						 	travelTable.setValueAt(paisField.getText(), selectedRow, 5);
+							travelTable.setValueAt(paisField.getText(), selectedRow, 5);
 						}
 					}
 				}

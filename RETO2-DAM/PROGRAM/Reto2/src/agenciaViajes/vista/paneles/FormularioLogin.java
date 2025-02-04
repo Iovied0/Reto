@@ -2,6 +2,8 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class FormularioLogin {
 	public FormularioLogin(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 900, 700);
+		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
 
 		//////////////////// USUARIO \\\\\\\\\\\\\\\\\\\\
@@ -84,27 +86,16 @@ public class FormularioLogin {
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ArrayList<Agencia> agencias = new ArrayList<Agencia>();
-				Controlador controlador = new Controlador();
-				char[] contraseñaChar = textPassword.getPassword();
-				String contraseña = new String(contraseñaChar);
-				Boolean login = false;
-				agencias = controlador.getAgencias();
-
-				for (Agencia agencia : agencias) {
-					if (agencia.getNombre().equalsIgnoreCase(textUsuario.getText())
-							&& agencia.getContraseña().equals(contraseña)) {
-						login = true;
-						frame.setAgenciaLogin(agencia);
-						frame.gotoViajes();
-						reset(textUsuario, textPassword);
-					}
-				}
-				if (login == false) {
-					JOptionPane.showMessageDialog(null, "Credenciales incorrectas.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-
+				login(textUsuario.getText(), textPassword.getPassword(), frame);
+				reset(textUsuario, textPassword);
+			}
+		});
+		textPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					login(textUsuario.getText(), textPassword.getPassword(), frame);
+					reset(textUsuario, textPassword);
 				}
 			}
 		});
@@ -132,8 +123,9 @@ public class FormularioLogin {
 		panel.add(labelFondoLogin);
 
 		ImageIcon bienvenida = new ImageIcon("src/agenciaViajes/vista/img/bienvenida.jpg");
-		JLabel labelImagen = new JLabel(bienvenida);
-		labelImagen.setBounds(0, -106, 887, 750);
+		Image bienvenidaReescalado = bienvenida.getImage().getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+		JLabel labelImagen = new JLabel(new ImageIcon(bienvenidaReescalado));
+		labelImagen.setBounds(0, 0, 1300, 900);
 		labelImagen.setOpaque(false);
 		panel.add(labelImagen);
 
@@ -152,5 +144,27 @@ public class FormularioLogin {
 	 */
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	private void login(String user, char[] passwd, ViajesErrekamari frame) {
+		ArrayList<Agencia> agencias = new ArrayList<Agencia>();
+		Controlador controlador = Controlador.getInstanceControlador();
+		String contraseña = new String(passwd);
+		Boolean login = false;
+		agencias = controlador.getAgencias();
+
+		for (Agencia agencia : agencias) {
+			if (agencia.getNombre().equalsIgnoreCase(user) && agencia.getContraseña().equals(contraseña)) {
+				login = true;
+				controlador.setInstanceAgencia(agencia);
+				frame.gotoViajes();
+
+			}
+		}
+		if (login == false) {
+			JOptionPane.showMessageDialog(null, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
+		} else {
+
+		}
 	}
 }

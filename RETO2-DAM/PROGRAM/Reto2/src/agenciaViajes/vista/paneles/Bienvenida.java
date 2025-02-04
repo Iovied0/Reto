@@ -2,6 +2,7 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Bienvenida {
 	public Bienvenida(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 900, 700);
+		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
 
 		//////////////////////////// TEXTO DEL FONDO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -41,14 +42,15 @@ public class Bienvenida {
 		//////////////////////////// FONDO DEL PANEL \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 		ImageIcon bienvenida = new ImageIcon("src/agenciaViajes/vista/img/bienvenida.jpg");
-		labelImagen = new JLabel(bienvenida);
+		Image bienvenidaReescalado = bienvenida.getImage().getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+		labelImagen = new JLabel(new ImageIcon(bienvenidaReescalado));
 		labelImagen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.gotoFormLogin();
 			}
 		});
-		labelImagen.setBounds(0, -106, 887, 750);
+		labelImagen.setBounds(0, 0, 1300, 900);
 		labelImagen.setOpaque(false);
 		panel.add(labelImagen);
 

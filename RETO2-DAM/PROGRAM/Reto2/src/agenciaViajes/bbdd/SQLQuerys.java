@@ -13,6 +13,8 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_PAISES = "select * from pais";
 
+	public static final String SELECT_TODOS_VIAJES_ID = "SELECT * from viaje where id_agencia = ?";
+
 	public static final String SELECT_TODOS_ACTIVIDAD = "select * from actividad";
 
 	public static final String SELECT_TODOS_ACTIVIDAD_ID = "SELECT * from actividad where id_viaje = ?";
