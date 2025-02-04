@@ -34,7 +34,7 @@ CREATE TABLE `actividad` (
   `precio` decimal(10,2) NOT NULL,
   `id_viaje` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+ 
 --
 -- Volcado de datos para la tabla `actividad`
 --
