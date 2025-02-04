@@ -9,7 +9,7 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_PAISES_POR_CODIGO = "SELECT * FROM pais WHERE codigo = ?";
 
-//	public static final String SELECT_TODOS_PAISES_POR_CODIGO = "SELECT * FROM actividad WHERE idViaje = ?";
+//	public static final String SELECT_TODOS_ACTIVIDADES_POR_IDVIAJE = "SELECT * FROM actividad WHERE idViaje = ?";
 
 	public static final String SELECT_TODOS_PAISES = "select * from pais";
 
@@ -42,13 +42,20 @@ public class SQLQuerys {
 
 	// INSERTS
 
-	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_evento) VALUES ('";
+	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_evento) VALUES (?, ?, ?, ?, ?)";
 
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";
 
 	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
+	
+	public static final String INSERT_NEW_VIAJE = "INSERT INTO viaje (nombreViaje, descViaje, inicioViaje, finViaje, numeroDias, servNoIncluidos, id_agencia, tipo_viaje, pais_destino) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	public static final String INSERT_NEW_VUELO = "INSERT INTO vuelo (tipo_vuelo, codigo_vuelo_ida, fecha_ida, hora_salida_ida, duracion_ida, aerolinea_ida, aeropuerto_origen, aeropuerto_destino, codigo_vuelo_vuelta, fecha_vuelta, hora_salida_vuelta, duracion_vuelta, aerolinea_vuelta, id_viaje, precio_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO alojamiento (nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
 
 //	public static final String INSERT_NEW_ALUMNO = "insert into alumnos (dni, nombre, apellidos, grupo) VALUES ('";
 //

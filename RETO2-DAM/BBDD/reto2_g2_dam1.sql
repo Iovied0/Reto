@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 01-02-2025 a las 21:46:39
+-- Servidor: 127.0.0.1:3307
+-- Tiempo de generación: 04-02-2025 a las 19:03:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -237,7 +237,7 @@ INSERT INTO `aeropuerto` (`codigo`, `id_ciudad`) VALUES
 CREATE TABLE `agencia` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
-  `logo` varchar(50) DEFAULT NULL,
+  `logo` varchar(500) DEFAULT NULL,
   `color` char(7) DEFAULT NULL,
   `contraseña` varchar(50) NOT NULL,
   `numero_empleados` char(2) NOT NULL,
