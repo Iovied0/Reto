@@ -31,31 +31,23 @@ if (isset($_SESSION['mensaje'])) {
 
 <body>
     <div class="background">
-        <!-- <header>
-            <h4><?php echo $_SESSION['agencia']; ?></h4>
-        </header> -->
-        <div class="login">
             <div class="cajaCentro">
                 <main>
                     <h2>Bienvenido a la página principal de <?php echo $_SESSION['agencia']; ?>!</h2>
                     <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
-
                     <nav>
                         <a href="../php/bidaia.php"><button class=botonRegistro>Registrar Viaje</button></a>
                         <a href="../php/zerbitzuak.php"><button class=botonRegistro>Registrar Servicios</button></a>
                     </nav>
                 </main>
             </div>
-            <div>
                 <footer>
                     <ul>
                         <li><a href="#">Sobre nosotros</a></li>
                         <li><a href="#">Política de privacidad</a></li>
                         <li><a href="#">Contacto</a></li>
                     </ul>
-                </footer>
-            </div>
-        </div>
+                </footer>        
     </div>
 </body>
 

@@ -3,7 +3,7 @@
 session_start();
 
 // Datu baserako konexioko parametroak
-$servername = "localhost";
+$servername = "localhost:3307";
 $username = "root";
 $password = "";
 $dbname = "reto2_g2_dam1";
