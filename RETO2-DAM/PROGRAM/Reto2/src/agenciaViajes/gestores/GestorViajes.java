@@ -1,6 +1,5 @@
 package agenciaViajes.gestores;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
+import agenciaViajes.controlador.Controlador;
 
 /**
  * Esta clase tiene todos los metodos relevantes a la tabla t_alumno de BBDD.
@@ -35,8 +35,8 @@ public class GestorViajes {
 			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VIAJES_ID);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
 
-			resultSet = preparedStatement.executeQuery();
 			preparedStatement.setInt(1, agencia.getId());
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				if (null == ret)
 					ret = new ArrayList<Viaje>();
@@ -49,9 +49,13 @@ public class GestorViajes {
 				viaje.setFinViaje(resultSet.getDate("finViaje"));
 				viaje.setNumeroDias(resultSet.getInt("numeroDias"));
 				viaje.setServNoIncluidos(resultSet.getString("servNoIncluidos"));
-				
-//				viaje.setTipoViaje(resultSet.getString("tipoViaje"));  CONTINUAR AQUI
-				
+				viaje.setAgencia(agencia);
+				Controlador controlador = Controlador.getInstanceControlador();
+				TipoViaje tipoViaje = controlador.getTipoViajeObjetoPorCodigo(resultSet.getString("tipo_viaje"));
+				viaje.setTipoViaje(tipoViaje);
+				Pais pais = controlador.getPaisPorCodigo(resultSet.getString("pais_destino"));
+				viaje.setPais(pais);
+
 				ret.add(viaje);
 			}
 		} catch (SQLException sqle) {

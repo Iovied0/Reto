@@ -56,4 +56,50 @@ public class GestorTipoViaje {
 		}
 		return ret;
 	}
+
+	public TipoViaje getTipoViajePorCodigo(String descripcion) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		TipoViaje ret = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_TIPOS_VIAJE);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				ret = new TipoViaje();
+				ret.setCodigo(resultSet.getString("codigo"));
+				ret.setDescripcion(resultSet.getString("descripcion"));
+
+			}
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+		return ret;
+	}
 }

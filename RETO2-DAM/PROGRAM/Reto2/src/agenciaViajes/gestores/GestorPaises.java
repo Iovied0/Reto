@@ -76,7 +76,7 @@ public class GestorPaises {
 		 * 
 		 * @return Los paises en la BBDD
 		 */
-		public Pais mostrarPaisViaje(String codigo) {
+		public Pais getPaisPorCodigo(String codigo) {
 
 			Pais ret = null;
 			Connection connection = null;
@@ -124,6 +124,8 @@ public class GestorPaises {
 			}
 			return ret;
 		}
+		
+		
 		
 		
 		

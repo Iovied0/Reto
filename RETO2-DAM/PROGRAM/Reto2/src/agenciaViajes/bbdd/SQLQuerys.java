@@ -33,7 +33,9 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_TIPOS_AGENCIA_WHERE_CODIGO = "select * from tiposagencia where codigo = ?";
 
-	public static final String SELECT_TODOS_TIPOS_VIAJE = "select descripcion from tipoviaje";
+	public static final String SELECT_TODOS_TIPOS_VIAJE = "select * from tipoviaje";
+	
+	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_CODIGO = "select * from tipoviaje where codigo = ?";
 
 	
 	//	public static final String SELECT_TODOS_NOTAS_BY_ID_ALUMNO = "SELECT * FROM `calificaciones` WHERE `Dni` = ?";
