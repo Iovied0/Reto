@@ -3,6 +3,7 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,16 +11,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import agenciaViajes.ViajesErrekamari;
+import agenciaViajes.bbdd.pojos.Actividad;
 import agenciaViajes.bbdd.pojos.Agencia;
+import agenciaViajes.bbdd.pojos.Alojamiento;
 import agenciaViajes.bbdd.pojos.Viaje;
+import agenciaViajes.bbdd.pojos.Vuelo;
 import agenciaViajes.controlador.Controlador;
 
 public class ViajesyEventos {
 
 	private JPanel panel;
-
+	private JTable travelTable, eventTable;;
 	private DefaultTableModel travelModel, eventModel;
-	private JButton generateOfferButton;
+	private JButton generateOfferButton, btnBorrarViaje, btnBorrarEvento;
 
 	public ViajesyEventos(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 		panel = new JPanel();
@@ -30,6 +34,8 @@ public class ViajesyEventos {
 		JLabel labelTitulo = new JLabel("Viajes y Eventos de " + agencia.getNombre());
 
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
+		Color colorAgencia = Color.decode(agencia.getColor());
+		labelTitulo.setForeground(colorAgencia);
 		labelTitulo.setBounds(200, 65, 600, 27);
 		panel.add(labelTitulo);
 
@@ -57,14 +63,25 @@ public class ViajesyEventos {
 		}
 
 		controlador = Controlador.getInstanceControlador();
-		ArrayList<Viaje> viajes = controlador.getViajesId(agencia);
+		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(agencia);
+
+		controlador = Controlador.getInstanceControlador();
 
 		// Initialize travelModel and travelTable
-		travelModel = new DefaultTableModel(
-				new Object[] { "Nombre", "Tipo", "Días", "Fecha Inicio", "Fecha Fin", "País" }, 0);
-		JTable travelTable;
-		travelTable = new JTable(travelModel);
 
+		travelModel = new DefaultTableModel(
+				new Object[] { "Nombre", "Tipo", "Días", "Fecha Inicio", "Fecha Fin", "País" }, 0) {
+			private static final long serialVersionUID = 1L; // si no lo pongo me da warning
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Ninguna celda será editable
+			}
+		};
+
+		travelTable = new JTable(travelModel);
+		travelTable.getTableHeader().setReorderingAllowed(false);
+		travelTable.setFocusable(false); // asi no muestra el cuadrado del focus al pulsar una celda
 		JScrollPane travelScrollPane = new JScrollPane(travelTable);
 		if (viajes != null) {
 			for (Viaje viaje : viajes) {
@@ -80,9 +97,18 @@ public class ViajesyEventos {
 		panel.add(travelScrollPane);
 
 		// Initialize eventModel and eventTable
-		eventModel = new DefaultTableModel(new Object[] { "Nombre", "Fecha", "Hora", "Lugar", "Descripción" }, 0);
-		JTable eventTable;
+		eventModel = new DefaultTableModel(new Object[] { "Nombre evento", "Tipo", "Fecha", "Precio" }, 0) {
+			private static final long serialVersionUID = 1L; // si no lo pongo me da warning
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Ninguna celda será editable
+			}
+		};
+
 		eventTable = new JTable(eventModel);
+		eventTable.getTableHeader().setReorderingAllowed(false);
+		eventTable.setFocusable(false);
 		JScrollPane eventScrollPane = new JScrollPane(eventTable);
 		eventScrollPane.setBounds(200, 530, 860, 200);
 		panel.add(eventScrollPane);
@@ -92,71 +118,107 @@ public class ViajesyEventos {
 		generateOfferButton.setBounds(350, 800, 200, 25);
 		panel.add(generateOfferButton);
 
+		btnBorrarEvento = new JButton("Borrar Evento");
+		btnBorrarEvento.setBounds(150, 800, 200, 25);
+		panel.add(btnBorrarEvento);
+
+		btnBorrarViaje = new JButton("Borrar Viaje");
+		btnBorrarViaje.setBounds(550, 800, 200, 25);
+		panel.add(btnBorrarViaje);
+
 		// Action Listeners
 		generateOfferButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = travelTable.getSelectedRow();
 				if (selectedRow != -1) {
-					// Implementar lógica para generar oferta el txt
-					JOptionPane.showMessageDialog(null, "Funcionalidad de generar oferta no implementada.");
+					String nombre = (String) travelTable.getValueAt(selectedRow, 0);
+					String tipo = (String) travelTable.getValueAt(selectedRow, 1);
+					String dias = (String) travelTable.getValueAt(selectedRow, 2);
+					String fechaInicio = (String) travelTable.getValueAt(selectedRow, 3);
+					String fechaFin = (String) travelTable.getValueAt(selectedRow, 4);
+					String pais = (String) travelTable.getValueAt(selectedRow, 5);
+
+					try (PrintWriter writer = new PrintWriter("oferta.txt", "UTF-8")) {
+						writer.println("Oferta de Viaje:");
+						writer.println("Nombre: " + nombre);
+						writer.println("Tipo: " + tipo);
+						writer.println("Días: " + dias);
+						writer.println("Fecha Inicio: " + fechaInicio);
+						writer.println("Fecha Fin: " + fechaFin);
+						writer.println("País: " + pais);
+						JOptionPane.showMessageDialog(null, "Oferta generada exitosamente.");
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Error al generar la oferta: " + ex.getMessage());
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, selecciona un viaje primero.");
 				}
 			}
 		});
 
-		// Mouse Listener for eventTable
+		// Mouse Listener for travelTable
 		travelTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) { // Doble clic
 					int selectedRow = travelTable.getSelectedRow();
-					if (selectedRow != -1) { // Verificamos que haya una fila seleccionada
-						// Obtenemos datos del viaje seleccionado
-						String nombre = (String) travelTable.getValueAt(selectedRow, 0);
-						String tipo = (String) travelTable.getValueAt(selectedRow, 1);
-						String dias = (String) travelTable.getValueAt(selectedRow, 2);
-						String fechaInicio = (String) travelTable.getValueAt(selectedRow, 3);
-						String fechaFin = (String) travelTable.getValueAt(selectedRow, 4);
-						String pais = (String) travelTable.getValueAt(selectedRow, 5);
+					if (selectedRow != -1) {
+						Controlador controlador = Controlador.getInstanceControlador();
+						System.out.println(selectedRow);
+						Viaje viaje = viajes.get(selectedRow);
+						ArrayList<Vuelo> vuelos = controlador.getVuelosPorIdViaje(viaje);
+						ArrayList<Alojamiento> alojamientos = controlador.getAlojamientosPorIdViaje(viaje);
+						ArrayList<Actividad> actividades = controlador.getActividadesPorIdViaje(viaje);
 
-						// Creamos campos de entrada con los valores actuales
-						JTextField nombreField = new JTextField(nombre);
-						JTextField tipoField = new JTextField(tipo);
-						JTextField diasField = new JTextField(dias);
-						JTextField fechaInicioField = new JTextField(fechaInicio);
-						JTextField fechaFinField = new JTextField(fechaFin);
-						JTextField paisField = new JTextField(pais);
-
-						Object[] fields = { "Nombre:", nombreField, "Tipo:", tipoField, "Días:", diasField,
-								"Fecha inicio:", fechaInicioField, "Fecha fin:", fechaFinField, "País:", paisField };
-
-						int option = JOptionPane.showConfirmDialog(null, fields, "Editar Viaje",
-								JOptionPane.OK_CANCEL_OPTION);
-						if (option == JOptionPane.OK_OPTION) {
-							// Actualizamos los valores en la tabla
-							travelTable.setValueAt(nombreField.getText(), selectedRow, 0);
-							travelTable.setValueAt(tipoField.getText(), selectedRow, 1);
-							travelTable.setValueAt(diasField.getText(), selectedRow, 2);
-							travelTable.setValueAt(fechaInicioField.getText(), selectedRow, 3);
-							travelTable.setValueAt(fechaFinField.getText(), selectedRow, 4);
-							travelTable.setValueAt(paisField.getText(), selectedRow, 5);
+						if (vuelos != null) {
+							for (Vuelo vuelo : vuelos) {
+								Object[] newRow = new Object[4];
+								if (vuelo.getTipoVuelo().equalsIgnoreCase("IDA")) {
+									newRow[0] = "Vuelo Ida";
+									newRow[1] = "Vuelo";
+									newRow[2] = vuelo.getFecha();
+									newRow[3] = vuelo.getPrecio();
+								} else {
+									newRow[0] = "Vuelo Vuelta";
+									newRow[1] = "Vuelo";
+									newRow[2] = vuelo.getFecha();
+									newRow[3] = vuelo.getPrecio();
+								}
+								eventModel.addRow(newRow);
+							}
+						}
+						if (alojamientos != null) {
+							for (Alojamiento alojamiento : alojamientos) {
+								Object[] newrow = new Object[4];
+								newrow[0] = "Hotel";
+								newrow[1] = "Alojamiento";
+								newrow[2] = alojamiento.getFechaEntrada();
+								newrow[3] = alojamiento.getPrecio();
+								eventModel.addRow(newrow);
+							}
+						}
+						if (actividades != null) {
+							for (Actividad actividad : actividades) {
+								Object[] newRow = new Object[4];
+								newRow[0] = actividad.getNombre();
+								newRow[1] = "Actividad";
+								newRow[2] = actividad.getFecha();
+								newRow[3] = actividad.getPrecio();
+								eventModel.addRow(newRow);
+							}
 						}
 					}
 				}
 			}
 		});
-
-		eventTable.addMouseListener(new MouseAdapter() {
+		btnBorrarViaje.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					int selectedRow = eventTable.getSelectedRow();
-					if (selectedRow != -1) {
-						// Implementar lógica para editar evento
-						JOptionPane.showMessageDialog(null, "Funcionalidad de editar evento no implementada.");
-					}
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = travelTable.getSelectedRow();
+				if (selectedRow != -1) {
+					Controlador controlador = Controlador.getInstanceControlador();
+					controlador.deleteViajePorId(viajes.get(selectedRow), frame);
 				}
 			}
 		});

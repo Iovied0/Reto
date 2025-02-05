@@ -7,17 +7,33 @@ public class SQLQuerys {
 
 	// SELECTS
 
-	public static final String SELECT_TODOS_PAISES_POR_CODIGO = "SELECT * FROM pais WHERE codigo = ?";
-
-//	public static final String SELECT_TODOS_ACTIVIDADES_POR_IDVIAJE = "SELECT * FROM actividad WHERE idViaje = ?";
+	public static final String SELECT_TODOS_PAISES_WERE_CODIGO = "SELECT * FROM pais WHERE codigo = ?";
 
 	public static final String SELECT_TODOS_PAISES = "select * from pais";
 
-	public static final String SELECT_TODOS_VIAJES_ID = "SELECT * from viaje where id_agencia = ?";
+	public static final String SELECT_TODOS_AEROLINEAS_WHERE_CODIGO = "SELECT * FROM aerolineas WHERE codigo = ?";
+
+	public static final String SELECT_TODOS_AEROPUERTO_WHERE_CODIGO = "SELECT * FROM aeropuerto WHERE codigo = ?";
+
+	public static final String SELECT_TODOS_AEROPUERTO_WHERE_ID = "SELECT * FROM aeropuerto WHERE id_ciudad = ?";
+
+	public static final String SELECT_TODOS_CIUDAD_WHERE_ID = "SELECT * FROM ciudad WHERE id = ?";
+
+	public static final String SELECT_TODOS_VIAJES_WHERE_IDAGENCIA = "SELECT * from viaje where id_agencia = ?";
+
+	public static final String SELECT_TODOS_VIAJES_WHERE_ID = "SELECT * from viaje where id = ?";
 
 	public static final String SELECT_TODOS_ACTIVIDAD = "select * from actividad";
 
 	public static final String SELECT_TODOS_ACTIVIDAD_ID = "SELECT * from actividad where id_viaje = ?";
+
+	public static final String SELECT_TODOS_TIPODORMITORIO_WHERE_CODIGO = "SELECT * from tipodormitorio where codigo = ?";
+
+	public static final String SELECT_TODOS_ALOJAMIENTO_WHERE_IDVIAJE = "SELECT * from alojamiento where id_viaje = ?";
+
+	public static final String SELECT_TODOS_ALOJAMIENTO_WHERE_CODIGO_DORMITORIO = "SELECT * from alojamiento where tipo_dormitorio = ?";
+
+	public static final String SELECT_TODOS_VUELO_ID = "SELECT * FROM `vuelo` where id_viaje = ? ORDER BY `vuelo`.`tipo_vuelo` ASC";
 
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS = "select * from numeroempleados";
 
@@ -25,8 +41,10 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_AGENCIA = "select * from agencia";
 
+	public static final String SELECT_TODOS_AGENCIA_WHERE_ID = "select * from agencia where id = ?";
+
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS_WHERE_DESCRIPCION = "select * from numeroempleados where numero_empleados = ?";
-	
+
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS_WHERE_CODIGO = "select * from numeroempleados where codigo = ?";
 
 	public static final String SELECT_TODOS_TIPOS_AGENCIA_WHERE_DESCRIPCION = "select * from tiposagencia where descripcion = ?";
@@ -34,28 +52,20 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_TIPOS_AGENCIA_WHERE_CODIGO = "select * from tiposagencia where codigo = ?";
 
 	public static final String SELECT_TODOS_TIPOS_VIAJE = "select * from tipoviaje";
-	
-	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_CODIGO = "select * from tipoviaje where codigo = ?";
 
-	
-	//	public static final String SELECT_TODOS_NOTAS_BY_ID_ALUMNO = "SELECT * FROM `calificaciones` WHERE `Dni` = ?";
+	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_DESCRIPCION = "select * from tipoviaje where descripcion = ?";
+
+	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_CODIGO = "select * from tipoviaje where codigo = ?";
 
 	// INSERTS
 
-	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_evento) VALUES (?, ?, ?, ?, ?)";
+	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_evento) VALUES ('?','?','?','?','?')";
 
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";
 
 	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
-	
-	public static final String INSERT_NEW_VIAJE = "INSERT INTO viaje (nombreViaje, descViaje, inicioViaje, finViaje, numeroDias, servNoIncluidos, id_agencia, tipo_viaje, pais_destino) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	
-	public static final String INSERT_NEW_VUELO = "INSERT INTO vuelo (tipo_vuelo, codigo_vuelo_ida, fecha_ida, hora_salida_ida, duracion_ida, aerolinea_ida, aeropuerto_origen, aeropuerto_destino, codigo_vuelo_vuelta, fecha_vuelta, hora_salida_vuelta, duracion_vuelta, aerolinea_vuelta, id_viaje, precio_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		
-	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO alojamiento (nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 
 //	public static final String INSERT_NEW_ALUMNO = "insert into alumnos (dni, nombre, apellidos, grupo) VALUES ('";
 //
@@ -66,7 +76,7 @@ public class SQLQuerys {
 //	public static final String UPDATE_MEDIA_ALUMNO_BY_DNI = "update alumnos set grupo = ? where dni = ?";
 
 	// DELETES
-
-//	public static final String DELETE_ALL_ALUMNOS = "delete from alumnos";
+	
+	public static final String DELETE_ALL_VIAJE_WHERE_ID = "delete from viaje where id = ?";
 //	public static final String DELETE_ALL_NOTAS = "delete from calificaciones";
 }

@@ -1,10 +1,104 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Ver_PreAlpha_1.0.1] - 2025/02/04
----
-Data retrieving related changes
+## [Ver_Alpha_1.1] - 2025/02/05
+WE ARE ANOUNCING THE END OF THE PRE-ALPHA **(YAY, WE ACTUALLY MANAGED TO DO IT!!!)**
 
+We are officially one step closer to the launch of the app, but we have still work to do in order to bring the best experience to our users, so please be patient and rest asured that there will be further improvements in the app.
+
+This version of the app brings more data retrieving related changes, as well as a fully functional login page for each user with their respective trips and events in their main page.
+### Added
+#### Class "Viajes y Eventos"
+- Now you can select one trip from the table "Viajes" in order to show all of its events in the table "Eventos".
+- Now the title is displayed with the color of the agency.
+- Added buttons to delete either a trip or an event.
+- Now you can delete one trip by selecting it in the table and then pressing the buton "Borrar Viaje"
+#### Class "Controlador"
+- Added new methods for "GestorVuelos" and "GestorAlojamientos" in charge of retrieving all rows of both tables from the DDBB given a certain trip's ID.
+- Added the method "getTiposViaje()".
+- Added the method "getAerolineaPorCodigo()".
+- Added the method "getAeropuertoPorCodigo()".
+- Added the method "getCiudadPorId()".
+- Added the method "getAeropuertoPorIdCiudad()".
+- Added the method "getViajePorId()".
+- Added the method "getAgenciaPorId()".
+- Added the method "getTipoDormitorioPorCodigo()".
+- Added the method "getAlojamientoPorCodigoDormitorio()".
+- Added the method "deleteViajePorId()".
+#### Class "Gestor TipoViaje"
+- Added a method to retrieve all the rows of the table "tipoViaje" from the DDBB.
+#### Class "Viajes Elorrieta"
+- Now the menu option "Nuevo Evento" is fully functional.
+#### Class "Gestor Vuelos"
+- Created new class "GestorVuelos".
+- Created new method to retrieve all the flights from the DDBB given a certain trip's ID.
+#### Class "Gestor Aerolineas"
+- Created new class "GestorAerolineas".
+- Created new method "getAerolineaPorCodigo()".
+#### Class "Gestor Aeropuerto"
+- Created new class "GestorAeropuerto".
+- Created new method "getAeropuertoPorCodigo()".
+- Created new method "getAeropuertoPorIdCiudad()".
+#### Class "Gestor Ciudad"
+- Created new class "GestorCiudad".
+- Created new method "getCiudadPorId()".
+#### Class "Gestor Viajes"
+- The method "getViajePorId()" has been added.
+- The method "deleteViajePorId()" has been added.
+#### Class "Gestor Agencia"
+- The method "getAgenciaPorId()" has been added.
+#### Class "Gestor Alojamiento"
+- Created new class "GestorAlojamiento".
+- Created new method "getAlojamientosPorIdViaje()".
+- Created new method "getAlojamientoPorCodigoDormitorio()".
+#### Class "Gestor Tipo Dormitorio"
+- Created new class "GestorTipoDormitorio".
+- Created new method "getTipoDormitorioPorCodigo()".
+#### Class "SQLQuerys"
+- The query "SELECT_TODOS_TIPOS_VIAJE_WHERE_DESCRIPCION" has been added.
+- The query "SELECT_TODOS_AEROLINEAS_WHERE_CODIGO" has been added.
+- The query "SELECT_TODOS_AEROPUERTO_WHERE_CODIGO" has been added.
+- The query "SELECT_TODOS_CIUDAD_WHERE_ID" has been added.
+- The query "SELECT_TODOS_AEROPUERTO_WHERE_ID" has been added.
+- The query "SELECT_TODOS_VIAJES_WHERE_ID" has been added.
+- The query "SELECT_TODOS_AGENCIA_WHERE_ID" has been added.
+- The query "SELECT_TODOS_ALOJAMIENTO_WHERE_IDVIAJE" has been added.
+- The query "SELECT_TODOS_TIPODORMITORIO_WHERE_CODIGO" has been added.
+- The query "SELECT_TODOS_ALOJAMIENTO_WHERE_CODIGO_DORMITORIO" has been added.
+- The query "DELETE_ALL_VIAJE_WHERE_ID" has been added.
+### Changed
+#### Class "Viajes y Eventos"
+- The header of both tables can no longer be dragged.
+- The cells of both tables are no longer editable.
+#### Class "Controlador"
+- Changed method "mostrarActividades()" name to "getActividades()".
+- Renamed incorrectly named method "getViajesId()" to "getViajesPorIdAgencia()".
+#### Class "Gestor Actividad"
+- Renamed incorrectly named method "getActividades()" to "getActividadesPorIdViaje()".
+- Renamed method "mostrarActividades()" to "getActividades()".
+- Deleted unused code.
+#### DDBB
+- Changed the required parameters to create an entry into the table "vuelo".
+- Changed the values of some country names to make a link between the tables "pais" and "aerolineas".
+#### Class "Vuelo"
+- Changed the required parameters to create the object "Vuelo".
+#### Class "Gestor Actividad"
+- Deleted missplaced method "mostrarPaisViaje()" and unused code.
+#### Class "SQLQuerys"
+- The query "SELECT_TODOS_PAISES_POR_CODIGO" has been renamed to "SELECT_TODOS_PAISES_WERE_CODIGO"
+- The query "SELECT_TODOS_VIAJES_ID" has been renamed to "SELECT_TODOS_VIAJES_WHERE_IDAGENCIA"
+### Fixed
+#### Class "Gestor TipoViaje"
+- Fixed a bug where incorrect values where returned from the DDBB.
+#### Class "Nuevo Viaje"
+- Fixed a bug where "comboTipoViaje" was being filled with the wrong method.
+#### Class "Controlador"
+- Fixed the method "getActividadesPorIdViaje()" to work as intended.
+#### Class "SQLQuerys"
+- Fixed the query "INSERT_NEW_ACTIVIDAD" which was not finished.
+
+## [Ver_PreAlpha_1.0.1] - 2025/02/04
+Data retrieving related changes.
 ### Added
 #### Class "Controlador"
 - Added the method "getTipoViajeObjetoPorCodigo()".
@@ -28,7 +122,6 @@ Data retrieving related changes
 
 
 ## [Ver_PreAlpha_1.0] - 2025/02/04
----
 General Update to the app adding new features such as a drop-down menu and a brand new Class to get the trips for each agency.
 ### Added
 #### Class "Viajes Elorrieta"

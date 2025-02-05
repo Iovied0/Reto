@@ -86,7 +86,7 @@ public class GestorPaises {
 			try {
 				Class.forName(DBUtils.DRIVER);
 				connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-				preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_PAISES_POR_CODIGO);
+				preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_PAISES_WERE_CODIGO);
 				//Enlaza cada ? de SQLQuerys con los parametros que se pasan
 				preparedStatement.setString(1, codigo);
 				resultSet = preparedStatement.executeQuery();

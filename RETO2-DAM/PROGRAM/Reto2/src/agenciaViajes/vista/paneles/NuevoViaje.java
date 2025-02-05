@@ -126,7 +126,7 @@ public class NuevoViaje {
         panel.add(labelTipoViaje);
 
         JComboBox<String> comboTipoViaje = new JComboBox<>();
-        ArrayList<TipoViaje> tiposViaje = controlador.getTipoViajePorDescripcion("");
+        ArrayList<TipoViaje> tiposViaje = controlador.getTiposViaje();
         for (TipoViaje tipoViaje : tiposViaje) {
             comboTipoViaje.addItem(tipoViaje.getDescripcion());
         }

@@ -5,83 +5,24 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
+import agenciaViajes.controlador.Controlador;
 
 /**
  * Esta clase tiene todos los metodos relevantes a la tabla t_alumno de BBDD.
  */
-public class GestorActividad {
+public class GestorAeropuerto {
 
 	/**
-	 * Retorna de BBDD todos los paises almacenados en la BBDD
-	 * 
-	 * @return Los paises en la BBDD
-	 */
-	public ArrayList<Actividad> getActividades() {
-
-		ArrayList<Actividad> ret = null;
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-			Class.forName(DBUtils.DRIVER);
-			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_ACTIVIDAD);
-			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
-			resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				if (null == ret)
-					ret = new ArrayList<Actividad>();
-
-				Actividad actividad = new Actividad();
-				actividad.setNombre(resultSet.getString("nombre"));
-				actividad.setDescripcion(resultSet.getString("descripcion"));
-				actividad.setFecha(resultSet.getDate("fecha"));
-				actividad.setPrecio(resultSet.getDouble("precio"));
-				ret.add(actividad);
-			}
-		} catch (SQLException sqle) {
-			System.out.println("Error con la BBDD - " + sqle.getMessage());
-		} catch (Exception e) {
-			System.out.println("Error generico - " + e.getMessage());
-		} finally {
-			// Cerramos al reves de como las abrimos
-			try {
-				if (resultSet != null)
-					resultSet.close();
-			} catch (Exception e) {
-				// No hace falta
-			}
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} catch (Exception e) {
-				// No hace falta
-			}
-			try {
-				if (connection != null)
-					connection.close();
-			} catch (Exception e) {
-				// No hace falta
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * Recoge todas las actividades asignadas a un id_viaje
+	 * Recoge un aeropuerto de la bbdd por su codigo
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public ArrayList<Actividad> getActividadesPorIdViaje(int id) {
+	public Aeropuerto getAeropuertoPorCodigo(String codigo) {
 
-		ArrayList<Actividad> ret = null;
+		Aeropuerto ret = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -89,21 +30,18 @@ public class GestorActividad {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_ACTIVIDAD_ID);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_AEROPUERTO_WHERE_CODIGO);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
-			preparedStatement.setInt(1, id);
+			preparedStatement.setString(1, codigo);
 			resultSet = preparedStatement.executeQuery();
 
-			while (resultSet.next()) {
-				if (null == ret)
-					ret = new ArrayList<Actividad>();
-
-				Actividad actividad = new Actividad();
-				actividad.setNombre(resultSet.getString("nombre"));
-				actividad.setDescripcion(resultSet.getString("descripcion"));
-				actividad.setFecha(resultSet.getDate("fecha"));
-				actividad.setPrecio(resultSet.getDouble("precio"));
-				ret.add(actividad);
+			if (resultSet.next()) {
+				ret = new Aeropuerto();
+				ret.setCodigo(resultSet.getString("codigo"));
+				Controlador controlador = Controlador.getInstanceControlador();
+				Ciudad ciudad = controlador.getCiudadPorId(resultSet.getInt("id_ciudad"));
+				ret.setCiudad(ciudad);
+				
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
@@ -133,4 +71,54 @@ public class GestorActividad {
 		return ret;
 	}
 
+	public Aeropuerto getAeropuertoPorIdCiudad(int id) {
+
+		Aeropuerto ret = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_AEROPUERTO_WHERE_ID);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				ret = new Aeropuerto();
+				ret.setCodigo(resultSet.getString("codigo"));
+				Controlador controlador = Controlador.getInstanceControlador();
+				Ciudad ciudad = controlador.getCiudadPorId(resultSet.getInt("id_ciudad"));
+				ret.setCiudad(ciudad);
+				
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+		return ret;
+	}
 }

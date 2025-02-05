@@ -2,6 +2,7 @@ package agenciaViajes.controlador;
 
 import java.util.ArrayList;
 
+import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.gestores.*;
 
@@ -46,30 +47,24 @@ public class Controlador {
 	}
 
 ////////////////////////////FUNCIONES GESTOR VIAJES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	public ArrayList<Viaje> getViajesId(Agencia agencia) {
+	public ArrayList<Viaje> getViajesPorIdAgencia(Agencia agencia) {
 		ArrayList<Viaje> ret = null;
 		GestorViajes gestorViajes = new GestorViajes();
-		ret = gestorViajes.getViajesId(agencia);
+		ret = gestorViajes.getViajesPorIdAgencia(agencia);
 		return ret;
 	}
 
-//////////////////////////// FUNCIONES GESTOR ACTIVIDADES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	public ArrayList<Actividad> mostrarActividades() {
-		ArrayList<Actividad> ret = null;
-		GestorActividad gestorActividad = new GestorActividad();
-		ret = gestorActividad.mostrarActividades();
+	public Viaje getViajePorId(int id) {
+		Viaje ret = null;
+		GestorViajes gestorviajes = new GestorViajes();
+		ret = gestorviajes.getViajePorId(id);
 		return ret;
 	}
-
-	public void dbInsertActividadesEnViaje(Viaje viaje) {
-		// Llama a la DB y consulta todas las Actividades en forma de ArrayList.
-		GestorActividad gestorActividad = new GestorActividad();
-		ArrayList<Actividad> actividades = gestorActividad.getActividades(viaje.getId());
-
-		for (Actividad actividad : actividades) {
-			actividad.setViaje(viaje);
-		}
-		viaje.setActividades(actividades);
+	
+	public void deleteViajePorId(Viaje viaje, ViajesErrekamari frame) {
+		GestorViajes gestorViajes = new GestorViajes();
+		gestorViajes.deleteViajePorId(viaje.getId());
+		frame.gotoViajes();
 	}
 
 //////////////////////////// FUNCIONES GESTOR NUMERO EMPLEADOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -134,6 +129,13 @@ public class Controlador {
 
 	}
 
+	public Agencia getAgenciaPorId(int id) {
+		Agencia ret = null;
+		GestorAgencia gestorAgencia = new GestorAgencia();
+		ret = gestorAgencia.getAgenciaPorId(id);
+		return ret;
+	}
+
 	public void setInstanceAgencia(Agencia agencia) {
 		instanceAgencia = agencia;
 	}
@@ -149,7 +151,13 @@ public class Controlador {
 		instanceAgencia = null;
 	}
 
-////////////////////////////FUNCIONES GESTOR TIPOS VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////// FUNCIONES GESTOR TIPOS VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public ArrayList<TipoViaje> getTiposViaje() {
+		ArrayList<TipoViaje> ret = null;
+		GestorTipoViaje gestorTipoViaje = new GestorTipoViaje();
+		ret = gestorTipoViaje.getTiposViaje();
+		return ret;
+	}
 
 	public ArrayList<TipoViaje> getTipoViajePorDescripcion(String descripcion) {
 		ArrayList<TipoViaje> ret = null;
@@ -162,6 +170,84 @@ public class Controlador {
 		TipoViaje ret = new TipoViaje();
 		GestorTipoViaje gestorTiposAgencia = new GestorTipoViaje();
 		ret = gestorTiposAgencia.getTipoViajePorCodigo(codigo);
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR ACTIVIDADES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public ArrayList<Actividad> getActividades() {
+		ArrayList<Actividad> ret = null;
+		GestorActividad gestorActividad = new GestorActividad();
+		ret = gestorActividad.getActividades();
+		return ret;
+	}
+
+	public ArrayList<Actividad> getActividadesPorIdViaje(Viaje viaje) {
+		ArrayList<Actividad> ret = null;
+		GestorActividad gestorActividad = new GestorActividad();
+		ret = gestorActividad.getActividadesPorIdViaje(viaje.getId());
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR VUELOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public ArrayList<Vuelo> getVuelosPorIdViaje(Viaje viaje) {
+		ArrayList<Vuelo> ret = null;
+		GestorVuelos gestorVuelos = new GestorVuelos();
+		ret = gestorVuelos.getVuelosPorIdViaje(viaje.getId());
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR ALOJAMIENTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public ArrayList<Alojamiento> getAlojamientosPorIdViaje(Viaje viaje) {
+		ArrayList<Alojamiento> ret = null;
+		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
+		ret = gestorAlojamiento.getAlojamientosPorIdViaje(viaje.getId());
+		return ret;
+	}
+
+	public Alojamiento getAlojamientoPorCodigoDormitorio(String codigo) {
+		Alojamiento ret = null;
+		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
+		ret = gestorAlojamiento.getAlojamientoPorCodigoDormitorio(codigo);
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR AEROLINEAS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public Aerolineas getAerolineaPorCodigo(String codigo) {
+		Aerolineas ret = null;
+		GestorAerolineas gestorAerolineas = new GestorAerolineas();
+		ret = gestorAerolineas.getAerolineaPorCodigo(codigo);
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR AEROPUERTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public Aeropuerto getAeropuertoPorCodigo(String codigo) {
+		Aeropuerto ret = null;
+		GestorAeropuerto gestorAeropuerto = new GestorAeropuerto();
+		ret = gestorAeropuerto.getAeropuertoPorCodigo(codigo);
+		return ret;
+	}
+
+	public Aeropuerto getAeropuertoPorIdCiudad(int id) {
+		Aeropuerto ret = null;
+		GestorAeropuerto gestorAeropuerto = new GestorAeropuerto();
+		ret = gestorAeropuerto.getAeropuertoPorIdCiudad(id);
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR CIUDAD \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public Ciudad getCiudadPorId(int id) {
+		Ciudad ret = null;
+		GestorCiudad gestorCiudad = new GestorCiudad();
+		ret = gestorCiudad.getCiudadPorId(id);
+		return ret;
+	}
+
+//////////////////////////// FUNCIONES GESTOR TIPO DORMITORIO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public TipoDormitorio getTipoDormitorioPorCodigo(String codigo) {
+		TipoDormitorio ret = null;
+		GestorTipoDormitorio gestorTipoDormitorio = new GestorTipoDormitorio();
+		ret = gestorTipoDormitorio.getTipoDormitorioPorCodigo(codigo);
+
 		return ret;
 	}
 

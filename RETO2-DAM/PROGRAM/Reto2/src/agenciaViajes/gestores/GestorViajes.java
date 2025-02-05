@@ -22,7 +22,7 @@ public class GestorViajes {
 	 * 
 	 * @return Los paises en la BBDD
 	 */
-	public ArrayList<Viaje> getViajesId(Agencia agencia) {
+	public ArrayList<Viaje> getViajesPorIdAgencia(Agencia agencia) {
 
 		ArrayList<Viaje> ret = null;
 		Connection connection = null;
@@ -32,7 +32,7 @@ public class GestorViajes {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VIAJES_ID);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VIAJES_WHERE_IDAGENCIA);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
 
 			preparedStatement.setInt(1, agencia.getId());
@@ -87,13 +87,13 @@ public class GestorViajes {
 	}
 
 	/**
-	 * Retorna de BBDD el pais por el nombre
+	 * Retorna de BBDD todos los datos de un viaje cuando se le da su ID
 	 * 
 	 * @return Los paises en la BBDD
 	 */
-	public Pais mostrarPaisViaje(String codigo) {
+	public Viaje getViajePorId(int id) {
 
-		Pais ret = null;
+		Viaje ret = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -101,16 +101,27 @@ public class GestorViajes {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_PAISES_POR_CODIGO);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VIAJES_WHERE_ID);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
-			preparedStatement.setString(1, codigo);
+			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
-
 			if (resultSet.next()) {
-				ret = new Pais();
-				ret.setCodigo(resultSet.getString("codigo"));
-				ret.setNombre(resultSet.getString("nombre"));
-
+				ret = new Viaje();
+				Viaje viaje = new Viaje();
+				viaje.setId(resultSet.getInt("id"));
+				viaje.setNombreViaje(resultSet.getString("nombreViaje"));
+				viaje.setDescViaje(resultSet.getString("descViaje"));
+				viaje.setInicioViaje(resultSet.getDate("inicioViaje"));
+				viaje.setFinViaje(resultSet.getDate("finViaje"));
+				viaje.setNumeroDias(resultSet.getInt("numeroDias"));
+				viaje.setServNoIncluidos(resultSet.getString("servNoIncluidos"));
+				Controlador controlador = Controlador.getInstanceControlador();
+				Agencia agencia = controlador.getAgenciaPorId(resultSet.getInt("id_agencia"));
+				viaje.setAgencia(agencia);
+				TipoViaje tipoViaje = controlador.getTipoViajeObjetoPorCodigo(resultSet.getString("tipo_viaje"));
+				viaje.setTipoViaje(tipoViaje);
+				Pais pais = controlador.getPaisPorCodigo(resultSet.getString("pais_destino"));
+				viaje.setPais(pais);
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
@@ -140,87 +151,44 @@ public class GestorViajes {
 		return ret;
 	}
 
-	/**
-	 * Inserta un alumno en BBDD
-	 * 
-	 * @param alumno
-	 */
-//		public void insertarAlumno(Alumno alumno) {
-//
-//			Connection connection = null;
-//			Statement statement = null;
-//
-//			try {
-//				Class.forName(DBUtils.DRIVER);
-//				connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-//				statement = connection.createStatement();
-//
-//				String sql = SQLQuerys.INSERT_NEW_ALUMNO + alumno.getDNI() + SQLQuerys.SEPARATOR + alumno.getNombre()
-//						+ SQLQuerys.SEPARATOR + alumno.getApellidos() + SQLQuerys.SEPARATOR + alumno.getGrupo() + SQLQuerys.END_BLOCK;
-//
-//				statement.executeUpdate(sql);
-//
-//			} catch (SQLException sqle) {
-//				System.out.println("Error con la BBDD - " + sqle.getMessage());
-//			} catch (Exception e) {
-//				System.out.println("Error generico - " + e.getMessage());
-//			} finally {
-//				// Cerramos al reves de como las abrimos
-//				try {
-//					if (statement != null)
-//						statement.close();
-//				} catch (Exception e) {
-//					// No hace falta
-//				}
-//				try {
-//					if (connection != null)
-//						connection.close();
-//				} catch (Exception e) {
-//					// No hace falta
-//				}
-//			}
-//		}
-//
-//		
-//		/**
-//		 * Actualiza el grupo de un alumno
-//		 * 
-//		 * @param alumno
-//		 * @param grupo
-//		 */
-//		public void actualizarMediaAlumno(Alumno alumno, int grupo) {
-//			Connection connection = null;
-//			PreparedStatement preparedStatement = null;
-//
-//			try {
-//				Class.forName(DBUtils.DRIVER);
-//				connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-//
-//				String sql = SQLQuerys.UPDATE_MEDIA_ALUMNO_BY_DNI;
-//				preparedStatement = connection.prepareStatement(sql);
-//				preparedStatement.setInt(1, grupo);
-//				preparedStatement.setString(2, alumno.getDNI());
-//
-//				preparedStatement.executeUpdate();
-//
-//			} catch (SQLException sqle) {
-//				System.out.println("Error con la BBDD - " + sqle.getMessage());
-//			} catch (Exception e) {
-//				System.out.println("Error generico - " + e.getMessage());
-//			} finally {
-//				try {
-//					if (preparedStatement != null)
-//						preparedStatement.close();
-//				} catch (Exception e) {
-//					// No hace falta
-//				}
-//				try {
-//					if (connection != null)
-//						connection.close();
-//				} catch (Exception e) {
-//					// No hace falta
-//				}
-//			}
-//		}
+	public void deleteViajePorId(int id) {
 
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.DELETE_ALL_VIAJE_WHERE_ID);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+	}
 }

@@ -75,6 +75,12 @@ public class ViajesErrekamari extends JFrame {
 		menuBar.add(mnLogOut);
 
 		JMenu mnNewTrip = new JMenu("Nuevo Viaje");
+		mnNewTrip.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				gotoNuevoViaje();
+			}
+		});
 		menuBar.add(mnNewTrip);
 
 		JMenu mnNewEvent = new JMenu("Añadir Evento");

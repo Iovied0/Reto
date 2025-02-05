@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 04-02-2025 a las 19:03:32
+-- Tiempo de generación: 05-02-2025 a las 04:53:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,7 +34,7 @@ CREATE TABLE `actividad` (
   `precio` decimal(10,2) NOT NULL,
   `id_viaje` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
- 
+
 --
 -- Volcado de datos para la tabla `actividad`
 --
@@ -68,7 +68,7 @@ INSERT INTO `aerolineas` (`codigo`, `nombre`, `pais`) VALUES
 ('6B', 'TUIfly Nordic AB', 'CN'),
 ('A.C.', 'Air France', 'FR'),
 ('A0', 'BA Euroflyer Limited dba Briti', 'GB'),
-('AA', 'American Airlines', 'USA'),
+('AA', 'American Airlines', 'US'),
 ('AM', 'Aerovias de Mexico SA de CV db', 'MX'),
 ('AR', 'Aerolineas Argentinas S.A.', 'AR'),
 ('AV', 'Aerovias del Continente Americ', 'CO'),
@@ -77,9 +77,9 @@ INSERT INTO `aerolineas` (`codigo`, `nombre`, `pais`) VALUES
 ('BA', 'British Airways PLC', 'GB'),
 ('CL', 'Lufthansa CityLine GmbH', 'DE'),
 ('DE', 'Condor Flugdienst GmbH', 'DE'),
-('DL', 'Delta Air Lines Inc', 'USA'),
+('DL', 'Delta Air Lines Inc', 'US'),
 ('DS', 'Easyjet CH S.A', 'CH'),
-('GL', 'Air GRL', 'GRL'),
+('GL', 'Air GRL', 'GL'),
 ('JJ', 'Tam Linhas Aereas SA dba Latam', 'BR'),
 ('KL', 'KLM', 'NL'),
 ('KN', 'CN United Airlines', 'CN'),
@@ -101,7 +101,7 @@ INSERT INTO `aerolineas` (`codigo`, `nombre`, `pais`) VALUES
 ('TP', 'TAP PT', 'PT'),
 ('TS', 'Air Transat', 'CA'),
 ('U2', 'EASYJET UK LIMITED', 'GB'),
-('UA', 'United Airlines Inc', 'USA'),
+('UA', 'United Airlines Inc', 'US'),
 ('UX', 'Air Europa Lineas Aereas, S.A.', 'ES'),
 ('VOY', 'Aerolínea Vueling SA', 'ES'),
 ('VS', 'Virgin Atlantic Airways Ltd', 'GB'),
@@ -255,7 +255,8 @@ INSERT INTO `agencia` (`id`, `nombre`, `logo`, `color`, `contraseña`, `numero_e
 (4, 'Turismo Local', 'logo4.png', '#FFFF33', 'edcba', 'L1', 'A2'),
 (5, 'Aventuras Extensas', 'logo5.png', '#33FFFF', 'contraseña', 'L2', 'A1'),
 (6, 'Agencia Elorrieta', 'logo6.png', '#FF4AFF', '12345', 'L1', 'A2'),
-(7, 'Agencia Bilbao', 'logo7.png', '#FaFF23', 'contraseña', 'L3', 'A1');
+(7, 'Agencia Bilbao', 'logo7.png', '#FaFF23', 'contraseña', 'L3', 'A1'),
+(9, 'a', 'https://natursan.net/wp-content/patatas-2.jpg', '#6699FF', 'a', 'L1', 'A1');
 
 -- --------------------------------------------------------
 
@@ -453,12 +454,14 @@ INSERT INTO `pais` (`codigo`, `nombre`) VALUES
 ('DE', 'ALEMANIA'),
 ('DK', 'DINAMARCA'),
 ('DO', 'REPUBLICA DOMINICANA'),
+('EC', 'ECUADOR'),
 ('EE', 'ESTONIA'),
 ('EG', 'EGIPTO'),
 ('ES', 'ESPAÑA'),
 ('FI', 'FINLANDIA'),
 ('FR', 'FRANCIA'),
 ('GB', 'REINO UNIDO'),
+('GL', 'GROENLANDIA'),
 ('GR', 'GRECIA'),
 ('GT', 'GUATEMALA'),
 ('HK', 'HONG-KONG'),
@@ -594,7 +597,8 @@ INSERT INTO `viaje` (`id`, `nombreViaje`, `descViaje`, `inicioViaje`, `finViaje`
 (2, 'Escapada Tropical', 'Descubre las playas de Brasil', '2025-02-10', '2025-02-20', 'Traslados', 2, 'B5', 'BR'),
 (3, 'Aventura en Asia', 'Un viaje por los rincones de Asia', '2025-04-05', '2025-04-20', 'Seguro de viaje', 3, 'B4', 'CN'),
 (4, 'Ruta Mediterránea', 'Explora las maravillas del Mediterráneo', '2025-06-01', '2025-06-15', 'Propinas', 4, 'B3', 'ES'),
-(5, 'Naturaleza Escandinava', 'Conexión con la naturaleza en los países nórdicos', '2025-05-10', '2025-05-20', 'Entradas a museos', 5, 'B6', 'SE');
+(5, 'Naturaleza Escandinava', 'Conexión con la naturaleza en los países nórdicos', '2025-05-10', '2025-05-20', 'Entradas a museos', 5, 'B6', 'SE'),
+(6, 'prueba segundo viaje', 'segundo viaje', '2025-02-04', '2025-02-13', 'todo incluido', 1, 'B1', 'ES');
 
 -- --------------------------------------------------------
 
@@ -603,19 +607,14 @@ INSERT INTO `viaje` (`id`, `nombreViaje`, `descViaje`, `inicioViaje`, `finViaje`
 --
 
 CREATE TABLE `vuelo` (
-  `tipo_vuelo` enum('IDA','IDA/VUELTA') NOT NULL,
-  `codigo_vuelo_ida` varchar(50) NOT NULL,
-  `fecha_ida` date NOT NULL,
-  `hora_salida_ida` time NOT NULL,
-  `duracion_ida` time NOT NULL,
-  `aerolinea_ida` varchar(10) NOT NULL,
+  `tipo_vuelo` enum('IDA','VUELTA') NOT NULL,
+  `codigo_vuelo` varchar(50) NOT NULL,
+  `fecha` date NOT NULL,
+  `hora_salida` time NOT NULL,
+  `duracion` time NOT NULL,
+  `aerolinea` varchar(10) NOT NULL,
   `aeropuerto_origen` char(3) NOT NULL,
   `aeropuerto_destino` char(3) DEFAULT NULL,
-  `codigo_vuelo_vuelta` varchar(50) DEFAULT NULL,
-  `fecha_vuelta` date DEFAULT NULL,
-  `hora_salida_vuelta` time DEFAULT NULL,
-  `duracion_vuelta` time DEFAULT NULL,
-  `aerolinea_vuelta` varchar(10) DEFAULT NULL,
   `id_viaje` int(11) NOT NULL,
   `precio_total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -624,9 +623,10 @@ CREATE TABLE `vuelo` (
 -- Volcado de datos para la tabla `vuelo`
 --
 
-INSERT INTO `vuelo` (`tipo_vuelo`, `codigo_vuelo_ida`, `fecha_ida`, `hora_salida_ida`, `duracion_ida`, `aerolinea_ida`, `aeropuerto_origen`, `aeropuerto_destino`, `codigo_vuelo_vuelta`, `fecha_vuelta`, `hora_salida_vuelta`, `duracion_vuelta`, `aerolinea_vuelta`, `id_viaje`, `precio_total`) VALUES
-('IDA/VUELTA', 'BR5678', '2025-02-10', '14:00:00', '04:00:00', 'JJ', 'RIO', 'MAD', 'BR2345', '2025-02-20', '00:00:00', '04:00:00', 'JJ', 2, 700.00),
-('IDA/VUELTA', 'FR1234', '2025-03-01', '08:00:00', '02:30:00', 'UX', 'MAD', 'CDG', 'FR5678', '2025-03-15', '00:00:00', '02:30:00', 'UX', 1, 600.00);
+INSERT INTO `vuelo` (`tipo_vuelo`, `codigo_vuelo`, `fecha`, `hora_salida`, `duracion`, `aerolinea`, `aeropuerto_origen`, `aeropuerto_destino`, `id_viaje`, `precio_total`) VALUES
+('IDA', 'BR5678', '2025-02-10', '14:00:00', '04:00:00', 'JJ', 'RIO', 'MAD', 2, 700.00),
+('VUELTA', 'ES4321', '2025-02-19', '06:19:58', '04:00:00', 'SP', 'FRA', 'BIO', 1, 500.00),
+('IDA', 'FR1234', '2025-03-01', '08:00:00', '02:30:00', 'UX', 'MAD', 'CDG', 1, 600.00);
 
 --
 -- Índices para tablas volcadas
@@ -643,7 +643,8 @@ ALTER TABLE `actividad`
 -- Indices de la tabla `aerolineas`
 --
 ALTER TABLE `aerolineas`
-  ADD PRIMARY KEY (`codigo`);
+  ADD PRIMARY KEY (`codigo`),
+  ADD KEY `fk_aerolineas_1` (`pais`);
 
 --
 -- Indices de la tabla `aeropuerto`
@@ -720,13 +721,11 @@ ALTER TABLE `viaje`
 -- Indices de la tabla `vuelo`
 --
 ALTER TABLE `vuelo`
-  ADD PRIMARY KEY (`codigo_vuelo_ida`),
-  ADD UNIQUE KEY `codigo_vuelo_vuelta` (`codigo_vuelo_vuelta`),
+  ADD PRIMARY KEY (`codigo_vuelo`),
   ADD KEY `aeropuerto_origen` (`aeropuerto_origen`),
   ADD KEY `aeropuerto_destino` (`aeropuerto_destino`),
-  ADD KEY `aerolinea` (`aerolinea_ida`),
-  ADD KEY `id_viaje` (`id_viaje`) USING BTREE,
-  ADD KEY `vuelo_ibfk_5` (`aerolinea_vuelta`);
+  ADD KEY `aerolinea` (`aerolinea`),
+  ADD KEY `id_viaje` (`id_viaje`) USING BTREE;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -736,7 +735,7 @@ ALTER TABLE `vuelo`
 -- AUTO_INCREMENT de la tabla `agencia`
 --
 ALTER TABLE `agencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `alojamiento`
@@ -754,7 +753,7 @@ ALTER TABLE `ciudad`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
@@ -765,6 +764,12 @@ ALTER TABLE `viaje`
 --
 ALTER TABLE `actividad`
   ADD CONSTRAINT `actividad_ibfk_1` FOREIGN KEY (`id_viaje`) REFERENCES `viaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `aerolineas`
+--
+ALTER TABLE `aerolineas`
+  ADD CONSTRAINT `fk_aerolineas_1` FOREIGN KEY (`pais`) REFERENCES `pais` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `aeropuerto`
@@ -808,8 +813,7 @@ ALTER TABLE `vuelo`
   ADD CONSTRAINT `vuelo_ibfk_1` FOREIGN KEY (`id_viaje`) REFERENCES `viaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vuelo_ibfk_2` FOREIGN KEY (`aeropuerto_origen`) REFERENCES `aeropuerto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vuelo_ibfk_3` FOREIGN KEY (`aeropuerto_destino`) REFERENCES `aeropuerto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vuelo_ibfk_4` FOREIGN KEY (`aerolinea_ida`) REFERENCES `aerolineas` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vuelo_ibfk_5` FOREIGN KEY (`aerolinea_vuelta`) REFERENCES `aerolineas` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vuelo_ibfk_4` FOREIGN KEY (`aerolinea`) REFERENCES `aerolineas` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

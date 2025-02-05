@@ -111,4 +111,62 @@ public class GestorAgencia {
 		return ret;
 	}
 
+	public Agencia getAgenciaPorId(int id) {
+		Agencia ret = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_AGENCIA_WHERE_ID);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+
+				ret = new Agencia();
+				TiposAgencia tipoagencia = new TiposAgencia();
+				NumeroEmpleados numeroEmpleados = new NumeroEmpleados();
+				Controlador controlador = new Controlador();
+				ret.setId(resultSet.getInt("id"));
+				ret.setNombre(resultSet.getString("nombre"));
+				ret.setLogo(resultSet.getString("logo"));
+				ret.setColor(resultSet.getString("color"));
+				ret.setContraseña(resultSet.getString("contraseña"));
+				numeroEmpleados = controlador
+						.getNumeroEmpleadosObjetoPorCodigo(resultSet.getString("numero_empleados"));
+				ret.setNumeroEmpleados(numeroEmpleados);
+				tipoagencia = controlador.getTipoAgenciaObjetoPorCodigo(resultSet.getString("tipo_agencia"));
+				ret.setTipoAgencia(tipoagencia);
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+		return ret;
+	}
 }
