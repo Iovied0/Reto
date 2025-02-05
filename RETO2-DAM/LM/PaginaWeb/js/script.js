@@ -35,26 +35,33 @@ function calcularDias() {
 // Aparece o desaparece la lista de los registros dependiendo del boton que elijas
 document.addEventListener("DOMContentLoaded", function () {
     const tipoServicioRadios = document.querySelectorAll('input[name="tipoServicio"]');
-    
+
     const seccionHospedaje = document.getElementById("seccionHospedaje");
     const seccionVuelo = document.getElementById("seccionVuelo");
     const seccionOtros = document.getElementById("seccionOtros");
 
+    // Ocultar todas las secciones al cargar la página
+    seccionHospedaje.style.display = "none";
+    seccionVuelo.style.display = "none";
+    seccionOtros.style.display = "none";
+
     function mostrarOpciones() {
-        const tipoServicioSeleccionado = document.querySelector('input[name="tipoServicio"]:checked').value;
+        const tipoServicioSeleccionado = document.querySelector('input[name="tipoServicio"]:checked');
 
         // Ocultar todas las secciones
         seccionHospedaje.style.display = "none";
         seccionVuelo.style.display = "none";
         seccionOtros.style.display = "none";
 
-        // Mostrar solo la sección correspondiente
-        if (tipoServicioSeleccionado === "hospedaje") {
-            seccionHospedaje.style.display = "block";
-        } else if (tipoServicioSeleccionado === "vuelo") {
-            seccionVuelo.style.display = "block";
-        } else if (tipoServicioSeleccionado === "otros") {
-            seccionOtros.style.display = "block";
+        // Verificar si hay un tipo de servicio seleccionado antes de mostrar
+        if (tipoServicioSeleccionado) {
+            if (tipoServicioSeleccionado.value === "hospedaje") {
+                seccionHospedaje.style.display = "block";
+            } else if (tipoServicioSeleccionado.value === "vuelo") {
+                seccionVuelo.style.display = "flex"; // Se muestra solo al hacer clic en la opción
+            } else if (tipoServicioSeleccionado.value === "otros") {
+                seccionOtros.style.display = "block";
+            }
         }
     }
 
@@ -63,7 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", mostrarOpciones);
     });
 
-    // Llamar a la función al cargar la página por si ya hay algo seleccionado
+    // Asegurar que al cargar la página no se muestre nada si no hay selección
     mostrarOpciones();
 });
+
 

@@ -35,19 +35,19 @@ if ($conn->connect_error) {
                 </select>
 
                 <label>¿Qué servicio desea registrar?</label>
-                <div>
-                    <input type="radio" id="vuelo" name="tipoServicio" value="vuelo" required>
+                <div class="opcionServicio">
                     <label for="vuelo">Vuelo</label>
-                    
-                    <input type="radio" id="hospedaje" name="tipoServicio" value="hospedaje">
+                    <input type="radio" id="vuelo" name="tipoServicio" value="vuelo" required>
+
                     <label for="hospedaje">Hospedaje</label>
-                    
-                    <input type="radio" id="otros" name="tipoServicio" value="otros">
+                    <input type="radio" id="hospedaje" name="tipoServicio" value="hospedaje">
+
                     <label for="otros">Otros</label>
+                    <input type="radio" id="otros" name="tipoServicio" value="otros">
                 </div>
 
                 <!-- Sección de Hospedaje -->
-                <div id="seccionHospedaje" style="display: none;">
+                <div id="seccionHospedaje">
                     <label for="hotel">Nombre del hotel:</label>
                     <input type="text" id="hotel" name="hotel">
                     
@@ -73,40 +73,42 @@ if ($conn->connect_error) {
                 </div>
 
                 <!-- Sección de Vuelo -->
-                <div id="seccionVuelo" style="display: none;">
-                    <label for="tipoVuelo">Tipo de vuelo:</label>
-                    <select id="tipoVuelo" name="tipoVuelo">
-                        <option value="ida">Ida</option>
-                        <option value="ida_vuelta">Ida y vuelta</option>
-                    </select>
-                    
-                    <label for="origen">Aeropuerto de origen:</label>
-                    <input type="text" id="origen" name="origen">
-                    
-                    <label for="destino">Aeropuerto de destino:</label>
-                    <input type="text" id="destino" name="destino">
-                    
-                    <label for="codigoVuelo">Código del vuelo:</label>
-                    <input type="text" id="codigoVuelo" name="codigoVuelo">
-                    
-                    <label for="aerolinea">Aerolínea:</label>
-                    <input type="text" id="aerolinea" name="aerolinea">
-                    
-                    <label for="precioVuelo">Precio (€):</label>
-                    <input type="number" id="precioVuelo" name="precioVuelo">
-                    
-                    <label for="fechaVuelo">Fecha del vuelo:</label>
-                    <input type="date" id="fechaVuelo" name="fechaVuelo">
-                    
-                    <label for="horaVuelo">Hora del vuelo:</label>
-                    <input type="time" id="horaVuelo" name="horaVuelo">
-                    
-                    <label for="duracionVuelo">Duración (horas):</label>
-                    <input type="number" id="duracionVuelo" name="duracionVuelo">
+                <div id="seccionVuelo">
+                    <div class="column">
+                        <label for="tipoVuelo">Tipo de vuelo:</label>
+                        <select id="tipoVuelo" name="tipoVuelo">
+                            <option value="ida">Ida</option>
+                            <option value="ida_vuelta">Ida y vuelta</option>
+                        </select>
+                        
+                        <label for="origen">Aeropuerto de origen:</label>
+                        <input type="text" id="origen" name="origen">
+                        
+                        <label for="destino">Aeropuerto de destino:</label>
+                        <input type="text" id="destino" name="destino">
+                        
+                        <label for="codigoVuelo">Código del vuelo:</label>
+                        <input type="text" id="codigoVuelo" name="codigoVuelo">
+                        
+                        <label for="aerolinea">Aerolínea:</label>
+                        <input type="text" id="aerolinea" name="aerolinea">
+                    </div>
+                    <div class="column">
+                        <label for="precioVuelo">Precio (€):</label>
+                        <input type="number" id="precioVuelo" name="precioVuelo">
+                        
+                        <label for="fechaVuelo">Fecha del vuelo:</label>
+                        <input type="date" id="fechaVuelo" name="fechaVuelo">
+                        
+                        <label for="horaVuelo">Hora del vuelo:</label>
+                        <input type="time" id="horaVuelo" name="horaVuelo">
+                        
+                        <label for="duracionVuelo">Duración (horas):</label>
+                        <input type="number" id="duracionVuelo" name="duracionVuelo">
+                    </div>
                 </div>
-
                 <!-- Sección de Otros Servicios -->
-                <div id="seccionOtros" style="display: none;">
+                <div id="seccionOtros">
                     <label for="nombreServicio">Nombre del servicio:</label>
                     <input type="text" id="nombreServicio" name="nombreServicio">
                     

@@ -1,48 +1,41 @@
 <?php
-// $_SESSION-ekin lan egiteko 
 session_start();
 
-// Datu baserako konexioko parametroak
+// Datos de conexión a la base de datos
 $servername = "localhost:3307";
 $username = "root";
 $password = "";
 $dbname = "reto2_g2_dam1";
 
-// Konexioa egin
+// Conectar con la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Konexioa egiaztatu
+// Verificar conexión
 if ($conn->connect_error) {
     die("Fallo en la conexión: " . $conn->connect_error);
 }
 
-// Formularioko datuak berreskuratu
+// Recuperar datos del formulario
 $nombre = $_POST['nombre'];
 $contraseña = $_POST['contraseña'];
 
-// SQL kontsulta
-$sql = "SELECT * FROM agencia WHERE nombre = '$nombre' AND Contraseña = '$contraseña'";
-
-// Kontsulta exekutatu
+// Consulta SQL para verificar la agencia y obtener el logo
+$sql = "SELECT nombre, logo FROM agencia WHERE nombre = '$nombre' AND Contraseña = '$contraseña'";
 $result = $conn->query($sql);
 
-// Erabiltzailea existitzen den egiaztatu
+// Verificar si el usuario existe
 if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $_SESSION['agencia'] = $row['nombre']; // Agentziaren izena gordeko dugu, gero goiburuan erakusteko 
-    }
-    // Aurkitu badugu erregistroa, logeatzen gara eta aurrera jo: menua.php orrira eraman
+    $row = $result->fetch_assoc(); // Obtener los datos en una sola llamada
+    $_SESSION['agencia'] = $row['nombre'];
+    $_SESSION['logo'] = $row['logo']; // Guardamos el logo en la sesión
+
     header("Location: ../php/menua.php");
     exit();
 } else {
-    // Ez bada existitzen, errore mezua (url bidez resolbitzen dut)
     header("Location: ../html/index.html?errorea=1");
     exit();
 }
 
-// Konexioa itxi
-if ($conn) {
-    $conn->close();
-}
-
+// Cerrar conexión
+$conn->close();
 ?>

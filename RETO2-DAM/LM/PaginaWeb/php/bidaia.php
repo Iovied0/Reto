@@ -20,7 +20,7 @@ if ($conn->connect_error) {
     <div class="background">
         <div class="cajaCentro">
             <h1>Registrar Viaje</h1>
-            <form action="/registrar_viaje" method="POST">
+            <form action="../php/bidaia_gorde.php" method="POST">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Nombre del viaje" required>
 

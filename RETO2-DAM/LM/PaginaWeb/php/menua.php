@@ -1,5 +1,8 @@
 <?php
 session_start();
+// Para el logo personalizado
+$logo = isset($_SESSION['logo']) ? $_SESSION['logo'] : '../logo.png';
+
 // Bidaia erregistratzen denean, ondo edo txarto sortu bada, _Session -en gorde dugu (bidaia_gorde.php)
 if (isset($_SESSION['mensaje'])) {
     // Javascripten erabili ahal izateko
@@ -32,7 +35,8 @@ if (isset($_SESSION['mensaje'])) {
 <body>
     <div class="background">
             <div class="cajaCentro">
-                <main>
+            <img src="<?php echo $logo; ?>" alt="Logo" class="logo">
+            <main>
                     <h2>Bienvenido a la página principal de <?php echo $_SESSION['agencia']; ?>!</h2>
                     <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
                     <nav>
