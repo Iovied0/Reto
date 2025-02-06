@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 05-02-2025 a las 04:53:28
+-- Tiempo de generación: 06-02-2025 a las 22:27:15
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,6 +40,7 @@ CREATE TABLE `actividad` (
 --
 
 INSERT INTO `actividad` (`nombre`, `descripcion`, `fecha`, `precio`, `id_viaje`) VALUES
+('actividadDelete', 'a', '2025-02-19', 2.00, 7),
 ('Caminata por los Fiordos', 'Explora la naturaleza nórdica', '2025-05-12', 120.00, 5),
 ('Excursión en Río', 'Explora las playas y montañas', '2025-02-12', 150.00, 2),
 ('Tour en barco por el Mediterráneo', 'Descubre las maravillas marítimas', '2025-06-10', 200.00, 4),
@@ -284,7 +285,8 @@ INSERT INTO `alojamiento` (`id`, `nombre_hotel`, `fecha_entrada`, `fecha_salida`
 (2, 'Resort Copacabana', '2025-02-10', '2025-02-20', 1200.00, 2, 16, 'DB'),
 (3, 'Hotel Beijing', '2025-04-05', '2025-04-20', 900.00, 3, 13, 'SIN'),
 (4, 'Crucero Mediterráneo', '2025-06-01', '2025-06-15', 2000.00, 4, 7, 'DUI'),
-(5, 'Lodge Escandinavo', '2025-05-10', '2025-05-20', 1300.00, 5, 62, 'TPL');
+(5, 'Lodge Escandinavo', '2025-05-10', '2025-05-20', 1300.00, 5, 62, 'TPL'),
+(8, 'Hotel Patata', '2025-02-03', '2025-02-11', 2.00, 7, 4, 'SIN');
 
 -- --------------------------------------------------------
 
@@ -598,7 +600,8 @@ INSERT INTO `viaje` (`id`, `nombreViaje`, `descViaje`, `inicioViaje`, `finViaje`
 (3, 'Aventura en Asia', 'Un viaje por los rincones de Asia', '2025-04-05', '2025-04-20', 'Seguro de viaje', 3, 'B4', 'CN'),
 (4, 'Ruta Mediterránea', 'Explora las maravillas del Mediterráneo', '2025-06-01', '2025-06-15', 'Propinas', 4, 'B3', 'ES'),
 (5, 'Naturaleza Escandinava', 'Conexión con la naturaleza en los países nórdicos', '2025-05-10', '2025-05-20', 'Entradas a museos', 5, 'B6', 'SE'),
-(6, 'prueba segundo viaje', 'segundo viaje', '2025-02-04', '2025-02-13', 'todo incluido', 1, 'B1', 'ES');
+(6, 'prueba segundo viaje', 'segundo viaje', '2025-02-04', '2025-02-13', 'todo incluido', 1, 'B1', 'ES'),
+(7, 'a', 'a', '2025-02-04', '2025-02-13', 'a', 9, 'B1', 'EE');
 
 -- --------------------------------------------------------
 
@@ -616,17 +619,22 @@ CREATE TABLE `vuelo` (
   `aeropuerto_origen` char(3) NOT NULL,
   `aeropuerto_destino` char(3) DEFAULT NULL,
   `id_viaje` int(11) NOT NULL,
-  `precio_total` decimal(10,2) NOT NULL
+  `precio_total` decimal(10,2) NOT NULL,
+  `codigo_asociado` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `vuelo`
 --
 
-INSERT INTO `vuelo` (`tipo_vuelo`, `codigo_vuelo`, `fecha`, `hora_salida`, `duracion`, `aerolinea`, `aeropuerto_origen`, `aeropuerto_destino`, `id_viaje`, `precio_total`) VALUES
-('IDA', 'BR5678', '2025-02-10', '14:00:00', '04:00:00', 'JJ', 'RIO', 'MAD', 2, 700.00),
-('VUELTA', 'ES4321', '2025-02-19', '06:19:58', '04:00:00', 'SP', 'FRA', 'BIO', 1, 500.00),
-('IDA', 'FR1234', '2025-03-01', '08:00:00', '02:30:00', 'UX', 'MAD', 'CDG', 1, 600.00);
+INSERT INTO `vuelo` (`tipo_vuelo`, `codigo_vuelo`, `fecha`, `hora_salida`, `duracion`, `aerolinea`, `aeropuerto_origen`, `aeropuerto_destino`, `id_viaje`, `precio_total`, `codigo_asociado`) VALUES
+('IDA', 'BR5678', '2025-02-10', '14:00:00', '04:00:00', 'JJ', 'RIO', 'MAD', 2, 700.00, NULL),
+('IDA', 'ES4321', '2025-02-19', '06:19:58', '04:00:00', 'SP', 'FRA', 'BIO', 1, 500.00, NULL),
+('VUELTA', 'FR1234', '2025-03-01', '08:00:00', '02:30:00', 'UX', 'MAD', 'CDG', 1, 600.00, 'ES4321'),
+('IDA', 'ida1', '2025-02-19', '06:19:58', '04:00:00', '2K', 'ACE', 'ACA', 7, 500.00, NULL),
+('IDA', 'ida2', '2025-02-19', '06:19:58', '04:00:00', 'A.C.', 'AGP', 'AGP', 7, 500.00, NULL),
+('VUELTA', 'vuelta1', '2025-02-19', '06:19:58', '04:00:00', '2K', 'ACE', 'ACE', 7, 500.00, 'ida1'),
+('VUELTA', 'vuelta2', '2025-02-19', '06:19:58', '04:00:00', 'A.C.', 'ACA', 'ALC', 7, 500.00, 'ida2');
 
 --
 -- Índices para tablas volcadas
@@ -722,6 +730,7 @@ ALTER TABLE `viaje`
 --
 ALTER TABLE `vuelo`
   ADD PRIMARY KEY (`codigo_vuelo`),
+  ADD UNIQUE KEY `codAsociado` (`codigo_asociado`),
   ADD KEY `aeropuerto_origen` (`aeropuerto_origen`),
   ADD KEY `aeropuerto_destino` (`aeropuerto_destino`),
   ADD KEY `aerolinea` (`aerolinea`),
@@ -741,7 +750,7 @@ ALTER TABLE `agencia`
 -- AUTO_INCREMENT de la tabla `alojamiento`
 --
 ALTER TABLE `alojamiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `ciudad`
@@ -753,7 +762,7 @@ ALTER TABLE `ciudad`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -813,7 +822,8 @@ ALTER TABLE `vuelo`
   ADD CONSTRAINT `vuelo_ibfk_1` FOREIGN KEY (`id_viaje`) REFERENCES `viaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vuelo_ibfk_2` FOREIGN KEY (`aeropuerto_origen`) REFERENCES `aeropuerto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `vuelo_ibfk_3` FOREIGN KEY (`aeropuerto_destino`) REFERENCES `aeropuerto` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vuelo_ibfk_4` FOREIGN KEY (`aerolinea`) REFERENCES `aerolineas` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vuelo_ibfk_4` FOREIGN KEY (`aerolinea`) REFERENCES `aerolineas` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `vuelo_ibfk_5` FOREIGN KEY (`codigo_asociado`) REFERENCES `vuelo` (`codigo_vuelo`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

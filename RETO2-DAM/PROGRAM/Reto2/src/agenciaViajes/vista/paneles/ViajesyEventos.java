@@ -65,8 +65,6 @@ public class ViajesyEventos {
 		controlador = Controlador.getInstanceControlador();
 		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(agencia);
 
-		controlador = Controlador.getInstanceControlador();
-
 		// Initialize travelModel and travelTable
 
 		travelModel = new DefaultTableModel(
@@ -165,60 +163,132 @@ public class ViajesyEventos {
 					int selectedRow = travelTable.getSelectedRow();
 					if (selectedRow != -1) {
 						Controlador controlador = Controlador.getInstanceControlador();
-						System.out.println(selectedRow);
 						Viaje viaje = viajes.get(selectedRow);
 						ArrayList<Vuelo> vuelos = controlador.getVuelosPorIdViaje(viaje);
 						ArrayList<Alojamiento> alojamientos = controlador.getAlojamientosPorIdViaje(viaje);
 						ArrayList<Actividad> actividades = controlador.getActividadesPorIdViaje(viaje);
 
-						if (vuelos != null) {
-							for (Vuelo vuelo : vuelos) {
-								Object[] newRow = new Object[4];
-								if (vuelo.getTipoVuelo().equalsIgnoreCase("IDA")) {
-									newRow[0] = "Vuelo Ida";
-									newRow[1] = "Vuelo";
-									newRow[2] = vuelo.getFecha();
-									newRow[3] = vuelo.getPrecio();
-								} else {
-									newRow[0] = "Vuelo Vuelta";
-									newRow[1] = "Vuelo";
-									newRow[2] = vuelo.getFecha();
-									newRow[3] = vuelo.getPrecio();
+						if (eventModel.getRowCount() == 0) {
+							if (vuelos != null) {
+								for (Vuelo vuelo : vuelos) {
+
+									Object[] newRow = new Object[4];
+									if (vuelo.getTipoVuelo().equalsIgnoreCase("IDA")) {
+										newRow[0] = "Vuelo Ida - " + vuelo.getCodigo();
+										newRow[1] = "Vuelo";
+										newRow[2] = vuelo.getFecha();
+										newRow[3] = vuelo.getPrecio() + "€";
+									} else {
+										newRow[0] = "Vuelo Vuelta - " + vuelo.getCodigo();
+										newRow[1] = "Vuelo";
+										newRow[2] = vuelo.getFecha();
+										newRow[3] = vuelo.getPrecio() + "€";
+									}
+									eventModel.addRow(newRow);
 								}
-								eventModel.addRow(newRow);
 							}
-						}
-						if (alojamientos != null) {
-							for (Alojamiento alojamiento : alojamientos) {
-								Object[] newrow = new Object[4];
-								newrow[0] = "Hotel";
-								newrow[1] = "Alojamiento";
-								newrow[2] = alojamiento.getFechaEntrada();
-								newrow[3] = alojamiento.getPrecio();
-								eventModel.addRow(newrow);
+							if (alojamientos != null) {
+								for (Alojamiento alojamiento : alojamientos) {
+									Object[] newrow = new Object[4];
+									newrow[0] = alojamiento.getNombreHotel() + " - Id: " + alojamiento.getId();
+									newrow[1] = "Alojamiento";
+									newrow[2] = alojamiento.getFechaEntrada();
+									newrow[3] = alojamiento.getPrecio() + "€";
+									eventModel.addRow(newrow);
+								}
 							}
-						}
-						if (actividades != null) {
-							for (Actividad actividad : actividades) {
-								Object[] newRow = new Object[4];
-								newRow[0] = actividad.getNombre();
-								newRow[1] = "Actividad";
-								newRow[2] = actividad.getFecha();
-								newRow[3] = actividad.getPrecio();
-								eventModel.addRow(newRow);
+							if (actividades != null) {
+								for (Actividad actividad : actividades) {
+									Object[] newRow = new Object[4];
+									newRow[0] = actividad.getNombre();
+									newRow[1] = "Actividad";
+									newRow[2] = actividad.getFecha();
+									newRow[3] = actividad.getPrecio() + "€";
+									eventModel.addRow(newRow);
+								}
+							}
+						} else {
+							eventModel.setRowCount(0);// vacia la tabla
+
+							if (vuelos != null) {
+								for (Vuelo vuelo : vuelos) {
+
+									Object[] newRow = new Object[4];
+									if (vuelo.getTipoVuelo().equalsIgnoreCase("IDA")) {
+										newRow[0] = "Vuelo Ida - " + vuelo.getCodigo();
+										newRow[1] = "Vuelo";
+										newRow[2] = vuelo.getFecha();
+										newRow[3] = vuelo.getPrecio() + "€";
+									} else {
+										newRow[0] = "Vuelo Vuelta - " + vuelo.getCodigo();
+										newRow[1] = "Vuelo";
+										newRow[2] = vuelo.getFecha();
+										newRow[3] = vuelo.getPrecio() + "€";
+									}
+									eventModel.addRow(newRow);
+								}
+							}
+							if (alojamientos != null) {
+								for (Alojamiento alojamiento : alojamientos) {
+									Object[] newrow = new Object[4];
+									newrow[0] = alojamiento.getNombreHotel() + " - Id: " + alojamiento.getId();
+									newrow[1] = "Alojamiento";
+									newrow[2] = alojamiento.getFechaEntrada();
+									newrow[3] = alojamiento.getPrecio() + "€";
+									eventModel.addRow(newrow);
+								}
+							}
+							if (actividades != null) {
+								for (Actividad actividad : actividades) {
+									Object[] newRow = new Object[4];
+									newRow[0] = actividad.getNombre();
+									newRow[1] = "Actividad";
+									newRow[2] = actividad.getFecha();
+									newRow[3] = actividad.getPrecio() + "€";
+									eventModel.addRow(newRow);
+								}
 							}
 						}
 					}
 				}
 			}
 		});
+
 		btnBorrarViaje.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = travelTable.getSelectedRow();
 				if (selectedRow != -1) {
 					Controlador controlador = Controlador.getInstanceControlador();
+					controlador.deleteActividadesPorIdViaje(viajes.get(selectedRow));
+					controlador.deleteVuelosPorIdViaje(viajes.get(selectedRow));
+					controlador.deleteAlojamientosPorIdViaje(viajes.get(selectedRow));
 					controlador.deleteViajePorId(viajes.get(selectedRow), frame);
+				}
+			}
+		});
+
+		btnBorrarEvento.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = eventTable.getSelectedRow();
+				int columnaNombre = 0;
+				int columnaTipo = 1;
+				if (selectedRow != -1) {
+					Controlador controlador = Controlador.getInstanceControlador();
+					if (eventModel.getValueAt(selectedRow, columnaTipo).equals("Actividad")) {
+						String nombre = eventModel.getValueAt(selectedRow, columnaNombre).toString();
+						controlador.deleteActividadPorNombre(nombre, frame);
+					} else if (eventModel.getValueAt(selectedRow, columnaTipo).equals("Vuelo")) {
+						String nombre = eventModel.getValueAt(selectedRow, columnaNombre).toString();
+						nombre = nombre.split(" - ")[1]; // lo primero que esté despues de " - "
+						controlador.deleteVueloPorNombre(nombre, frame);
+					} else if (eventModel.getValueAt(selectedRow, columnaTipo).equals("Alojamiento")) {
+						String nombre = eventModel.getValueAt(selectedRow, columnaNombre).toString();
+						int id = Integer.valueOf(nombre.split(" - Id: ")[1]); // lo primero que esté despues de " - id:"
+
+						controlador.deleteAlojamientoPorId(id, frame);
+					}
 				}
 			}
 		});

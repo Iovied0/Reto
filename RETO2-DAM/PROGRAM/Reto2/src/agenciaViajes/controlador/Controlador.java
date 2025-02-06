@@ -60,7 +60,7 @@ public class Controlador {
 		ret = gestorviajes.getViajePorId(id);
 		return ret;
 	}
-	
+
 	public void deleteViajePorId(Viaje viaje, ViajesErrekamari frame) {
 		GestorViajes gestorViajes = new GestorViajes();
 		gestorViajes.deleteViajePorId(viaje.getId());
@@ -174,12 +174,12 @@ public class Controlador {
 	}
 
 //////////////////////////// FUNCIONES GESTOR ACTIVIDADES \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	public ArrayList<Actividad> getActividades() {
-		ArrayList<Actividad> ret = null;
-		GestorActividad gestorActividad = new GestorActividad();
-		ret = gestorActividad.getActividades();
-		return ret;
-	}
+//	public ArrayList<Actividad> getActividadesAgencia(Agencia agencia) {
+//		ArrayList<Actividad> ret = null;
+//		GestorActividad gestorActividad = new GestorActividad();
+//		ret = gestorActividad.getActividades();
+//		return ret;
+//	}
 
 	public ArrayList<Actividad> getActividadesPorIdViaje(Viaje viaje) {
 		ArrayList<Actividad> ret = null;
@@ -188,19 +188,41 @@ public class Controlador {
 		return ret;
 	}
 
+	public void deleteActividadesPorIdViaje(Viaje viaje) {
+		GestorActividad gestorActividad = new GestorActividad();
+		gestorActividad.deleteActividadesPorIdViaje(viaje.getId());
+	}
+
+	public void deleteActividadPorNombre(String nombre, ViajesErrekamari frame) {
+		GestorActividad gestorActividad = new GestorActividad();
+		gestorActividad.deleteActividadPorNombre(nombre);
+		frame.gotoViajes();
+	}
+
 //////////////////////////// FUNCIONES GESTOR VUELOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public ArrayList<Vuelo> getVuelosPorIdViaje(Viaje viaje) {
 		ArrayList<Vuelo> ret = null;
 		GestorVuelos gestorVuelos = new GestorVuelos();
-		ret = gestorVuelos.getVuelosPorIdViaje(viaje.getId());
+		ret = gestorVuelos.getVuelosPorIdViaje(viaje);
 		return ret;
+	}
+
+	public void deleteVuelosPorIdViaje(Viaje viaje) {
+		GestorVuelos gestorVuelos = new GestorVuelos();
+		gestorVuelos.deleteVuelosPorIdViaje(viaje.getId());
+	}
+
+	public void deleteVueloPorNombre(String codigo, ViajesErrekamari frame) {
+		GestorVuelos gestorVuelos = new GestorVuelos();
+		gestorVuelos.deleteVueloPorCodigo(codigo);
+		frame.gotoViajes();
 	}
 
 //////////////////////////// FUNCIONES GESTOR ALOJAMIENTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public ArrayList<Alojamiento> getAlojamientosPorIdViaje(Viaje viaje) {
 		ArrayList<Alojamiento> ret = null;
 		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
-		ret = gestorAlojamiento.getAlojamientosPorIdViaje(viaje.getId());
+		ret = gestorAlojamiento.getAlojamientosPorIdViaje(viaje);
 		return ret;
 	}
 
@@ -211,6 +233,17 @@ public class Controlador {
 		return ret;
 	}
 
+	public void deleteAlojamientosPorIdViaje(Viaje viaje) {
+		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
+		gestorAlojamiento.deleteAlojamientosPorIdViaje(viaje.getId());
+	}
+
+	public void deleteAlojamientoPorId(int id, ViajesErrekamari frame) {
+		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
+		gestorAlojamiento.deleteAlojamientoPorId(id);
+		frame.gotoViajes();
+	}
+	
 //////////////////////////// FUNCIONES GESTOR AEROLINEAS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public Aerolineas getAerolineaPorCodigo(String codigo) {
 		Aerolineas ret = null;

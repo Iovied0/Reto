@@ -19,7 +19,7 @@ public class GestorAlojamiento {
 	 * @param id
 	 * @return
 	 */
-	public ArrayList<Alojamiento> getAlojamientosPorIdViaje(int id) {
+	public ArrayList<Alojamiento> getAlojamientosPorIdViaje(Viaje viaje) {
 
 		ArrayList<Alojamiento> ret = null;
 		Connection connection = null;
@@ -31,7 +31,7 @@ public class GestorAlojamiento {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_ALOJAMIENTO_WHERE_IDVIAJE);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, viaje.getId());
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -46,7 +46,6 @@ public class GestorAlojamiento {
 				alojamiento.setPrecio(resultSet.getDouble("precio"));
 
 				Controlador controlador = Controlador.getInstanceControlador();
-				Viaje viaje = controlador.getViajePorId(resultSet.getInt("id_viaje"));
 				alojamiento.setViaje(viaje);
 				Ciudad ciudad = controlador.getCiudadPorId(resultSet.getInt("id_ciudad"));
 				alojamiento.setCiudad(ciudad);
@@ -143,4 +142,87 @@ public class GestorAlojamiento {
 		}
 		return ret;
 	}
+
+	public void deleteAlojamientosPorIdViaje(int id) {
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.DELETE_ALL_ALOJAMIENTO_WHERE_VIAJE);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+	}
+
+	public void deleteAlojamientoPorId(int id) {
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.DELETE_ALL_ALOJAMIENTO_WHERE_ID);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+	}
+
 }

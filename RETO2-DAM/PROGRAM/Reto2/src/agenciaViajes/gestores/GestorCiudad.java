@@ -43,8 +43,8 @@ public class GestorCiudad {
 				Controlador controlador = Controlador.getInstanceControlador();
 				Pais pais = controlador.getPaisPorCodigo(resultSet.getString("codPais"));
 				ret.setPais(pais);
-				Aeropuerto aeropuerto = controlador.getAeropuertoPorIdCiudad(resultSet.getInt("id"));
-				ret.setAeropuerto(aeropuerto);
+//				Aeropuerto aeropuerto = controlador.getAeropuertoPorIdCiudad(resultSet.getInt("id"));
+//				ret.setAeropuerto(aeropuerto);
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());

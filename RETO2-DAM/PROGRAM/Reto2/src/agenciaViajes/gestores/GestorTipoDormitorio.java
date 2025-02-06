@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
-import agenciaViajes.controlador.Controlador;
 
 public class GestorTipoDormitorio {
 
@@ -37,9 +36,9 @@ public class GestorTipoDormitorio {
 				ret = new TipoDormitorio();
 				ret.setCodigo(resultSet.getString("codigo"));
 				ret.setDescripcion(resultSet.getString("descripcion"));
-				Controlador controlador = Controlador.getInstanceControlador();
-				Alojamiento alojamiento = controlador.getAlojamientoPorCodigoDormitorio(resultSet.getString("codigo"));
-				ret.setAlojamiento(alojamiento);
+//				Controlador controlador = Controlador.getInstanceControlador();
+//				Alojamiento alojamiento = controlador.getAlojamientoPorCodigoDormitorio(resultSet.getString("codigo"));
+//				ret.setAlojamiento(alojamiento);
 
 			}
 		} catch (SQLException sqle) {

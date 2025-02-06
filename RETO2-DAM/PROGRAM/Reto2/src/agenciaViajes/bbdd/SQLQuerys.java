@@ -33,7 +33,9 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_ALOJAMIENTO_WHERE_CODIGO_DORMITORIO = "SELECT * from alojamiento where tipo_dormitorio = ?";
 
-	public static final String SELECT_TODOS_VUELO_ID = "SELECT * FROM `vuelo` where id_viaje = ? ORDER BY `vuelo`.`tipo_vuelo` ASC";
+	public static final String SELECT_TODOS_VUELO_ID = "SELECT * FROM `vuelo` where id_viaje = ?";
+	
+	public static final String SELECT_TODOS_VUELO = "SELECT * FROM vuelo";
 
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS = "select * from numeroempleados";
 
@@ -78,5 +80,18 @@ public class SQLQuerys {
 	// DELETES
 	
 	public static final String DELETE_ALL_VIAJE_WHERE_ID = "delete from viaje where id = ?";
+	
+	public static final String DELETE_ALL_ACTIVIDAD_WHERE_VIAJE = "delete from actividad where id_viaje = ?";
+	
+	public static final String DELETE_ALL_VUELO_WHERE_VIAJE = "delete from vuelo where id_viaje = ?";
+	
+	public static final String DELETE_ALL_ALOJAMIENTO_WHERE_VIAJE = "delete from alojamiento where id_viaje = ?";
+	
+	public static final String DELETE_ALL_ACTIVIDAD_WHERE_NOMBRE = "delete from actividad where nombre = ?";
+	
+	public static final String DELETE_ALL_VUELO_WHERE_CODIGO = "delete from vuelo where codigo_vuelo = ?";
+	
+	public static final String DELETE_ALL_ALOJAMIENTO_WHERE_ID = "delete from alojamiento where id = ?";
+	
 //	public static final String DELETE_ALL_NOTAS = "delete from calificaciones";
 }

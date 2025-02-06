@@ -22,7 +22,7 @@ public class GestorVuelos {
 	 * @param id
 	 * @return
 	 */
-	public ArrayList<Vuelo> getVuelosPorIdViaje(int id) {
+	public ArrayList<Vuelo> getVuelosPorIdViaje(Viaje viaje) {
 
 		ArrayList<Vuelo> ret = null;
 		Connection connection = null;
@@ -34,7 +34,7 @@ public class GestorVuelos {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VUELO_ID);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, viaje.getId());
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -52,13 +52,13 @@ public class GestorVuelos {
 				Controlador controlador = Controlador.getInstanceControlador();
 				aerolinea = controlador.getAerolineaPorCodigo(resultSet.getString("aerolinea"));
 				vuelo.setAerolinea(aerolinea);
-				Aeropuerto aeropuertoOrigen = controlador.getAeropuertoPorCodigo(resultSet.getString("aeropuerto_origen"));
+				Aeropuerto aeropuertoOrigen = controlador
+						.getAeropuertoPorCodigo(resultSet.getString("aeropuerto_origen"));
 				vuelo.setAeropuertoOrigen(aeropuertoOrigen);
-				Aeropuerto aeropuertoDestino = controlador.getAeropuertoPorCodigo(resultSet.getString("aeropuerto_destino"));
-				vuelo.setAeropuertoOrigen(aeropuertoDestino);
-				Viaje viaje = controlador.getViajePorId(resultSet.getInt("id_viaje"));
+				Aeropuerto aeropuertoDestino = controlador
+						.getAeropuertoPorCodigo(resultSet.getString("aeropuerto_destino"));
+				vuelo.setAeropuertoDestino(aeropuertoDestino);
 				vuelo.setViaje(viaje);
-				
 				vuelo.setPrecio(resultSet.getDouble("precio_total"));
 				ret.add(vuelo);
 			}
@@ -90,4 +90,85 @@ public class GestorVuelos {
 		return ret;
 	}
 
+	public void deleteVuelosPorIdViaje(int id) {
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.DELETE_ALL_VUELO_WHERE_VIAJE);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+	}
+
+	public void deleteVueloPorCodigo(String codigo) {
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.DELETE_ALL_VUELO_WHERE_CODIGO);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+			preparedStatement.setString(1, codigo);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+	}
 }
