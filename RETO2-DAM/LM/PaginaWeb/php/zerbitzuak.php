@@ -82,16 +82,46 @@ if ($conn->connect_error) {
                         </select>
                         
                         <label for="origen">Aeropuerto de origen:</label>
-                        <input type="text" id="origen" name="origen">
+                        <select id="origen" name="origen" required>
+                        <option value="">--Seleccionar--</option> <!-- Consulta en la base de datos para generar opciones en este select-->
+                        <?php
+                        $sql = "SELECT aeropuerto.codigo, ciudad.nombre 
+                                FROM aeropuerto 
+                                JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo']   . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
                         
                         <label for="destino">Aeropuerto de destino:</label>
-                        <input type="text" id="destino" name="destino">
+                        <select id="destino" name="destino" required>
+                        <option value="">--Seleccionar--</option>
+                            <?php
+                            $sql = "SELECT aeropuerto.codigo, ciudad.nombre 
+                                    FROM aeropuerto 
+                                    JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] .  "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
                         
                         <label for="codigoVuelo">Código del vuelo:</label>
-                        <input type="text" id="codigoVuelo" name="codigoVuelo">
+                        <select id="codigoVuelo" name="codigoVuelo">
+
                         
                         <label for="aerolinea">Aerolínea:</label>
-                        <input type="text" id="aerolinea" name="aerolinea">
+                        <select id="aerolinea" name="aerolinea">
+                            <!-- Hacer lista desplegable-->
                     </div>
                     <div class="column">
                         <label for="precioVuelo">Precio (€):</label>

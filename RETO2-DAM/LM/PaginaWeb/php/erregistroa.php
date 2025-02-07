@@ -55,9 +55,10 @@ session_start();
             <!-- Continua el formulario -->
             XXXX
             XXXX
-
-            <label for="XXXX">XXXX:</label>
-            <select id="XXXX" name="XXXX" required>
+            
+            <!--Consultar aeropuertos en la base de datos -->
+            <label for="aeropuerto">XXXX:</label>
+            <select id="aeropuerto" name="aeropuerto" required>
                 <option value="">--Aukeratu--</option>
                 <!-- DATU BASETIK -->
                 <?php
@@ -65,11 +66,12 @@ session_start();
                 if ($conn->connect_error) {
                     die("Conexión fallida: " . $conn->connect_error);
                 }
-                $sql = "SELECT id, izena FROM herrialdeak";
+                $sql = "SELECT aeropuerto.codigo, ciudad.nombre FROM aeropuerto JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['izena'] . "</option>";
+                        $valor = $row['codigo'] . " - " . $row['nombre'];
+                        echo "<option value='" . $row['codigo'] . "'>" . $valor . "</option>";
                     }
                 }
                 $conn->close();

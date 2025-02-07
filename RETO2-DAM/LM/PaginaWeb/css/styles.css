@@ -118,7 +118,9 @@ width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 20px; /* Espacio entre columnas */
+
 }
+
 
 #seccionVuelo .columna {
     flex: 1;
@@ -168,3 +170,31 @@ footer li a:hover {
     opacity: 1;
 }
 
+
+/* Estilos para los select de aeropuertos */
+#aeropuerto, #origen, #destino {
+    width: 100%; /* Que ocupe todo el ancho disponible */
+    padding: 12px;
+    background: #222; /* Fondo oscuro */
+    color: white;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease, background 0.3s ease;
+    cursor: pointer;
+}
+
+/* Cambio de color al hacer hover o focus */
+#aeropuerto:hover, #aeropuerto:focus,
+#origen:hover, #origen:focus,
+#destino:hover, #destino:focus {
+    border-color: #007BFF;
+    background: #333;
+}
+
+/* Ajustar el diseño dentro del formulario */
+.cajaCentro select {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}

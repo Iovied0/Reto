@@ -74,4 +74,21 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarOpciones();
 });
 
+// evento para manejar extraer código del aeropuerto usando substring()
+document.addEventListener("DOMContentLoaded", function () {
+    const aeropuertoSelect = document.getElementById("aeropuerto");
+
+    if (aeropuertoSelect) {
+        aeropuertoSelect.addEventListener("change", function () {
+            const opcionSeleccionada = aeropuertoSelect.options[aeropuertoSelect.selectedIndex].text;
+            
+            // Extrae solo el código del aeropuerto (asumiendo que está antes del " - ")
+            const codigoAeropuerto = opcionSeleccionada.substring(0, opcionSeleccionada.indexOf(" - "));
+
+            console.log("Código seleccionado:", codigoAeropuerto); // Para verificar en consola
+        });
+    }
+});
+
+
 
