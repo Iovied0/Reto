@@ -1,5 +1,6 @@
 package agenciaViajes.vista.paneles;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +10,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
@@ -18,9 +22,12 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
+import agenciaViajes.bbdd.pojos.TipoViaje;
+import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
 
 public class NuevaActividad {
 	JPanel panel;
@@ -34,8 +41,24 @@ public class NuevaActividad {
 
 		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DE LA NUEVA ACTIVIDAD");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(15, 20, 600, 25);
+		labelTitulo.setBounds(30, 50, 150, 25);
 		panel.add(labelTitulo);
+
+		JComboBox<String> comboViaje = new JComboBox<>();
+		ArrayList<Viaje> viajes = controlador.getViajes();
+		for (Viaje viaje : viajes) {
+			comboViaje.addItem(viaje.getNombreViaje());
+		}
+		comboViaje.setBounds(175, 50, 150, 25);
+		panel.add(comboViaje);
+
+		JComboBox<String> comboTipoViaje = new JComboBox<>();
+		ArrayList<TipoViaje> tiposViaje = controlador.getTiposViaje();
+		for (TipoViaje tipoViaje : tiposViaje) {
+			comboTipoViaje.addItem(tipoViaje.getDescripcion());
+		}
+		comboTipoViaje.setBounds(175, 500, 190, 25);
+		panel.add(comboTipoViaje);
 
 		JLabel labelTrayecto = new JLabel("Nombre de actividad");
 		labelTrayecto.setBounds(30, 100, 150, 25);
@@ -76,11 +99,11 @@ public class NuevaActividad {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char key = e.getKeyChar();
-				
-				boolean numeroValido = key >= '0' && key <='9';
+
+				boolean numeroValido = key >= '0' && key <= '9';
 				boolean punto = key == '.';
-				
-				if(!(numeroValido || punto))
+
+				if (!(numeroValido || punto))
 					e.consume();
 			}
 		});
@@ -93,6 +116,16 @@ public class NuevaActividad {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Pendiente hacer que se guarden los datos en la base de datos
+				Viaje viaje = viajes.get(comboViaje.getSelectedIndex());
+
+				java.util.Date fechaUtil = modelInicio.getValue();
+				Date fechaSql = new Date(fechaUtil.getTime());
+
+				
+				controlador.insertActividad(textNombre.getText(), textDescripcion.getText(), fechaSql,
+						textPrecio.getText(), viaje.getId(), frame);
+				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		panel.add(btnConfirmar);

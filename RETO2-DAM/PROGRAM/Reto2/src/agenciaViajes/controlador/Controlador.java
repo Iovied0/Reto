@@ -1,5 +1,6 @@
 package agenciaViajes.controlador;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import agenciaViajes.ViajesErrekamari;
@@ -53,6 +54,14 @@ public class Controlador {
 		ret = gestorViajes.getViajesPorIdAgencia(agencia);
 		return ret;
 	}
+	
+	public ArrayList<Viaje> getViajes() {
+		ArrayList<Viaje> ret = null;
+		GestorViajes gestorViajes = new GestorViajes();
+		ret = gestorViajes.getViajes();
+		return ret;
+	}
+
 
 	public Viaje getViajePorId(int id) {
 		Viaje ret = null;
@@ -196,6 +205,12 @@ public class Controlador {
 	public void deleteActividadPorNombre(String nombre, ViajesErrekamari frame) {
 		GestorActividad gestorActividad = new GestorActividad();
 		gestorActividad.deleteActividadPorNombre(nombre);
+		frame.gotoViajes();
+	}
+	
+	public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje, ViajesErrekamari frame) {
+		GestorActividad gestorActividad = new GestorActividad();
+		gestorActividad.insertActividad(nombre, descripcion, fecha, precio, id_viaje);
 		frame.gotoViajes();
 	}
 

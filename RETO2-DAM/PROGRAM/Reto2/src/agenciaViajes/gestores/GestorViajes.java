@@ -16,6 +16,67 @@ import agenciaViajes.controlador.Controlador;
  */
 public class GestorViajes {
 
+	public ArrayList<Viaje> getViajes() {
+
+		ArrayList<Viaje> ret = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_VIAJES);
+			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
+
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				if (null == ret)
+					ret = new ArrayList<Viaje>();
+
+				Viaje viaje = new Viaje();
+				viaje.setId(resultSet.getInt("id"));
+				viaje.setNombreViaje(resultSet.getString("nombreViaje"));
+				viaje.setDescViaje(resultSet.getString("descViaje"));
+				viaje.setInicioViaje(resultSet.getDate("inicioViaje"));
+				viaje.setFinViaje(resultSet.getDate("finViaje"));
+				viaje.setNumeroDias(resultSet.getInt("numeroDias"));
+				viaje.setServNoIncluidos(resultSet.getString("servNoIncluidos"));
+				Controlador controlador = Controlador.getInstanceControlador();
+				TipoViaje tipoViaje = controlador.getTipoViajeObjetoPorCodigo(resultSet.getString("tipo_viaje"));
+				viaje.setTipoViaje(tipoViaje);
+				Pais pais = controlador.getPaisPorCodigo(resultSet.getString("pais_destino"));
+				viaje.setPais(pais);
+
+				ret.add(viaje);
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			// Cerramos al reves de como las abrimos
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta
+			}
+		}
+		return ret;
+	}
 	/**
 	 * Retorna de BBDD todos los Viajes almacenados en la BBDD filtrados por
 	 * ID_agencia

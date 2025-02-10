@@ -134,13 +134,6 @@ public class ViajesErrekamari extends JFrame {
 		JPanel panelNuevoViaje = nuevoViaje.getPanel();
 		panelNuevoViaje.setVisible(false);
 
-		NuevaActividad nuevaActividad = new NuevaActividad(paneles, this);
-		JPanel panelNuevaActividad = nuevaActividad.getPanel();
-		panelNuevaActividad.setVisible(false);
-
-		NuevoAlojamiento nuevoAlojamiento = new NuevoAlojamiento(paneles, this);
-		JPanel panelNuevoAlojamiento = nuevoAlojamiento.getPanel();
-		panelNuevoAlojamiento.setVisible(false);
 
 		// lo metemos en el array y en la ventana
 		paneles.add(0, panelBienvenida);

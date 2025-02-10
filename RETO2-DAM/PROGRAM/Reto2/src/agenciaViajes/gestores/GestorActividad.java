@@ -1,6 +1,7 @@
 package agenciaViajes.gestores;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +16,37 @@ import agenciaViajes.bbdd.pojos.*;
  */
 public class GestorActividad {
 
-	/**
-	 * Retorna de BBDD todos los paises almacenados en la BBDD
-	 * 
-	 * @return Los paises en la BBDD
-	 */
+	public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_ACTIVIDAD);
+			statement.setString(1, nombre);
+			statement.setString(2, descripcion);
+			statement.setDate(3, fecha);
+			statement.setString(4, precio);
+			statement.setInt(5, id_viaje);
+			statement.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error generico - " + e.getMessage());
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				// No hace falta manejarlo
+			}
+		}
+	}
 	public ArrayList<Actividad> getActividades() {
 
 		ArrayList<Actividad> ret = null;

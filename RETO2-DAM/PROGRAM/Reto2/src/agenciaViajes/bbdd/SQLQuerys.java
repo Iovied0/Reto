@@ -24,6 +24,8 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_CIUDAD_WHERE_ID = "SELECT * FROM ciudad WHERE id = ?";
 
 	public static final String SELECT_TODOS_VIAJES_WHERE_IDAGENCIA = "SELECT * from viaje where id_agencia = ?";
+	
+	public static final String SELECT_TODOS_VIAJES = "SELECT * from viaje";
 
 	public static final String SELECT_TODOS_VIAJES_WHERE_ID = "SELECT * from viaje where id = ?";
 
@@ -65,7 +67,7 @@ public class SQLQuerys {
 
 	// INSERTS
 
-	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_evento) VALUES ('?','?','?','?','?')";
+	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_viaje) VALUES (?,?,?,?,?)";
 
 	public static final String SEPARATOR = "', '";
 
