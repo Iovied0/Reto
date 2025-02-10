@@ -7,24 +7,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
-import agenciaViajes.bbdd.pojos.Pais;
-import agenciaViajes.bbdd.pojos.TipoViaje;
 import agenciaViajes.controlador.Controlador;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class NuevaActividad {
 	JPanel panel;
@@ -36,12 +32,12 @@ public class NuevaActividad {
 
 		Controlador controlador = Controlador.getInstanceControlador();
 
-		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO VUELO");
+		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DE LA NUEVA ACTIVIDAD");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
 		labelTitulo.setBounds(15, 20, 600, 25);
 		panel.add(labelTitulo);
 
-		JLabel labelTrayecto = new JLabel("Trayecto");
+		JLabel labelTrayecto = new JLabel("Nombre de actividad");
 		labelTrayecto.setBounds(30, 100, 150, 25);
 		panel.add(labelTrayecto);
 
@@ -49,15 +45,15 @@ public class NuevaActividad {
 		textNombre.setBounds(175, 100, 150, 25);
 		panel.add(textNombre);
 
-		JLabel labelDescripcion = new JLabel("Descripción del viaje");
-		labelDescripcion.setBounds(30, 140, 150, 25);
+		JLabel labelDescripcion = new JLabel("<html>Descripción de la <br/> actividad</html>");
+		labelDescripcion.setBounds(30, 150, 150, 25);
 		panel.add(labelDescripcion);
 
 		JTextArea textDescripcion = new JTextArea();
 		textDescripcion.setBounds(175, 140, 400, 100);
 		panel.add(textDescripcion);
 
-		JLabel labelFechaInicio = new JLabel("Fecha de inicio");
+		JLabel labelFechaInicio = new JLabel("Fecha del evento");
 		labelFechaInicio.setBounds(30, 260, 150, 25);
 		panel.add(labelFechaInicio);
 
@@ -71,76 +67,28 @@ public class NuevaActividad {
 		datePickerInicio.setBounds(175, 260, 150, 25);
 		panel.add(datePickerInicio);
 
-		JLabel labelFechaFin = new JLabel("Fecha de fin");
-		labelFechaFin.setBounds(30, 300, 150, 25);
-		panel.add(labelFechaFin);
+		JLabel labelPrecio = new JLabel("Precio");
+		labelPrecio.setBounds(30, 300, 150, 25);
+		panel.add(labelPrecio);
 
-		UtilDateModel modelFin = new UtilDateModel();
-		JDatePanelImpl datePanelFin = new JDatePanelImpl(modelFin, p);
-		JDatePickerImpl datePickerFin = new JDatePickerImpl(datePanelFin, new DateLabelFormatter());
-		datePickerFin.setBounds(175, 300, 150, 25);
-		panel.add(datePickerFin);
-
-		JLabel labelDuracion = new JLabel("Duración (días)");
-		labelDuracion.setBounds(30, 340, 150, 25);
-		panel.add(labelDuracion);
-
-		JTextField textDuracion = new JTextField();
-		textDuracion.setBounds(175, 340, 150, 25);
-		textDuracion.setEditable(false);
-		panel.add(textDuracion);
-
-		ChangeListener changeListener = new ChangeListener() {
+		JTextField textPrecio = new JTextField();
+		textPrecio.addKeyListener(new KeyAdapter() {
 			@Override
-			public void stateChanged(ChangeEvent e) {
-				Date fechaInicio = (Date) datePickerInicio.getModel().getValue();
-				Date fechaFin = (Date) datePickerFin.getModel().getValue();
-				if (fechaInicio != null && fechaFin != null) {
-					long duracion = (fechaFin.getTime() - fechaInicio.getTime()) / (1000 * 60 * 60 * 24);
-					textDuracion.setText(String.valueOf(duracion));
-				} else {
-					textDuracion.setText("");
-				}
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+				
+				boolean numeroValido = key >= '0' && key <='9';
+				boolean punto = key == '.';
+				
+				if(!(numeroValido || punto))
+					e.consume();
 			}
-		};
-
-		datePickerInicio.getModel().addChangeListener(changeListener);
-		datePickerFin.getModel().addChangeListener(changeListener);
-
-		JLabel labelServicios = new JLabel("Servicios no incluidos");
-		labelServicios.setBounds(30, 380, 150, 25);
-		panel.add(labelServicios);
-
-		JTextArea textServicios = new JTextArea();
-		textServicios.setBounds(175, 380, 400, 100);
-		panel.add(textServicios);
-
-		JLabel labelTipoViaje = new JLabel("Tipo de viaje");
-		labelTipoViaje.setBounds(30, 500, 150, 25);
-		panel.add(labelTipoViaje);
-
-		JComboBox<String> comboTipoViaje = new JComboBox<>();
-		ArrayList<TipoViaje> tiposViaje = controlador.getTiposViaje();
-		for (TipoViaje tipoViaje : tiposViaje) {
-			comboTipoViaje.addItem(tipoViaje.getDescripcion());
-		}
-		comboTipoViaje.setBounds(175, 500, 190, 25);
-		panel.add(comboTipoViaje);
-
-		JLabel labelPais = new JLabel("País destino");
-		labelPais.setBounds(30, 540, 150, 25);
-		panel.add(labelPais);
-
-		JComboBox<String> comboPais = new JComboBox<>();
-		ArrayList<Pais> paises = controlador.mostrarPaises();
-		for (Pais pais : paises) {
-			comboPais.addItem(pais.getNombre());
-		}
-		comboPais.setBounds(175, 540, 190, 25);
-		panel.add(comboPais);
+		});
+		textPrecio.setBounds(175, 300, 150, 25);
+		panel.add(textPrecio);
 
 		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setBounds(120, 600, 150, 25);
+		btnConfirmar.setBounds(120, 400, 150, 25);
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -150,7 +98,7 @@ public class NuevaActividad {
 		panel.add(btnConfirmar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(400, 600, 150, 25);
+		btnCancelar.setBounds(400, 400, 150, 25);
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
