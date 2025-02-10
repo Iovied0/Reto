@@ -3,12 +3,12 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="eu">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="XXXX">
-    <link rel="stylesheet" href="XXXX.css">
-    <script src="XXXX.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
     <title>Menua</title>
   </head>
 <body>
@@ -19,7 +19,7 @@ session_start();
     <main>
     <nav>
         <ul>
-            <li><a href="XXXX.php">XXXX erregistratu</a></li>
+            <li><a href="zerbitzuak.php">XXXX erregistratu</a></li>
             <li><a href="XXXX.php">XXXX</a></li>
           </ul>
         </nav>

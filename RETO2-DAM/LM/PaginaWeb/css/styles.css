@@ -124,9 +124,15 @@ width: 100%;
 
 #seccionVuelo .columna {
     flex: 1;
-    min-width: 200px; /* Ancho mínimo de cada columna */
+    min-width: 200px; /* Ancho mínimo de cada columna */   
 }
 
+.hidden {
+    display: none;
+}
+.mostrar {
+    display: block;
+}
 .opcionServicio {
     display: flex;
     gap: 20px; /* Espacio entre los elementos */
