@@ -243,12 +243,19 @@ public class Controlador {
 		gestorAlojamiento.deleteAlojamientoPorId(id);
 		frame.gotoViajes();
 	}
-	
+
 //////////////////////////// FUNCIONES GESTOR AEROLINEAS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public Aerolineas getAerolineaPorCodigo(String codigo) {
 		Aerolineas ret = null;
 		GestorAerolineas gestorAerolineas = new GestorAerolineas();
 		ret = gestorAerolineas.getAerolineaPorCodigo(codigo);
+		return ret;
+	}
+
+	public ArrayList<Aerolineas> getAerolineas() {
+		ArrayList<Aerolineas> ret = null;
+		GestorAerolineas gestorAerolineas = new GestorAerolineas();
+		ret = gestorAerolineas.getAerolineas();
 		return ret;
 	}
 
@@ -264,6 +271,13 @@ public class Controlador {
 		Aeropuerto ret = null;
 		GestorAeropuerto gestorAeropuerto = new GestorAeropuerto();
 		ret = gestorAeropuerto.getAeropuertoPorIdCiudad(id);
+		return ret;
+	}
+
+	public ArrayList<Aeropuerto> getAeropuertos() {
+		ArrayList<Aeropuerto> ret = null;
+		GestorAeropuerto gestorAeropuerto = new GestorAeropuerto();
+		ret = gestorAeropuerto.getAeropuertos();
 		return ret;
 	}
 

@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.sql.Date;
 
 public class Vuelo {
-	private String codigo, tipoVuelo;
+	private String codigo, tipoVuelo, codigoAsociado;
 	private Date fecha;
 	private Time horaSalida, duracion;
 	private Aeropuerto aeropuertoOrigen, aeropuertoDestino;
@@ -18,7 +18,7 @@ public class Vuelo {
 	}
 
 	public Vuelo(String tipoVuelo, String codigo, Date fecha, Time horaSalida, Time duracion, Aerolineas aerolinea,
-			Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, Viaje viaje, double precio) {
+			Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, Viaje viaje, double precio, String codigoAsociado) {
 
 		this.tipoVuelo = tipoVuelo;
 		this.codigo = codigo;
@@ -30,7 +30,16 @@ public class Vuelo {
 		this.aeropuertoDestino = aeropuertoDestino;
 		this.viaje = viaje;
 		this.precio = precio;
+		this.codigoAsociado = codigoAsociado;
 
+	}
+
+	public String getCodigoAsociado() {
+		return codigoAsociado;
+	}
+
+	public void setCodigoAsociado(String codigoAsociado) {
+		this.codigoAsociado = codigoAsociado;
 	}
 
 	public String getCodigo() {
@@ -115,8 +124,8 @@ public class Vuelo {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(aerolinea, aeropuertoDestino, aeropuertoOrigen, codigo, duracion, fecha, horaSalida, precio,
-				tipoVuelo, viaje);
+		return Objects.hash(aerolinea, aeropuertoDestino, aeropuertoOrigen, codigo, codigoAsociado, duracion, fecha,
+				horaSalida, precio, tipoVuelo, viaje);
 	}
 
 	@Override
@@ -130,18 +139,18 @@ public class Vuelo {
 		Vuelo other = (Vuelo) obj;
 		return Objects.equals(aerolinea, other.aerolinea) && Objects.equals(aeropuertoDestino, other.aeropuertoDestino)
 				&& Objects.equals(aeropuertoOrigen, other.aeropuertoOrigen) && Objects.equals(codigo, other.codigo)
-				&& Objects.equals(duracion, other.duracion) && Objects.equals(fecha, other.fecha)
-				&& Objects.equals(horaSalida, other.horaSalida)
+				&& Objects.equals(codigoAsociado, other.codigoAsociado) && Objects.equals(duracion, other.duracion)
+				&& Objects.equals(fecha, other.fecha) && Objects.equals(horaSalida, other.horaSalida)
 				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio)
 				&& Objects.equals(tipoVuelo, other.tipoVuelo) && Objects.equals(viaje, other.viaje);
 	}
 
 	@Override
 	public String toString() {
-		return "Vuelo [codigo=" + codigo + ", tipoVuelo=" + tipoVuelo + ", fecha=" + fecha + ", horaSalida="
-				+ horaSalida + ", duracion=" + duracion + ", aeropuertoOrigen=" + aeropuertoOrigen
-				+ ", aeropuertoDestino=" + aeropuertoDestino + ", aerolinea=" + aerolinea + ", viaje=" + viaje
-				+ ", precio=" + precio + "]";
+		return "Vuelo [codigo=" + codigo + ", tipoVuelo=" + tipoVuelo + ", codigoAsociado=" + codigoAsociado
+				+ ", fecha=" + fecha + ", horaSalida=" + horaSalida + ", duracion=" + duracion + ", aeropuertoOrigen="
+				+ aeropuertoOrigen + ", aeropuertoDestino=" + aeropuertoDestino + ", aerolinea=" + aerolinea
+				+ ", viaje=" + viaje + ", precio=" + precio + "]";
 	}
 
 }

@@ -12,10 +12,14 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_PAISES = "select * from pais";
 
 	public static final String SELECT_TODOS_AEROLINEAS_WHERE_CODIGO = "SELECT * FROM aerolineas WHERE codigo = ?";
+	
+	public static final String SELECT_NOMBRES_AEROLINEAS = "SELECT nombre FROM aerolineas";
 
 	public static final String SELECT_TODOS_AEROPUERTO_WHERE_CODIGO = "SELECT * FROM aeropuerto WHERE codigo = ?";
 
 	public static final String SELECT_TODOS_AEROPUERTO_WHERE_ID = "SELECT * FROM aeropuerto WHERE id_ciudad = ?";
+	
+	public static final String SELECT_TODOS_AEROPUERTO_Y_COD_CIUDAD = "SELECT aeropuerto.codigo, ciudad.nombre FROM aeropuerto JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id ORDER BY ciudad.nombre ASC";
 
 	public static final String SELECT_TODOS_CIUDAD_WHERE_ID = "SELECT * FROM ciudad WHERE id = ?";
 
