@@ -1,5 +1,6 @@
 package agenciaViajes;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import agenciaViajes.bbdd.pojos.Agencia;
 import agenciaViajes.vista.paneles.*;
 import javax.swing.JMenuBar;
@@ -89,7 +89,6 @@ public class ViajesErrekamari extends JFrame {
 		JMenuItem miNuevoVuelo = new JMenuItem("Nuevo Vuelo");
 		miNuevoVuelo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("GoTo -> panel3 (Nuevo vuelo)");
 				gotoNuevoVuelo();
 			}
 		});
@@ -98,7 +97,6 @@ public class ViajesErrekamari extends JFrame {
 		JMenuItem miNuevoAlojamiento = new JMenuItem("Nuevo Alojamiento");
 		miNuevoAlojamiento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("GoTo -> panel3 (Nuevo Alojamiento)");
 				gotoNuevoAlojamiento();
 			}
 		});
@@ -107,7 +105,6 @@ public class ViajesErrekamari extends JFrame {
 		JMenuItem miNuevaActividad = new JMenuItem("Nueva Actividad");
 		miNuevaActividad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("GoTo -> panel3 (Nueva Actividad)");
 				gotoNuevaActividad();
 			}
 		});
@@ -130,11 +127,6 @@ public class ViajesErrekamari extends JFrame {
 		JPanel panelNuevaAgencia = nuevaAgencia.getPanel();
 		panelNuevaAgencia.setVisible(false);
 
-		NuevoViaje nuevoViaje = new NuevoViaje(paneles, this);
-		JPanel panelNuevoViaje = nuevoViaje.getPanel();
-		panelNuevoViaje.setVisible(false);
-
-
 		// lo metemos en el array y en la ventana
 		paneles.add(0, panelBienvenida);
 		frame.getContentPane().add(panelBienvenida);
@@ -145,71 +137,40 @@ public class ViajesErrekamari extends JFrame {
 		paneles.add(2, panelNuevaAgencia);
 		frame.getContentPane().add(panelNuevaAgencia);
 
-		paneles.add(3, panelNuevoViaje);
-		frame.getContentPane().add(panelNuevoViaje);
 	}
 
 	////////////////////// Cambio de panel por función \\\\\\\\\\\\\\\\\\\\\\
 
 	public void logOut() {
-		paneles.get(0).setVisible(true);
-		paneles.get(1).setVisible(false);
-		paneles.get(2).setVisible(false);
-		paneles.get(3).setVisible(false);
+		paneles.get(0).setVisible(true); // Mostrar el panel principal
+		paneles.get(1).setVisible(false); // Ocultar el panel de login
+		paneles.get(2).setVisible(false); // Ocultar el panel de "Nueva Agencia"
 
-		if (paneles.size() >= 8) {
-			paneles.get(4).setVisible(false);
-			paneles.get(5).setVisible(false);
-			paneles.get(6).setVisible(false);
-			paneles.get(7).setVisible(false);
+		// Eliminar cualquier panel extra
+		while (paneles.size() > 3) {
+			JPanel panel = paneles.remove(paneles.size() - 1);
+			frame.getContentPane().remove(panel);
 		}
+
 		menuBar.setVisible(false);
 		agenciaLogin = null;
+
+		// Actualizar la ventana
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public void gotoFormLogin() {
 		paneles.get(0).setVisible(false);
 		paneles.get(1).setVisible(true);
 		paneles.get(2).setVisible(false);
-		paneles.get(3).setVisible(false);
-		
-		if (paneles.size() >= 8) {
-			paneles.get(4).setVisible(false);
-			paneles.get(5).setVisible(false);
-			paneles.get(6).setVisible(false);
-			paneles.get(7).setVisible(false);
-		}
-
 	}
 
 	public void gotoNuevaAgencia() {
-		
+
 		paneles.get(0).setVisible(false);
 		paneles.get(1).setVisible(false);
 		paneles.get(2).setVisible(true);
-		paneles.get(3).setVisible(false);
-		
-		if (paneles.size() >= 8) {
-			paneles.get(4).setVisible(false);
-			paneles.get(5).setVisible(false);
-			paneles.get(6).setVisible(false);
-			paneles.get(7).setVisible(false);
-		}
-	}
-
-	public void gotoNuevoViaje() {
-
-		paneles.get(0).setVisible(false);
-		paneles.get(1).setVisible(false);
-		paneles.get(2).setVisible(false);
-		paneles.get(3).setVisible(true);
-		
-		if (paneles.size() >= 8) {
-			paneles.get(4).setVisible(false);
-			paneles.get(5).setVisible(false);
-			paneles.get(6).setVisible(false);
-			paneles.get(7).setVisible(false);
-		}
 	}
 
 	public void gotoViajes() {
@@ -217,62 +178,73 @@ public class ViajesErrekamari extends JFrame {
 		ViajesyEventos viajesyEventos = new ViajesyEventos(paneles, this);
 		JPanel panelViajesyEventos = viajesyEventos.getPanel();
 
-		paneles.add(4, panelViajesyEventos);
-		frame.getContentPane().add(panelViajesyEventos);
-		
-		NuevoVuelo nuevoVuelo = new NuevoVuelo(paneles, this);
-		JPanel panelNuevoVuelo = nuevoVuelo.getPanel();
-		panelNuevoVuelo.setVisible(false);
+		gestionarPaneles(panelViajesyEventos);
 
-		paneles.add(5, panelNuevoVuelo);
-		frame.getContentPane().add(panelNuevoVuelo);
-		
-		NuevoAlojamiento nuevoAlojamiento = new NuevoAlojamiento(paneles, this);
-		JPanel panelNuevoAlojamiento = nuevoAlojamiento.getPanel();
-		panelNuevoAlojamiento.setVisible(false);
-
-		paneles.add(6, panelNuevoAlojamiento);
-		frame.getContentPane().add(panelNuevoAlojamiento);
-
-		NuevaActividad nuevaActividad = new NuevaActividad(paneles, this);
-		JPanel panelNuevaActividad = nuevaActividad.getPanel();
-		panelNuevaActividad.setVisible(false);
-
-		paneles.add(7, panelNuevaActividad);
-		frame.getContentPane().add(panelNuevaActividad);
-		
-		
-		
-		paneles.get(0).setVisible(false);
-		paneles.get(1).setVisible(false);
-		paneles.get(2).setVisible(false);
-		paneles.get(3).setVisible(false);
-		paneles.get(4).setVisible(true);
-//		paneles.get(5).setVisible(false);
-//		paneles.get(6).setVisible(false);
-//		paneles.get(7).setVisible(false);
 		menuBar.setVisible(true);
+
+	}
+
+	public void gotoNuevoViaje() {
+
+		NuevoViaje nuevoViaje = new NuevoViaje(paneles, this);
+		JPanel panelNuevoViaje = nuevoViaje.getPanel();
+
+		gestionarPaneles(panelNuevoViaje);
+
 	}
 
 	public void gotoNuevoVuelo() {
 
-		paneles.get(4).setVisible(false);
-		paneles.get(5).setVisible(true);
+		NuevoVuelo nuevoVuelo = new NuevoVuelo(paneles, this);
+		JPanel panelNuevoVuelo = nuevoVuelo.getPanel();
+
+		gestionarPaneles(panelNuevoVuelo);
 
 	}
-	
+
 	public void gotoNuevoAlojamiento() {
-		
-		paneles.get(4).setVisible(false);
-		paneles.get(6).setVisible(true);
+
+		NuevoAlojamiento nuevoAlojamiento = new NuevoAlojamiento(paneles, this);
+		JPanel panelNuevoAlojamiento = nuevoAlojamiento.getPanel();
+
+		gestionarPaneles(panelNuevoAlojamiento);
 
 	}
-	
+
 	public void gotoNuevaActividad() {
 
-		paneles.get(4).setVisible(false);
-		paneles.get(7).setVisible(true);
+		NuevaActividad nuevaActividad = new NuevaActividad(paneles, this);
+		JPanel panelNuevaActividad = nuevaActividad.getPanel();
 
+		gestionarPaneles(panelNuevaActividad);
+
+	}
+
+	private void gestionarPaneles(JPanel nuevoPanel) {
+		// Eliminar el panel si ya existe
+		for (Component panelContentPane : frame.getContentPane().getComponents()) {
+			if (panelContentPane.equals(nuevoPanel)) {
+				frame.getContentPane().remove(panelContentPane);
+				break;
+			}
+		}
+
+		// Ocultar todos los paneles actuales
+		for (JPanel panel : paneles) {
+			panel.setVisible(false);
+		}
+
+		// Agregar el nuevo panel si no está en la lista
+		if (!paneles.contains(nuevoPanel)) {
+			paneles.add(nuevoPanel);
+		}
+
+		frame.getContentPane().add(nuevoPanel);
+		nuevoPanel.setVisible(true);
+
+		// Actualizar el frame
+		frame.revalidate();
+		frame.repaint();
 	}
 
 }
