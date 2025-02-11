@@ -91,15 +91,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// evento para manejar el dropdown de vuelta, mostrando u ocultando el segundo calendario según el tipo de vuelo (ida o ida-vuelta)
-// Ocultar el segundo dropdown al cargar la página
-function mostrarVuelta() {
-        var tipoVuelo = document.querySelector('input[name="tipoVuelo"]:checked').value;
-        var dropdownVuelta = document.getElementById('dropdown-vuelta');
 
-        if (tipoVuelo === 'ida_vuelta') {
-            dropdownVuelta.classList.remove('hidden');
-        } else {
-            dropdownVuelta.classList.add('hidden');
-        }
-}
