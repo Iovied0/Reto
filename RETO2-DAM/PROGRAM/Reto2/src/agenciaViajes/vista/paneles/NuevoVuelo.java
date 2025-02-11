@@ -28,6 +28,7 @@ import agenciaViajes.bbdd.pojos.Aeropuerto;
 import agenciaViajes.bbdd.pojos.Pais;
 import agenciaViajes.bbdd.pojos.TipoViaje;
 import agenciaViajes.bbdd.pojos.TiposAgencia;
+import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 
 public class NuevoVuelo {
@@ -45,6 +46,14 @@ public class NuevoVuelo {
 		labelTitulo.setBounds(15, 20, 600, 25);
 		panel.add(labelTitulo);
 
+		JComboBox<String> comboViaje = new JComboBox<>();
+		ArrayList<Viaje> viajes = controlador.getViajes();
+		for (Viaje viaje : viajes) {
+			comboViaje.addItem(viaje.getNombreViaje());
+		}
+		comboViaje.setBounds(175, 50, 150, 25);
+		panel.add(comboViaje);
+		
 		JLabel labelTrayecto = new JLabel("Trayecto");
 		labelTrayecto.setBounds(30, 100, 150, 25);
 		panel.add(labelTrayecto);

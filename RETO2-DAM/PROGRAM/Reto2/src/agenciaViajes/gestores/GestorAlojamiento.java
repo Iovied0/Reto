@@ -1,6 +1,7 @@
 package agenciaViajes.gestores;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,39 @@ import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.controlador.Controlador;
 
 public class GestorAlojamiento {
+
+	public void insertAlojamiento(int id, String nombre_hotel, Date fecha_entrada , Date fecha_salida, String precio, int id_viaje, int id_ciudad, char tipo_dormitorio) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            Class.forName(DBUtils.DRIVER);
+            connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+            statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_ALOJAMIENTO);
+            statement.setInt(1, id);
+            statement.setString(2, nombre_hotel);
+            statement.setDate(3, fecha_entrada);
+            statement.setDate(4, fecha_salida);
+            statement.setString(5, precio);
+            statement.setInt(6, id_viaje);
+            statement.setInt(7, id_ciudad);
+            statement.setString(8, String.valueOf(tipo_dormitorio));
+            statement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.out.println("Error con la BBDD - " + sqle.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error generico - " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (Exception e) {
+                // No hace falta manejarlo
+            }
+        }
+    }
 
 	/**
 	 * Recoge todas las actividades asignadas a un id_viaje

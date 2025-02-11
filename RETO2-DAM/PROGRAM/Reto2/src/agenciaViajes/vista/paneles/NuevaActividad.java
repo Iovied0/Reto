@@ -1,6 +1,5 @@
 package agenciaViajes.vista.paneles;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
@@ -22,7 +20,6 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
-import agenciaViajes.bbdd.pojos.TipoViaje;
 import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 import java.awt.event.KeyAdapter;
@@ -51,14 +48,6 @@ public class NuevaActividad {
 		}
 		comboViaje.setBounds(175, 50, 150, 25);
 		panel.add(comboViaje);
-
-		JComboBox<String> comboTipoViaje = new JComboBox<>();
-		ArrayList<TipoViaje> tiposViaje = controlador.getTiposViaje();
-		for (TipoViaje tipoViaje : tiposViaje) {
-			comboTipoViaje.addItem(tipoViaje.getDescripcion());
-		}
-		comboTipoViaje.setBounds(175, 500, 190, 25);
-		panel.add(comboTipoViaje);
 
 		JLabel labelTrayecto = new JLabel("Nombre de actividad");
 		labelTrayecto.setBounds(30, 100, 150, 25);
@@ -115,7 +104,6 @@ public class NuevaActividad {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Pendiente hacer que se guarden los datos en la base de datos
 				Viaje viaje = viajes.get(comboViaje.getSelectedIndex());
 
 				java.util.Date fechaUtil = modelInicio.getValue();

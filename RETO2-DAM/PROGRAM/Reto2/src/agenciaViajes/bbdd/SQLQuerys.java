@@ -67,14 +67,17 @@ public class SQLQuerys {
 
 	// INSERTS
 
-	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_viaje) VALUES (?,?,?,?,?)";
+	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_viaje) VALUES (?, ?, ?, ?, ? )";
 
+	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
+	
+	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO Alojamiento (id, nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?)";
+	
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";
 
-	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
-
+	
 //	public static final String INSERT_NEW_ALUMNO = "insert into alumnos (dni, nombre, apellidos, grupo) VALUES ('";
 //
 //	public static final String INSERT_NEW_NOTA = "insert into calificaciones (dni, CodAsignatura, nota) VALUES ('";
