@@ -116,6 +116,7 @@ public class GestorAlojamiento {
 		return ret;
 	}
 
+
 	public Alojamiento getAlojamientoPorCodigoDormitorio(String codigo) {
 
 		Alojamiento ret = null;

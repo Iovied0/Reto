@@ -28,6 +28,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Pais;
+import agenciaViajes.bbdd.pojos.TipoDormitorio;
 import agenciaViajes.bbdd.pojos.TipoViaje;
 import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
@@ -65,19 +66,19 @@ public class NuevoAlojamiento {
 		nombreEventoField.setBounds(175, 100, 150, 25);
 		panel.add(nombreEventoField);
 
-		// Tipo de habitación
-		JLabel tipoHabitacionLabel = new JLabel("Tipo de habitación:");
-		tipoHabitacionLabel.setBounds(30, 180, 150, 25);
-		panel.add(tipoHabitacionLabel);
+		 // Tipo de habitación
+        JLabel tipoHabitacionLabel = new JLabel("Tipo de habitación:");
+        tipoHabitacionLabel.setBounds(30, 180, 150, 25);
+        panel.add(tipoHabitacionLabel);
 
-		JComboBox<String> tipoHabitacion = new JComboBox<>();
-		ArrayList<Viaje> tipoHabitacionComboBox = controlador.getViajes();
-		for (Viaje viaje : viajes) {
-			comboViaje.addItem(viaje.getNombreViaje());
-		}
-		comboViaje.setBounds(175, 180, 150, 25);
-		panel.add(comboViaje);
-		
+        JComboBox<String> tipoDormitorioComboBox = new JComboBox<>();
+        ArrayList<TipoDormitorio> tipoDormitorios = controlador.getTipoDormitorio();
+        for (TipoDormitorio tipoDormitorio : tipoDormitorios) {
+            tipoDormitorioComboBox.addItem(tipoDormitorio.getDescripcion());
+        }
+        tipoDormitorioComboBox.setBounds(175, 180, 150, 25);
+        panel.add(tipoDormitorioComboBox);
+
 		// Ciudad
 		JLabel ciudadLabel = new JLabel("Ciudad:");
 		ciudadLabel.setBounds(30, 220, 150, 25);
@@ -128,16 +129,15 @@ public class NuevoAlojamiento {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TipoHabitacion tipoHabitacion = tipoHabitacionComboBox.get(tipoHabitacion.getSelectedIndex());
 				
 				java.util.Date fechaUtil = modelInicio.getValue();
 				Date fechaSql = new Date(fechaUtil.getTime());
 
-				controlador.insertAlojamiento(nombreEventoField.getText(), tipoHabitacionComboBox.get(0),
-						ciudadField.getText(), textPrecio.getText(), modelInicio.getValue(), modelFin.getValue(),
-						frame);
-				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
-						JOptionPane.INFORMATION_MESSAGE);
+//				controlador.insertAlojamiento(nombreEventoField.getText(), tipoDormitorioComboBox.getSelectedItem().toString(),
+//						ciudadField.getText(), textPrecio.getText(), modelInicio.getValue(), modelFin.getValue(),
+//						frame);
+//				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
+//						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 

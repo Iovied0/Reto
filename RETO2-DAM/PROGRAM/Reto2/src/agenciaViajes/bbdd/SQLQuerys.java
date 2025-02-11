@@ -64,6 +64,10 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_DESCRIPCION = "select * from tipoviaje where descripcion = ?";
 
 	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_CODIGO = "select * from tipoviaje where codigo = ?";
+	
+	public static final String SELECT_TODOS_TIPOS_DORMITORIO = "select * from tipodormitorio";
+
+	
 
 	// INSERTS
 

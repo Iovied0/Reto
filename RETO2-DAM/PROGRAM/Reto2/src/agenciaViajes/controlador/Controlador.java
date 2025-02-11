@@ -54,14 +54,13 @@ public class Controlador {
 		ret = gestorViajes.getViajesPorIdAgencia(agencia);
 		return ret;
 	}
-	
+
 	public ArrayList<Viaje> getViajes() {
 		ArrayList<Viaje> ret = null;
 		GestorViajes gestorViajes = new GestorViajes();
 		ret = gestorViajes.getViajes();
 		return ret;
 	}
-
 
 	public Viaje getViajePorId(int id) {
 		Viaje ret = null;
@@ -207,8 +206,9 @@ public class Controlador {
 		gestorActividad.deleteActividadPorNombre(nombre);
 		frame.gotoViajes();
 	}
-	
-	public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje, ViajesErrekamari frame) {
+
+	public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje,
+			ViajesErrekamari frame) {
 		GestorActividad gestorActividad = new GestorActividad();
 		gestorActividad.insertActividad(nombre, descripcion, fecha, precio, id_viaje);
 		frame.gotoViajes();
@@ -258,7 +258,7 @@ public class Controlador {
 		gestorAlojamiento.deleteAlojamientoPorId(id);
 		frame.gotoViajes();
 	}
-	
+
 	public void insertAlojamiento(int id, String nombre_hotel, Date fecha_entrada, Date fecha_salida, String precio,
 			int id_viaje, int id_ciudad, char tipo_dormitorio, ViajesErrekamari frame) {
 		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
@@ -318,6 +318,13 @@ public class Controlador {
 		GestorTipoDormitorio gestorTipoDormitorio = new GestorTipoDormitorio();
 		ret = gestorTipoDormitorio.getTipoDormitorioPorCodigo(codigo);
 
+		return ret;
+	}
+
+	public ArrayList<TipoDormitorio> getTipoDormitorio() {
+		ArrayList<TipoDormitorio> ret = null;
+		GestorTipoDormitorio gestorTipoDormitorio = new GestorTipoDormitorio();
+		ret = gestorTipoDormitorio.getTipoDormitorio();
 		return ret;
 	}
 

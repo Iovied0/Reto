@@ -5,7 +5,7 @@ public class DBUtils {
 
 	// La URL donde esta la Base de Datos. Se descompone en:
 	// driver : bbd : // IP : Puerto / Schema
-	public static final String URL = "jdbc:mysql://localhost:3306/reto2_g2_dam1"; //mi puerto en casa es el 3306, cambiar si es necesario
+	public static final String URL = "jdbc:mysql://localhost:3307/reto2_g2_dam1"; //mi puerto en casa es el 3306, cambiar si es necesario
 
 	// El Driver que vamos a usar
 	public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
