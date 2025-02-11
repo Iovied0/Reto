@@ -109,7 +109,6 @@ public class NuevaActividad {
 				java.util.Date fechaUtil = modelInicio.getValue();
 				Date fechaSql = new Date(fechaUtil.getTime());
 
-				
 				controlador.insertActividad(textNombre.getText(), textDescripcion.getText(), fechaSql,
 						textPrecio.getText(), viaje.getId(), frame);
 				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
