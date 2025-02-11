@@ -2,6 +2,8 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Aerolineas;
 import agenciaViajes.bbdd.pojos.Aeropuerto;
+import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 
 public class NuevoVuelo {
@@ -148,15 +151,25 @@ public class NuevoVuelo {
 		lblViaje.setBounds(33, 110, 150, 25);
 		panel.add(lblViaje);
 		
-		JComboBox<String> trayectoCombo_1 = new JComboBox<String>();
-		trayectoCombo_1.setBackground(Color.WHITE);
-		trayectoCombo_1.setBounds(178, 109, 150, 27);
-		panel.add(trayectoCombo_1);
+		JComboBox<String> comboViaje = new JComboBox<>();
+		ArrayList<Viaje> viajes = controlador.getViajes();
+		for (Viaje viaje : viajes) {
+			comboViaje.addItem(viaje.getNombreViaje());
+		}
+		comboViaje.setBounds(178, 109, 150, 27);
+		panel.add(comboViaje);
+
 		
-		JButton btnGuardar = new JButton("New button");
-		btnGuardar.setBounds(195, 810, 89, 23);
-		panel.add(btnGuardar);
-		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(195, 810, 89, 23);
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Boton de cancelar que lleve a donde haga falta
+				frame.gotoViajes();
+			}
+		});
+		panel.add(btnCancelar);
 		
 		
 		

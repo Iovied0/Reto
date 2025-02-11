@@ -28,6 +28,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Pais;
 import agenciaViajes.bbdd.pojos.TipoViaje;
+import agenciaViajes.bbdd.pojos.Viaje;
 import agenciaViajes.controlador.Controlador;
 
 public class NuevoViaje {
@@ -51,10 +52,14 @@ public class NuevoViaje {
         labelNombre.setBounds(30, 100, 150, 25);
         panel.add(labelNombre);
 
-        JTextField textNombre = new JTextField();
-        textNombre.setBounds(175, 100, 150, 25);
-        panel.add(textNombre);
-
+		JComboBox<String> comboViaje = new JComboBox<>();
+		ArrayList<Viaje> viajes = controlador.getViajes();
+		for (Viaje viaje : viajes) {
+			comboViaje.addItem(viaje.getNombreViaje());
+		}
+		comboViaje.setBounds(175, 100, 150, 25);
+		panel.add(comboViaje);
+		
         JLabel labelDescripcion = new JLabel("Descripción del viaje");
         labelDescripcion.setBounds(30, 140, 150, 25);
         panel.add(labelDescripcion);

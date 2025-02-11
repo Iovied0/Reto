@@ -142,6 +142,17 @@ public class NuevoAlojamiento {
 		});
 
 		panel.add(btnConfirmar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(195, 810, 89, 23);
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Boton de cancelar que lleve a donde haga falta
+				frame.gotoViajes();
+			}
+		});
+		panel.add(btnCancelar);
 	}
 
 	public JPanel getPanel() {
