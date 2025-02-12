@@ -1,5 +1,6 @@
 package agenciaViajes.vista.paneles;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,40 +34,44 @@ public class NuevaActividad {
 		panel = new JPanel();
 		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
-
 		Controlador controlador = Controlador.getInstanceControlador();
 
 		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DE LA NUEVA ACTIVIDAD");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(30, 50, 150, 25);
+		labelTitulo.setBounds(25, 40, 600, 35);
 		panel.add(labelTitulo);
 
-		JComboBox<String> comboViaje = new JComboBox<>();
-		ArrayList<Viaje> viajes = controlador.getViajes();
+		JLabel lblViaje = new JLabel("Seleccione Viaje");
+		lblViaje.setBounds(33, 110, 150, 25);
+		panel.add(lblViaje);
+
+		JComboBox<String> comboViaje = new JComboBox<String>();
+		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(controlador.getInstanceAgencia());
 		for (Viaje viaje : viajes) {
 			comboViaje.addItem(viaje.getNombreViaje());
 		}
-		comboViaje.setBounds(175, 50, 150, 25);
+		comboViaje.setBackground(Color.WHITE);
+		comboViaje.setBounds(178, 109, 150, 27);
 		panel.add(comboViaje);
 
 		JLabel labelTrayecto = new JLabel("Nombre de actividad");
-		labelTrayecto.setBounds(30, 100, 150, 25);
+		labelTrayecto.setBounds(33, 179, 150, 25);
 		panel.add(labelTrayecto);
 
 		JTextField textNombre = new JTextField();
-		textNombre.setBounds(175, 100, 150, 25);
+		textNombre.setBounds(178, 178, 150, 27);
 		panel.add(textNombre);
 
 		JLabel labelDescripcion = new JLabel("<html>Descripción de la <br/> actividad</html>");
-		labelDescripcion.setBounds(30, 150, 150, 25);
+		labelDescripcion.setBounds(33, 245, 150, 25);
 		panel.add(labelDescripcion);
 
 		JTextArea textDescripcion = new JTextArea();
-		textDescripcion.setBounds(175, 140, 400, 100);
+		textDescripcion.setBounds(178, 245, 250, 100);
 		panel.add(textDescripcion);
 
 		JLabel labelFechaInicio = new JLabel("Fecha del evento");
-		labelFechaInicio.setBounds(30, 260, 150, 25);
+		labelFechaInicio.setBounds(33, 368, 150, 25);
 		panel.add(labelFechaInicio);
 
 		UtilDateModel modelInicio = new UtilDateModel();
@@ -76,11 +81,11 @@ public class NuevaActividad {
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanelInicio = new JDatePanelImpl(modelInicio, p);
 		JDatePickerImpl datePickerInicio = new JDatePickerImpl(datePanelInicio, new DateLabelFormatter());
-		datePickerInicio.setBounds(175, 260, 150, 25);
+		datePickerInicio.setBounds(178, 366, 150, 27);
 		panel.add(datePickerInicio);
 
 		JLabel labelPrecio = new JLabel("Precio");
-		labelPrecio.setBounds(30, 300, 150, 25);
+		labelPrecio.setBounds(33, 421, 150, 25);
 		panel.add(labelPrecio);
 
 		JTextField textPrecio = new JTextField();
@@ -96,11 +101,11 @@ public class NuevaActividad {
 					e.consume();
 			}
 		});
-		textPrecio.setBounds(175, 300, 150, 25);
+		textPrecio.setBounds(178, 421, 150, 25);
 		panel.add(textPrecio);
 
-		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setBounds(120, 400, 150, 25);
+		JButton btnConfirmar = new JButton("GUARDAR");
+		btnConfirmar.setBounds(310, 810, 118, 23);
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -109,16 +114,24 @@ public class NuevaActividad {
 				java.util.Date fechaUtil = modelInicio.getValue();
 				Date fechaSql = new Date(fechaUtil.getTime());
 
-				controlador.insertActividad(textNombre.getText(), textDescripcion.getText(), fechaSql,
-						textPrecio.getText(), viaje.getId(), frame);
+				// Convertir precio a double
+				double precio = Double.parseDouble(textPrecio.getText());
+				
+				controlador.insertActividad(
+						textNombre.getText(), 
+						textDescripcion.getText(), 
+						fechaSql,
+						precio,
+						viaje.getId(),
+						frame);
 				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		panel.add(btnConfirmar);
 
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(400, 400, 150, 25);
+		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setBounds(609, 810, 118, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

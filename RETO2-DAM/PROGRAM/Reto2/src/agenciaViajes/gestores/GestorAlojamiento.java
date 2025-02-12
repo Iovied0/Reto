@@ -14,7 +14,7 @@ import agenciaViajes.controlador.Controlador;
 
 public class GestorAlojamiento {
 
-	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada , Date fecha_salida, String precio, int id_viaje, int id_ciudad, String tipo_dormitorio) {
+	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada , Date fecha_salida, Double precio, int id_viaje, int id_ciudad, String tipo_dormitorio) {
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -26,7 +26,7 @@ public class GestorAlojamiento {
             statement.setString(1, nombre_hotel);
             statement.setDate(2, fecha_entrada);
             statement.setDate(3, fecha_salida);
-            statement.setString(4, precio);
+            statement.setDouble(4, precio);
             statement.setInt(5, id_viaje);
             statement.setInt(6, id_ciudad);
             statement.setString(7, tipo_dormitorio);

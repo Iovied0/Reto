@@ -1,8 +1,12 @@
 package agenciaViajes.vista.paneles;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +27,6 @@ import org.jdatepicker.impl.UtilDateModel;
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.controlador.Controlador;
-import java.awt.SystemColor;
-import java.sql.Date;
 
 public class NuevoAlojamiento {
 	JPanel panel;
@@ -37,29 +39,34 @@ public class NuevoAlojamiento {
 
 		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO ALOJAMIENTO");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(25, 20, 700, 25);
+		labelTitulo.setBounds(25, 40, 600, 35);
 		panel.add(labelTitulo);
 
-		JComboBox<String> comboViaje = new JComboBox<>();
-		ArrayList<Viaje> viajes = controlador.getViajes();
+		JLabel lblViaje = new JLabel("Seleccione Viaje");
+		lblViaje.setBounds(33, 110, 150, 25);
+		panel.add(lblViaje);
+
+		JComboBox<String> comboViaje = new JComboBox<String>();
+		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(controlador.getInstanceAgencia());
 		for (Viaje viaje : viajes) {
 			comboViaje.addItem(viaje.getNombreViaje());
 		}
-		comboViaje.setBounds(175, 50, 150, 25);
+		comboViaje.setBackground(Color.WHITE);
+		comboViaje.setBounds(178, 109, 150, 27);
 		panel.add(comboViaje);
 
 		// Nombre del evento
 		JLabel nombreHotelLabel = new JLabel("Nombre evento: ");
-		nombreHotelLabel.setBounds(30, 100, 150, 25);
+		nombreHotelLabel.setBounds(33, 179, 150, 25);
 		panel.add(nombreHotelLabel);
 
 		JTextField nombreHotelField = new JTextField();
-		nombreHotelField.setBounds(175, 100, 150, 25);
+		nombreHotelField.setBounds(178, 178, 150, 27);
 		panel.add(nombreHotelField);
 
 		// Tipo de habitación
 		JLabel tipoHabitacionLabel = new JLabel("Tipo de habitación:");
-		tipoHabitacionLabel.setBounds(30, 180, 150, 25);
+		tipoHabitacionLabel.setBounds(33, 245, 150, 25);
 		panel.add(tipoHabitacionLabel);
 
 		JComboBox<String> tipoDormitorioComboBox = new JComboBox<>();
@@ -70,12 +77,12 @@ public class NuevoAlojamiento {
 		    String item = tipoDormitorio.getCodigo() + " - " + tipoDormitorio.getDescripcion();
 		    tipoDormitorioComboBox.addItem(item); 
 		}
-		tipoDormitorioComboBox.setBounds(175, 180, 150, 25);
+		tipoDormitorioComboBox.setBounds(178, 245, 250, 25);
 		panel.add(tipoDormitorioComboBox);
 
 		// Ciudad
 		JLabel ciudadLabel = new JLabel("Ciudad:");
-		ciudadLabel.setBounds(30, 220, 150, 25);
+		ciudadLabel.setBounds(33, 316, 150, 25);
 		panel.add(ciudadLabel);
 
 		JComboBox<String> ciudadComboBox = new JComboBox<>();
@@ -83,21 +90,33 @@ public class NuevoAlojamiento {
 		for (Ciudad ciudad : ciudades) {
 			ciudadComboBox.addItem(ciudad.getNombre());
 		}
-		ciudadComboBox.setBounds(175, 220, 150, 25);
+		ciudadComboBox.setBounds(178, 316, 250, 25);
 		panel.add(ciudadComboBox);
 
 		// Precio
 		JLabel labelPrecio = new JLabel("Precio");
-		labelPrecio.setBounds(30, 260, 150, 25);
+		labelPrecio.setBounds(33, 368, 150, 25);
 		panel.add(labelPrecio);
 
 		JTextField textPrecio = new JTextField();
-		textPrecio.setBounds(175, 260, 150, 25);
-		panel.add(textPrecio);
+		textPrecio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
 
+				boolean numeroValido = key >= '0' && key <= '9';
+				boolean punto = key == '.';
+
+				if (!(numeroValido || punto))
+					e.consume();
+			}
+		});
+		textPrecio.setBounds(178, 366, 150, 27);
+		panel.add(textPrecio);
+		
 		// Fecha entrada
 		JLabel labelFechaInicio = new JLabel("Fecha de entrada");
-		labelFechaInicio.setBounds(30, 300, 150, 25);
+		labelFechaInicio.setBounds(33, 421, 150, 25);
 		panel.add(labelFechaInicio);
 
 		UtilDateModel modelInicio = new UtilDateModel();
@@ -107,23 +126,22 @@ public class NuevoAlojamiento {
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanelInicio = new JDatePanelImpl(modelInicio, p);
 		JDatePickerImpl datePickerInicio = new JDatePickerImpl(datePanelInicio, new DateLabelFormatter());
-		datePickerInicio.setBounds(175, 300, 150, 25);
+		datePickerInicio.setBounds(178, 421, 150, 25);
 		panel.add(datePickerInicio);
 
 		// Fecha salida
 		JLabel labelFechaFin = new JLabel("Fecha salida");
-		labelFechaFin.setBounds(30, 340, 150, 25);
+		labelFechaFin.setBounds(33, 479, 150, 25);
 		panel.add(labelFechaFin);
 
 		UtilDateModel modelFin = new UtilDateModel();
 		JDatePanelImpl datePanelFin = new JDatePanelImpl(modelFin, p);
 		JDatePickerImpl datePickerFin = new JDatePickerImpl(datePanelFin, new DateLabelFormatter());
-		datePickerFin.setBounds(175, 340, 150, 25);
+		datePickerFin.setBounds(178, 479, 250, 25);
 		panel.add(datePickerFin);
 
-		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setBackground(SystemColor.activeCaption);
-		btnConfirmar.setBounds(175, 400, 150, 25);
+		JButton btnConfirmar = new JButton("GUARDAR");
+		btnConfirmar.setBounds(310, 810, 118, 23);
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,16 +161,19 @@ public class NuevoAlojamiento {
 		        
 		        // Convertir fechas
 				java.util.Date fechaUtil = modelInicio.getValue();
-				Date fechaSql = new Date(fechaUtil.getTime());
+				Date fechaSql1 = new Date(fechaUtil.getTime());
 
 				java.util.Date fechaUtil2 = modelFin.getValue();
 				Date fechaSql2 = new Date(fechaUtil2.getTime());
 
+				//	Convertir string a double
+				Double precio = Double.parseDouble(textPrecio.getText());
+				
 				controlador.insertAlojamiento(
 						nombreHotelField.getText(), 
-						fechaSql, 
+						fechaSql1, 
 						fechaSql2, 
-						textPrecio.getText(),
+						precio,
 						idViaje,
 						idCiudad, 
 						codigoTipoDormitorio, 
@@ -164,8 +185,8 @@ public class NuevoAlojamiento {
 
 		panel.add(btnConfirmar);
 
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(195, 810, 89, 23);
+		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setBounds(609, 810, 118, 23);
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
+import java.sql.Time;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,26 +38,25 @@ public class NuevoVuelo {
 		panel = new JPanel();
 		panel.setBounds(0, 0, 1300, 900);
 		panel.setLayout(null);
-
 		Controlador controlador = Controlador.getInstanceControlador();
+
+		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO VUELO");
+		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
+		labelTitulo.setBounds(25, 40, 600, 35);
+		panel.add(labelTitulo);
 
 		JLabel lblViaje = new JLabel("Seleccione Viaje");
 		lblViaje.setBounds(33, 110, 150, 25);
 		panel.add(lblViaje);
 
-		JComboBox<String> viajesCombo = new JComboBox<String>();
+		JComboBox<String> comboViaje = new JComboBox<String>();
 		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(controlador.getInstanceAgencia());
 		for (Viaje viaje : viajes) {
-			viajesCombo.addItem(viaje.getNombreViaje());
+			comboViaje.addItem(viaje.getNombreViaje());
 		}
-		viajesCombo.setBackground(Color.WHITE);
-		viajesCombo.setBounds(178, 109, 150, 27);
-		panel.add(viajesCombo);
-
-		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO VUELO");
-		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(15, 20, 600, 25);
-		panel.add(labelTitulo);
+		comboViaje.setBackground(Color.WHITE);
+		comboViaje.setBounds(178, 109, 150, 27);
+		panel.add(comboViaje);
 
 		JLabel labelTrayecto = new JLabel("Trayecto");
 		labelTrayecto.setBounds(33, 179, 150, 25);
@@ -82,11 +83,11 @@ public class NuevoVuelo {
 		panel.add(AeropuertoOrigenCombo);
 
 //		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
-//		String seleccionado = (String) AeropuertoOrigenCombo.getSelectedItem();
-//
-//        // Usar una expresión regular para extraer el código entre paréntesis
-//        String codigo = seleccionado.replaceAll(".*\\((\\w{3})\\)$", "$1");
-//        System.out.println(codigo);
+		String seleccionadoOrigen = (String) AeropuertoOrigenCombo.getSelectedItem();
+
+        // Usar una expresión regular para extraer el código entre paréntesis
+        String codigoOrigen= seleccionadoOrigen.replaceAll(".*\\((\\w{3})\\)$", "$1");
+        System.out.println(codigoOrigen);
 
 		JLabel AeropuertoDestino = new JLabel("Aeropuerto Destino");
 		AeropuertoDestino.setBounds(33, 316, 150, 25);
@@ -101,6 +102,12 @@ public class NuevoVuelo {
 		AeropuertoDestinoCombo.setBounds(178, 316, 250, 25);
 		panel.add(AeropuertoDestinoCombo);
 
+//		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
+		String seleccionadoDestino = (String) AeropuertoDestinoCombo.getSelectedItem();
+
+        String codigoDestino= seleccionadoDestino.replaceAll(".*\\((\\w{3})\\)$", "$1");
+        System.out.println(codigoDestino);
+        
 		JLabel labelFechaInicio = new JLabel("Fecha Ida");
 		labelFechaInicio.setBounds(33, 368, 150, 25);
 		panel.add(labelFechaInicio);
@@ -358,6 +365,10 @@ public class NuevoVuelo {
 		panel.add(labelAerolineaVuelta);
 
 		JComboBox<String> comboAerolineasVuelta = new JComboBox<String>();
+		ArrayList<Aerolineas> AerolineasVuelta = controlador.getAerolineas();
+		for (Aerolineas aerolineas : AerolineasVuelta) {
+			comboAerolineasVuelta.addItem(aerolineas.getNombre());
+		}
 		comboAerolineasVuelta.setBackground(Color.WHITE);
 		comboAerolineasVuelta.setBounds(693, 479, 250, 25);
 		comboAerolineasVuelta.setVisible(false);
@@ -503,6 +514,92 @@ public class NuevoVuelo {
 		btnGuardar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+		        // Obtener el viaje seleccionado
+		        Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
+		        int idViaje = viajeSeleccionado.getId();
+		        		       
+		        // Convertir fechas
+				java.util.Date fechaUtil = modelIda.getValue();
+				Date fechaIda = new Date(fechaUtil.getTime());
+
+
+				
+				// Convertir hora salida y duracion
+				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+				java.util.Date date1 = null;
+				java.util.Date date2 = null;
+
+				try {
+					date1 = timeFormat.parse(txtHorarioSalidaIda.getText());
+					date2 = timeFormat.parse(txtDuracionIda.getText());
+
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				Time horaSalida = new Time(date1.getTime());				
+				Time duracion = new Time(date2.getTime());
+				
+
+
+				//Aeroline
+				Aerolineas aerolineaIda = AerolineasIda.get(comboAerolineasIda.getSelectedIndex());
+
+                
+				if (trayectoCombo.getSelectedIndex() == 0) {
+					//Precio
+					double precio = Double.parseDouble(txtPrecio.getText());
+					
+			        controlador.insertVuelo(//Vuelo de ida
+			        		trayectoCombo.getSelectedItem().toString(),
+			        		txtCodigoVueloIda.getText(),
+			        		fechaIda,
+			        		horaSalida, 
+			        		duracion, 
+			        		aerolineaIda.getCodigo(),
+			        		codigoOrigen,
+			        		codigoDestino,
+			        		idViaje, 
+			        		precio, 
+			        		null,
+			        		frame);
+				} else {
+					java.util.Date fechaUtil2 = modelVuelta.getValue();
+					Date fechaVuelta = new Date(fechaUtil2.getTime());
+										
+					double precioTotal = Double.parseDouble(txtPrecioTotal.getText());
+	                double precioMitad = precioTotal / 2;
+	                
+	                Aerolineas aerolineaVuelta = AerolineasVuelta.get(comboAerolineasVuelta.getSelectedIndex());
+	                
+			        controlador.insertVuelo(//Vuelo de ida
+			        		"IDA",
+			        		txtCodigoVueloIda.getText(),
+			        		fechaIda,
+			        		horaSalida, 
+			        		duracion, 
+			        		aerolineaIda.getCodigo(),
+			        		codigoOrigen,
+			        		codigoDestino,
+			        		idViaje, 
+			        		precioMitad, 
+			        		null,
+			        		frame);
+					controlador.insertVuelo(//Vuelo de vuelta
+							"VUELTA",
+							txtCodigoVueloVuelta.getText(),
+							fechaVuelta,
+							horaSalida,
+							duracion,
+							aerolineaVuelta.getCodigo(),
+							codigoDestino,
+			        		codigoOrigen,
+							idViaje,
+							precioTotal,
+			        		txtCodigoVueloIda.getText(),
+							frame);
+				}
 
 			}
 		});

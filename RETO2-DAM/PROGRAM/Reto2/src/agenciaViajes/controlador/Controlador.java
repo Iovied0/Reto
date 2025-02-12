@@ -1,6 +1,7 @@
 package agenciaViajes.controlador;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import agenciaViajes.ViajesErrekamari;
@@ -207,7 +208,7 @@ public class Controlador {
 		frame.gotoViajes();
 	}
 
-	public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje,
+	public void insertActividad(String nombre, String descripcion, Date fecha, Double precio, int id_viaje,
 			ViajesErrekamari frame) {
 		GestorActividad gestorActividad = new GestorActividad();
 		gestorActividad.insertActividad(nombre, descripcion, fecha, precio, id_viaje);
@@ -230,6 +231,15 @@ public class Controlador {
 	public void deleteVueloPorNombre(String codigo, ViajesErrekamari frame) {
 		GestorVuelos gestorVuelos = new GestorVuelos();
 		gestorVuelos.deleteVueloPorCodigo(codigo);
+		frame.gotoViajes();
+	}
+
+	public void insertVuelo(String tipo_vuelo, String codigo_vuelo, Date fecha, Time hora_salida, Time duracion,
+			String aerolinea, String aeropuerto_origen, String aeropuerto_destino, int id_viaje, Double precio,
+			String codigo_asociado, ViajesErrekamari frame) {
+		GestorVuelos gestorVuelos = new GestorVuelos();
+		gestorVuelos.insertVuelos(tipo_vuelo, codigo_vuelo, fecha, hora_salida, duracion, aerolinea,
+				aeropuerto_origen, aeropuerto_destino, id_viaje, precio, codigo_asociado);
 		frame.gotoViajes();
 	}
 
@@ -259,7 +269,7 @@ public class Controlador {
 		frame.gotoViajes();
 	}
 
-	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada, Date fecha_salida, String precio,
+	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada, Date fecha_salida, Double precio,
 			int id_viaje, int id_ciudad, String tipo_dormitorio, ViajesErrekamari frame) {
 		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
 		gestorAlojamiento.insertAlojamiento(nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad,
@@ -311,13 +321,13 @@ public class Controlador {
 		ret = gestorCiudad.getCiudadPorId(id);
 		return ret;
 	}
-	
-    public ArrayList<Ciudad> getCiudades() {
-        ArrayList<Ciudad> ret = null;
-        GestorCiudad gestorCiudad = new GestorCiudad();
-        ret = gestorCiudad.getCiudades();
-        return ret;
-    }
+
+	public ArrayList<Ciudad> getCiudades() {
+		ArrayList<Ciudad> ret = null;
+		GestorCiudad gestorCiudad = new GestorCiudad();
+		ret = gestorCiudad.getCiudades();
+		return ret;
+	}
 
 //////////////////////////// FUNCIONES GESTOR TIPO DORMITORIO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public TipoDormitorio getTipoDormitorioPorCodigo(String codigo) {

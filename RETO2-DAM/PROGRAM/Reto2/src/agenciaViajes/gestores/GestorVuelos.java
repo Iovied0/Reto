@@ -1,12 +1,15 @@
 package agenciaViajes.gestores;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 
+import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.controlador.Controlador;
@@ -16,6 +19,44 @@ import agenciaViajes.controlador.Controlador;
  */
 public class GestorVuelos {
 
+	
+	public void insertVuelos(String tipo_vuelo, String codigo_vuelo, Date fecha, Time hora_salida, Time duracion,
+			String aerolinea, String aeropuerto_origen, String aeropuerto_destino, int id_viaje, Double precio,
+			String codigo_asociado) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            Class.forName(DBUtils.DRIVER);
+            connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+            statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_VUELO);
+            statement.setString(1, tipo_vuelo);
+            statement.setString(2, codigo_vuelo);
+            statement.setDate(3, fecha);
+            statement.setTime(4, hora_salida);
+            statement.setTime(5, duracion);
+            statement.setString(6, aerolinea);
+            statement.setString(7, aeropuerto_origen);
+            statement.setString(8, aeropuerto_destino);
+            statement.setInt(9, id_viaje);
+            statement.setDouble(10, precio);
+            statement.setString(11, codigo_asociado);
+            statement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.out.println("Error con la BBDD - " + sqle.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error generico - " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (Exception e) {
+                // No hace falta manejarlo
+            }
+        }
+    }
 	/**
 	 * Recoge todos los vuelos asignados a un id_viaje
 	 * 

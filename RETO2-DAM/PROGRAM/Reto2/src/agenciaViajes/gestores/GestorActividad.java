@@ -16,7 +16,7 @@ import agenciaViajes.bbdd.pojos.*;
  */
 public class GestorActividad {
 
-	 public void insertActividad(String nombre, String descripcion, Date fecha, String precio, int id_viaje) {
+	 public void insertActividad(String nombre, String descripcion, Date fecha, Double precio, int id_viaje) {
 	        Connection connection = null;
 	        PreparedStatement statement = null;
 
@@ -28,7 +28,7 @@ public class GestorActividad {
 	            statement.setString(1, nombre);
 	            statement.setString(2, descripcion);
 	            statement.setDate(3, fecha);
-	            statement.setString(4, precio);
+	            statement.setDouble(4, precio);
 	            statement.setInt(5, id_viaje);
 	            statement.executeUpdate();
 

@@ -1,5 +1,7 @@
 package agenciaViajes.bbdd;
 
+import java.sql.Date;
+
 /**
  * Esta clase contiene las sentencias SQL del proyecto
  */
@@ -13,7 +15,7 @@ public class SQLQuerys {
 
 	public static final String SELECT_TODOS_AEROLINEAS_WHERE_CODIGO = "SELECT * FROM aerolineas WHERE codigo = ?";
 	
-	public static final String SELECT_NOMBRES_AEROLINEAS = "SELECT nombre FROM aerolineas";
+	public static final String SELECT_TODOS_AEROLINEAS = "SELECT * FROM aerolineas";
 
 	public static final String SELECT_TODOS_AEROPUERTO_WHERE_CODIGO = "SELECT * FROM aeropuerto WHERE codigo = ?";
 
@@ -77,6 +79,8 @@ public class SQLQuerys {
 	
 	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO Alojamiento (nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	
+	public static final String INSERT_NEW_VUELO = "INSERT INTO Vuelo (tipo_vuelo, codigo_vuelo, fecha, hora_salida, duracion, aerolinea, aeropuerto_origen, aeropuerto_destino, id_viaje, precio_total, codigo_asociado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";

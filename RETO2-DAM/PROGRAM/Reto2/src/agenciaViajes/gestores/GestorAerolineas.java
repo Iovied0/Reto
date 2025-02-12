@@ -81,7 +81,7 @@ public class GestorAerolineas {
 		try {
 			Class.forName(DBUtils.DRIVER);
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_NOMBRES_AEROLINEAS);
+			preparedStatement = connection.prepareStatement(SQLQuerys.SELECT_TODOS_AEROLINEAS);
 			// Enlaza cada ? de SQLQuerys con los parametros que se pasan
 			resultSet = preparedStatement.executeQuery();
 
@@ -89,7 +89,11 @@ public class GestorAerolineas {
 				if (null == ret)
 					ret = new ArrayList<Aerolineas>();
 				Aerolineas aerolineas = new Aerolineas();
+				aerolineas.setCodigo(resultSet.getString("codigo"));
 				aerolineas.setNombre(resultSet.getString("nombre"));
+				Controlador controlador = Controlador.getInstanceControlador();
+				Pais pais = controlador.getPaisPorCodigo(resultSet.getString("pais"));
+				aerolineas.setPais(pais);
 				ret.add(aerolineas);
 
 			}
