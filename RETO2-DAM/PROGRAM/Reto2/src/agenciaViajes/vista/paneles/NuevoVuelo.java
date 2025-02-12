@@ -1,9 +1,13 @@
 package agenciaViajes.vista.paneles;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
@@ -26,8 +31,6 @@ import agenciaViajes.controlador.Controlador;
 
 public class NuevoVuelo {
 	JPanel panel;
-	private JTextField txtHorarioSalidaIda;
-	private JTextField textField;
 
 	public NuevoVuelo(ArrayList<JPanel> paneles, ViajesErrekamari frame) {
 		panel = new JPanel();
@@ -35,6 +38,19 @@ public class NuevoVuelo {
 		panel.setLayout(null);
 
 		Controlador controlador = Controlador.getInstanceControlador();
+
+		JLabel lblViaje = new JLabel("Seleccione Viaje");
+		lblViaje.setBounds(33, 110, 150, 25);
+		panel.add(lblViaje);
+
+		JComboBox<String> viajesCombo = new JComboBox<String>();
+		ArrayList<Viaje> viajes = controlador.getViajesPorIdAgencia(controlador.getInstanceAgencia());
+		for (Viaje viaje : viajes) {
+			viajesCombo.addItem(viaje.getNombreViaje());
+		}
+		viajesCombo.setBackground(Color.WHITE);
+		viajesCombo.setBounds(178, 109, 150, 27);
+		panel.add(viajesCombo);
 
 		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO VUELO");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
@@ -64,6 +80,13 @@ public class NuevoVuelo {
 		AeropuertoOrigenCombo.setBackground(Color.white);
 		AeropuertoOrigenCombo.setBounds(178, 245, 250, 25);
 		panel.add(AeropuertoOrigenCombo);
+
+//		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
+//		String seleccionado = (String) AeropuertoOrigenCombo.getSelectedItem();
+//
+//        // Usar una expresión regular para extraer el código entre paréntesis
+//        String codigo = seleccionado.replaceAll(".*\\((\\w{3})\\)$", "$1");
+//        System.out.println(codigo);
 
 		JLabel AeropuertoDestino = new JLabel("Aeropuerto Destino");
 		AeropuertoDestino.setBounds(33, 316, 150, 25);
@@ -98,20 +121,10 @@ public class NuevoVuelo {
 		JTextField txtCodigoVueloIda = new JTextField();
 		txtCodigoVueloIda.setBounds(178, 421, 150, 25);
 		panel.add(txtCodigoVueloIda);
-//		JLabel labelFechaFin = new JLabel("Fecha de fin");
-//		labelFechaFin.setBounds(30, 300, 150, 25);
-//		panel.add(labelFechaFin);
-//
-//		UtilDateModel modelFin = new UtilDateModel();
-//		JDatePanelImpl datePanelFin = new JDatePanelImpl(modelFin, p);
-//		JDatePickerImpl datePickerFin = new JDatePickerImpl(datePanelFin, new DateLabelFormatter());
-//		datePickerFin.setBounds(175, 300, 150, 25);
-//		panel.add(datePickerFin);
 
 		JLabel labelAerolinea = new JLabel("Aerolinea");
 		labelAerolinea.setBounds(33, 479, 150, 25);
 		panel.add(labelAerolinea);
-
 		JComboBox<String> comboAerolineasIda = new JComboBox<String>();
 		ArrayList<Aerolineas> AerolineasIda = controlador.getAerolineas();
 		for (Aerolineas aerolineas : AerolineasIda) {
@@ -120,130 +133,433 @@ public class NuevoVuelo {
 		comboAerolineasIda.setBackground(Color.white);
 		comboAerolineasIda.setBounds(178, 479, 250, 25);
 		panel.add(comboAerolineasIda);
-		
+
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setBounds(33, 532, 150, 25);
 		panel.add(lblPrecio);
-		
+
 		JTextField txtPrecio = new JTextField();
+		txtPrecio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char key = e.getKeyChar();
+
+				boolean numeroValido = key >= '0' && key <= '9';
+				boolean punto = key == '.';
+
+				if (!(numeroValido || punto)) {
+					e.consume();
+					return;
+				}
+				// evita que se pueda meter mas de un punto
+				if (punto && txtPrecio.getText().contains(".")) {
+					e.consume();
+				}
+			}
+		});
+
 		txtPrecio.setBounds(178, 532, 150, 25);
 		panel.add(txtPrecio);
-		
+
 		// AÑADIR EL FILTRO PARA QUE SOLO PUEDA METER NUMEROS O PUNTO
-		
+
 		JLabel lblHorarioSalidaIda = new JLabel("Horario Salida");
 		lblHorarioSalidaIda.setBounds(33, 593, 150, 25);
 		panel.add(lblHorarioSalidaIda);
-		
-		txtHorarioSalidaIda = new JTextField();
+
+		JTextField txtHorarioSalidaIda = new JTextField();
+		txtHorarioSalidaIda.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtHorarioSalidaIda.getText();
+
+				// Longitud máxima de 5 caracteres
+				if (texto.length() >= 5) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: 0-2
+					if (caracterIntroducido < '0' || caracterIntroducido > '2') {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
+					// ser mayor que 3
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					} else if (texto.charAt(0) == '2' && caracterIntroducido > '3') {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: ':'
+					if (caracterIntroducido != ':') {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: 0-5
+					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: 0-9
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					}
+					break;
+				}
+			}
+		});
 		txtHorarioSalidaIda.setBounds(178, 593, 150, 25);
 		panel.add(txtHorarioSalidaIda);
-		
+
 		JLabel lblDuracionIda = new JLabel("Duracion");
 		lblDuracionIda.setBounds(33, 654, 150, 25);
 		panel.add(lblDuracionIda);
-		
-		textField = new JTextField();
-		textField.setBounds(178, 654, 150, 25);
-		panel.add(textField);
-		
-		JLabel lblViaje = new JLabel("Seleccione Viaje");
-		lblViaje.setBounds(33, 110, 150, 25);
-		panel.add(lblViaje);
-		
-		JComboBox<String> comboViaje = new JComboBox<>();
-		ArrayList<Viaje> viajes = controlador.getViajes();
-		for (Viaje viaje : viajes) {
-			comboViaje.addItem(viaje.getNombreViaje());
-		}
-		comboViaje.setBounds(178, 109, 150, 27);
-		panel.add(comboViaje);
 
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(195, 810, 89, 23);
+		JTextField txtDuracionIda = new JTextField();
+		txtDuracionIda.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtDuracionIda.getText();
+
+				// Longitud máxima de 5 caracteres
+				if (texto.length() >= 5) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: 0-2
+					if (caracterIntroducido < '0' || caracterIntroducido > '2') {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
+					// ser mayor que 3
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					} else if (texto.charAt(0) == '2' && caracterIntroducido > '3') {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: ':'
+					if (caracterIntroducido != ':') {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: 0-5
+					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: 0-9
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					}
+					break;
+				}
+			}
+		});
+		txtDuracionIda.setBounds(178, 654, 150, 25);
+		panel.add(txtDuracionIda);
+
+		JButton btnBuscarViaje = new JButton("BUSCAR VIAJE");
+		btnBuscarViaje.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				Abrir el enlace en el navegador predeterminado
+				try {
+
+					// ABRE LA WEB SKYSCANNER EN EL NAVEGADOR PREDETERMINADO
+					Desktop.getDesktop().browse(new URI("https://www.skyscanner.es"));
+
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnBuscarViaje.setBounds(524, 284, 257, 23);
+		panel.add(btnBuscarViaje);
+
+		JLabel lblCodigoVueloVuelta = new JLabel("Codigo Vuelo");
+		lblCodigoVueloVuelta.setBounds(548, 421, 150, 25);
+		lblCodigoVueloVuelta.setVisible(false);
+		panel.add(lblCodigoVueloVuelta);
+
+		JTextField txtCodigoVueloVuelta = new JTextField();
+		txtCodigoVueloVuelta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtCodigoVueloVuelta.getText();
+
+				boolean minuscula = caracterIntroducido >= 'a' && caracterIntroducido <= 'z';
+				boolean mayuscula = caracterIntroducido >= 'A' && caracterIntroducido <= 'Z';
+				boolean numero = caracterIntroducido >= '0' && caracterIntroducido <= '9';
+
+				// Longitud máxima de 5 caracteres
+				if (texto.length() == 6) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: a-Z
+					if (!(mayuscula || minuscula)) {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
+					// ser mayor que 3
+					if (!(mayuscula || minuscula)) {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: ':'
+					if (caracterIntroducido != ':') {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: 0-5
+					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: 0-9
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					}
+					break;
+				}
+
+			}
+		});
+		txtCodigoVueloVuelta.setBounds(693, 421, 150, 25);
+		txtCodigoVueloVuelta.setVisible(false);
+		panel.add(txtCodigoVueloVuelta);
+
+		JLabel labelAerolineaVuelta = new JLabel("Aerolinea");
+		labelAerolineaVuelta.setBounds(548, 479, 150, 25);
+		labelAerolineaVuelta.setVisible(false);
+		panel.add(labelAerolineaVuelta);
+
+		JComboBox<String> comboAerolineasVuelta = new JComboBox<String>();
+		comboAerolineasVuelta.setBackground(Color.WHITE);
+		comboAerolineasVuelta.setBounds(693, 479, 250, 25);
+		comboAerolineasVuelta.setVisible(false);
+		panel.add(comboAerolineasVuelta);
+
+		JLabel lblPrecioTotal = new JLabel("Precio Total");
+		lblPrecioTotal.setBounds(548, 532, 150, 25);
+		lblPrecioTotal.setVisible(false);
+		panel.add(lblPrecioTotal);
+
+		JTextField txtPrecioTotal = new JTextField();
+		txtPrecioTotal.setBounds(693, 532, 150, 25);
+		txtPrecioTotal.setVisible(false);
+		panel.add(txtPrecioTotal);
+
+		JLabel lblHorarioSalidaVuelta = new JLabel("Horario Salida");
+		lblHorarioSalidaVuelta.setBounds(548, 593, 150, 25);
+		lblHorarioSalidaVuelta.setVisible(false);
+		panel.add(lblHorarioSalidaVuelta);
+
+		JTextField txtHorarioSalidaVuelta = new JTextField();
+		txtHorarioSalidaVuelta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtHorarioSalidaVuelta.getText();
+
+				// Longitud máxima de 5 caracteres
+				if (texto.length() >= 5) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: 0-2
+					if (caracterIntroducido < '0' || caracterIntroducido > '2') {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
+					// ser mayor que 3
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					} else if (texto.charAt(0) == '2' && caracterIntroducido > '3') {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: ':'
+					if (caracterIntroducido != ':') {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: 0-5
+					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: 0-9
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					}
+					break;
+				}
+			}
+		});
+		txtHorarioSalidaVuelta.setBounds(693, 593, 150, 25);
+		txtHorarioSalidaVuelta.setVisible(false);
+		panel.add(txtHorarioSalidaVuelta);
+
+		JLabel lblDuracionVuelta = new JLabel("Duracion");
+		lblDuracionVuelta.setBounds(548, 654, 150, 25);
+		lblDuracionVuelta.setVisible(false);
+		panel.add(lblDuracionVuelta);
+
+		JTextField txtDuracionVuelta = new JTextField();
+		txtDuracionVuelta.setBounds(693, 654, 150, 25);
+		txtDuracionVuelta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtDuracionVuelta.getText();
+
+				// Longitud máxima de 5 caracteres
+				if (texto.length() >= 5) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: 0-2
+					if (caracterIntroducido < '0' || caracterIntroducido > '2') {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
+					// ser mayor que 3
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					} else if (texto.charAt(0) == '2' && caracterIntroducido > '3') {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: ':'
+					if (caracterIntroducido != ':') {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: 0-5
+					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: 0-9
+					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+						e.consume();
+					}
+					break;
+				}
+			}
+		});
+		txtDuracionVuelta.setVisible(false);
+		panel.add(txtDuracionVuelta);
+
+		JLabel labelFechaVuelta = new JLabel("Fecha Vuelta");
+		labelFechaVuelta.setBounds(548, 373, 150, 25);
+		labelFechaVuelta.setVisible(false);
+		panel.add(labelFechaVuelta);
+
+		UtilDateModel modelVuelta = new UtilDateModel();
+		JDatePanelImpl datePanelVuelta = new JDatePanelImpl(modelVuelta, p);
+		JDatePickerImpl datePickerVuelta = new JDatePickerImpl(datePanelVuelta, new DateLabelFormatter());
+		datePickerVuelta.setBounds(693, 373, 150, 27);
+		datePickerVuelta.setVisible(false);
+		panel.add(datePickerVuelta);
+
+		JButton btnGuardar = new JButton("GUARDAR");
+		btnGuardar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		btnGuardar.setBounds(310, 810, 118, 23);
+		panel.add(btnGuardar);
+
+		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Boton de cancelar que lleve a donde haga falta
 				frame.gotoViajes();
 			}
 		});
+		btnCancelar.setBounds(609, 810, 118, 23);
 		panel.add(btnCancelar);
-		
-		
-		
-		
-		
-//		ChangeListener changeListener = new ChangeListener() {
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				Date fechaInicio = (Date) datePickerInicio.getModel().getValue();
-//				Date fechaFin = (Date) datePickerFin.getModel().getValue();
-//				if (fechaInicio != null && fechaFin != null) {
-//					long duracion = (fechaFin.getTime() - fechaInicio.getTime()) / (1000 * 60 * 60 * 24);
-//					textDuracion.setText(String.valueOf(duracion));
-//				} else {
-//					textDuracion.setText("");
-//				}
-//			}
-//		};
 
-//		datePickerInicio.getModel().addChangeListener(changeListener);
-//		datePickerFin.getModel().addChangeListener(changeListener);
+		// ActionListener desplegable trayecto
+		trayectoCombo.addActionListener(new ActionListener() {
 
-//		JLabel labelServicios = new JLabel("Servicios no incluidos");
-//		labelServicios.setBounds(30, 380, 150, 25);
-//		panel.add(labelServicios);
-//
-//		JTextArea textServicios = new JTextArea();
-//		textServicios.setBounds(175, 380, 400, 100);
-//		panel.add(textServicios);
-//
-//		JLabel labelTipoViaje = new JLabel("Tipo de viaje");
-//		labelTipoViaje.setBounds(30, 500, 150, 25);
-//		panel.add(labelTipoViaje);
-//
-//		JComboBox<String> comboTipoViaje = new JComboBox<>();
-//		ArrayList<TipoViaje> tiposViaje = controlador.getTiposViaje();
-//		for (TipoViaje tipoViaje : tiposViaje) {
-//			comboTipoViaje.addItem(tipoViaje.getDescripcion());
-//		}
-//		comboTipoViaje.setBounds(175, 500, 190, 25);
-//		panel.add(comboTipoViaje);
-//
-//		JLabel labelPais = new JLabel("País destino");
-//		labelPais.setBounds(30, 540, 150, 25);
-//		panel.add(labelPais);
-//
-//		JComboBox<String> comboPais = new JComboBox<>();
-//		ArrayList<Pais> paises = controlador.mostrarPaises();
-//		for (Pais pais : paises) {
-//			comboPais.addItem(pais.getNombre());
-//		}
-//		comboPais.setBounds(175, 540, 190, 25);
-//		panel.add(comboPais);
-//
-//		JButton btnConfirmar = new JButton("Confirmar");
-//		btnConfirmar.setBounds(120, 600, 150, 25);
-//		btnConfirmar.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// Pendiente hacer que se guarden los datos en la base de datos
-//			}
-//		});
-//		panel.add(btnConfirmar);
-//
-//		JButton btnCancelar = new JButton("Cancelar");
-//		btnCancelar.setBounds(400, 600, 150, 25);
-//		btnCancelar.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// Boton de cancelar que lleve a donde haga falta
-//				frame.gotoViajes();
-//			}
-//		});
-//		panel.add(btnCancelar);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (trayectoCombo.getSelectedIndex() == 0) {
+					lblPrecio.setVisible(true);
+					txtPrecio.setVisible(true);
+
+					labelFechaVuelta.setVisible(false);
+					datePickerVuelta.setVisible(false);
+					lblCodigoVueloVuelta.setVisible(false);
+					txtCodigoVueloVuelta.setVisible(false);
+					labelAerolineaVuelta.setVisible(false);
+					comboAerolineasVuelta.setVisible(false);
+					lblPrecioTotal.setVisible(false);
+					txtPrecioTotal.setVisible(false);
+					lblHorarioSalidaVuelta.setVisible(false);
+					txtHorarioSalidaVuelta.setVisible(false);
+					lblDuracionVuelta.setVisible(false);
+					txtDuracionVuelta.setVisible(false);
+				} else {
+					lblPrecio.setVisible(false);
+					txtPrecio.setVisible(false);
+
+					labelFechaVuelta.setVisible(true);
+					datePickerVuelta.setVisible(true);
+					lblCodigoVueloVuelta.setVisible(true);
+					txtCodigoVueloVuelta.setVisible(true);
+					labelAerolineaVuelta.setVisible(true);
+					comboAerolineasVuelta.setVisible(true);
+					lblPrecioTotal.setVisible(true);
+					txtPrecioTotal.setVisible(true);
+					lblHorarioSalidaVuelta.setVisible(true);
+					txtHorarioSalidaVuelta.setVisible(true);
+					lblDuracionVuelta.setVisible(true);
+					txtDuracionVuelta.setVisible(true);
+
+				}
+			}
+		});
 	}
 
 	public JPanel getPanel() {
@@ -269,23 +585,5 @@ public class NuevoVuelo {
 			return "";
 		}
 	}
-	@SuppressWarnings("serial")
-	class HourLabelFormatter extends AbstractFormatter {
-		private String datePattern = "HH:mm";
-		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
-		@Override
-		public Object stringToValue(String text) throws ParseException {
-			return dateFormatter.parse(text);
-		}
-
-		@Override
-		public String valueToString(Object value) {
-			if (value != null) {
-				Calendar cal = (Calendar) value;
-				return dateFormatter.format(cal.getTime());
-			}
-			return "";
-		}
-	}
 }
