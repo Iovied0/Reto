@@ -14,7 +14,7 @@ import agenciaViajes.controlador.Controlador;
 
 public class GestorAlojamiento {
 
-	public void insertAlojamiento(int id, String nombre_hotel, Date fecha_entrada , Date fecha_salida, String precio, int id_viaje, int id_ciudad, char tipo_dormitorio) {
+	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada , Date fecha_salida, String precio, int id_viaje, int id_ciudad, String tipo_dormitorio) {
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -23,14 +23,13 @@ public class GestorAlojamiento {
             connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
             statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_ALOJAMIENTO);
-            statement.setInt(1, id);
-            statement.setString(2, nombre_hotel);
-            statement.setDate(3, fecha_entrada);
-            statement.setDate(4, fecha_salida);
-            statement.setString(5, precio);
-            statement.setInt(6, id_viaje);
-            statement.setInt(7, id_ciudad);
-            statement.setString(8, String.valueOf(tipo_dormitorio));
+            statement.setString(1, nombre_hotel);
+            statement.setDate(2, fecha_entrada);
+            statement.setDate(3, fecha_salida);
+            statement.setString(4, precio);
+            statement.setInt(5, id_viaje);
+            statement.setInt(6, id_ciudad);
+            statement.setString(7, tipo_dormitorio);
             statement.executeUpdate();
 
         } catch (SQLException sqle) {

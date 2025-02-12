@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.controlador.Controlador;
@@ -13,6 +15,51 @@ import agenciaViajes.controlador.Controlador;
  * Esta clase tiene todos los metodos relevantes a la tabla t_alumno de BBDD.
  */
 public class GestorCiudad {
+
+	public ArrayList<Ciudad> getCiudades() {
+		ArrayList<Ciudad> ciudades = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			Class.forName(DBUtils.DRIVER);
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			preparedStatement = connection.prepareStatement("SELECT * FROM ciudad");
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				if (ciudades == null)
+					ciudades = new ArrayList<>();
+
+				Ciudad ciudad = new Ciudad();
+				ciudad.setId(resultSet.getInt("id"));
+				ciudad.setNombre(resultSet.getString("nombre"));
+				ciudades.add(ciudad);
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Error con la BBDD - " + sqle.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error genérico - " + e.getMessage());
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+			}
+		}
+		return ciudades;
+	}
 
 	/**
 	 * Recoge una ciudad por su id

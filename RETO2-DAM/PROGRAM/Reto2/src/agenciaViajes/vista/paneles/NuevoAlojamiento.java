@@ -3,37 +3,28 @@ package agenciaViajes.vista.paneles;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+
 import agenciaViajes.ViajesErrekamari;
-import agenciaViajes.bbdd.pojos.Pais;
-import agenciaViajes.bbdd.pojos.TipoDormitorio;
-import agenciaViajes.bbdd.pojos.TipoViaje;
-import agenciaViajes.bbdd.pojos.Viaje;
+import agenciaViajes.bbdd.pojos.*;
 import agenciaViajes.controlador.Controlador;
-import javax.swing.SpringLayout;
 import java.awt.SystemColor;
+import java.sql.Date;
 
 public class NuevoAlojamiento {
 	JPanel panel;
@@ -58,35 +49,42 @@ public class NuevoAlojamiento {
 		panel.add(comboViaje);
 
 		// Nombre del evento
-		JLabel nombreEventoLabel = new JLabel("Nombre evento: ");
-		nombreEventoLabel.setBounds(30, 100, 150, 25);
-		panel.add(nombreEventoLabel);
+		JLabel nombreHotelLabel = new JLabel("Nombre evento: ");
+		nombreHotelLabel.setBounds(30, 100, 150, 25);
+		panel.add(nombreHotelLabel);
 
-		JTextField nombreEventoField = new JTextField();
-		nombreEventoField.setBounds(175, 100, 150, 25);
-		panel.add(nombreEventoField);
+		JTextField nombreHotelField = new JTextField();
+		nombreHotelField.setBounds(175, 100, 150, 25);
+		panel.add(nombreHotelField);
 
-		 // Tipo de habitación
-        JLabel tipoHabitacionLabel = new JLabel("Tipo de habitación:");
-        tipoHabitacionLabel.setBounds(30, 180, 150, 25);
-        panel.add(tipoHabitacionLabel);
+		// Tipo de habitación
+		JLabel tipoHabitacionLabel = new JLabel("Tipo de habitación:");
+		tipoHabitacionLabel.setBounds(30, 180, 150, 25);
+		panel.add(tipoHabitacionLabel);
 
-        JComboBox<String> tipoDormitorioComboBox = new JComboBox<>();
-        ArrayList<TipoDormitorio> tipoDormitorios = controlador.getTipoDormitorio();
-        for (TipoDormitorio tipoDormitorio : tipoDormitorios) {
-            tipoDormitorioComboBox.addItem(tipoDormitorio.getDescripcion());
-        }
-        tipoDormitorioComboBox.setBounds(175, 180, 150, 25);
-        panel.add(tipoDormitorioComboBox);
+		JComboBox<String> tipoDormitorioComboBox = new JComboBox<>();
+		ArrayList<TipoDormitorio> tipoDormitorios = controlador.getTipoDormitorio();
+
+		for (TipoDormitorio tipoDormitorio : tipoDormitorios) {
+		    //"Código - Descripción"
+		    String item = tipoDormitorio.getCodigo() + " - " + tipoDormitorio.getDescripcion();
+		    tipoDormitorioComboBox.addItem(item); 
+		}
+		tipoDormitorioComboBox.setBounds(175, 180, 150, 25);
+		panel.add(tipoDormitorioComboBox);
 
 		// Ciudad
 		JLabel ciudadLabel = new JLabel("Ciudad:");
 		ciudadLabel.setBounds(30, 220, 150, 25);
 		panel.add(ciudadLabel);
 
-		JTextField ciudadField = new JTextField();
-		ciudadField.setBounds(175, 220, 150, 25);
-		panel.add(ciudadField);
+		JComboBox<String> ciudadComboBox = new JComboBox<>();
+		ArrayList<Ciudad> ciudades = controlador.getCiudades();
+		for (Ciudad ciudad : ciudades) {
+			ciudadComboBox.addItem(ciudad.getNombre());
+		}
+		ciudadComboBox.setBounds(175, 220, 150, 25);
+		panel.add(ciudadComboBox);
 
 		// Precio
 		JLabel labelPrecio = new JLabel("Precio");
@@ -129,20 +127,43 @@ public class NuevoAlojamiento {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+		        // Obtener el viaje seleccionado
+		        Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
+		        int idViaje = viajeSeleccionado.getId();
+
+		        // Obtener la ciudad seleccionada
+		        Ciudad ciudadSeleccionada = ciudades.get(ciudadComboBox.getSelectedIndex());
+		        int idCiudad = ciudadSeleccionada.getId();
+		        
+		        // Obtener el tipo de dormitorio seleccionado
+		        String itemSeleccionado = (String) tipoDormitorioComboBox.getSelectedItem();
+		        
+		        // Extraer el código (la parte antes del guion "-")
+		        String codigoTipoDormitorio = itemSeleccionado.split(" - ")[0];
+		        
+		        // Convertir fechas
 				java.util.Date fechaUtil = modelInicio.getValue();
 				Date fechaSql = new Date(fechaUtil.getTime());
 
-//				controlador.insertAlojamiento(nombreEventoField.getText(), tipoDormitorioComboBox.getSelectedItem().toString(),
-//						ciudadField.getText(), textPrecio.getText(), modelInicio.getValue(), modelFin.getValue(),
-//						frame);
-//				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
-//						JOptionPane.INFORMATION_MESSAGE);
+				java.util.Date fechaUtil2 = modelFin.getValue();
+				Date fechaSql2 = new Date(fechaUtil2.getTime());
+
+				controlador.insertAlojamiento(
+						nombreHotelField.getText(), 
+						fechaSql, 
+						fechaSql2, 
+						textPrecio.getText(),
+						idViaje,
+						idCiudad, 
+						codigoTipoDormitorio, 
+						frame);
+				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
 		panel.add(btnConfirmar);
-		
+
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(195, 810, 89, 23);
 		btnCancelar.addActionListener(new ActionListener() {

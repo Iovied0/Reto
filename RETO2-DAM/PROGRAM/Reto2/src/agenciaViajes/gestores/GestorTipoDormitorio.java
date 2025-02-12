@@ -85,6 +85,7 @@ public class GestorTipoDormitorio {
 
 			while (resultSet.next()) {
 				TipoDormitorio tipoDormitorio = new TipoDormitorio();
+	            tipoDormitorio.setCodigo(resultSet.getString("codigo"));
 				tipoDormitorio.setDescripcion(resultSet.getString("descripcion"));
 				ret.add(tipoDormitorio);
 			}

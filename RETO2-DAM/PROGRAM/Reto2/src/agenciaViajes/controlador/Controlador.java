@@ -259,10 +259,10 @@ public class Controlador {
 		frame.gotoViajes();
 	}
 
-	public void insertAlojamiento(int id, String nombre_hotel, Date fecha_entrada, Date fecha_salida, String precio,
-			int id_viaje, int id_ciudad, char tipo_dormitorio, ViajesErrekamari frame) {
+	public void insertAlojamiento(String nombre_hotel, Date fecha_entrada, Date fecha_salida, String precio,
+			int id_viaje, int id_ciudad, String tipo_dormitorio, ViajesErrekamari frame) {
 		GestorAlojamiento gestorAlojamiento = new GestorAlojamiento();
-		gestorAlojamiento.insertAlojamiento(id, nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad,
+		gestorAlojamiento.insertAlojamiento(nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad,
 				tipo_dormitorio);
 		frame.gotoViajes();
 	}
@@ -311,6 +311,13 @@ public class Controlador {
 		ret = gestorCiudad.getCiudadPorId(id);
 		return ret;
 	}
+	
+    public ArrayList<Ciudad> getCiudades() {
+        ArrayList<Ciudad> ret = null;
+        GestorCiudad gestorCiudad = new GestorCiudad();
+        ret = gestorCiudad.getCiudades();
+        return ret;
+    }
 
 //////////////////////////// FUNCIONES GESTOR TIPO DORMITORIO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	public TipoDormitorio getTipoDormitorioPorCodigo(String codigo) {

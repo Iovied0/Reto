@@ -75,7 +75,7 @@ public class SQLQuerys {
 
 	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
 	
-	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO Alojamiento (id, nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO Alojamiento (nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	
 	public static final String SEPARATOR = "', '";
 
