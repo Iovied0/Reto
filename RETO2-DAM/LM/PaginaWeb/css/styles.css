@@ -31,6 +31,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     
 }
 
@@ -200,5 +201,25 @@ footer li a {
 
 footer li a:hover {
     opacity: 1;
+}
+
+.logout-container {
+    position: absolute; /* Posiciona el botón respecto al body */
+    top: 20px; /* Distancia desde la parte superior */
+    right: 20px; /* Distancia desde la derecha */
+}
+
+.logout-button {
+    padding: 10px 20px;
+    background-color: #ff4d4d; /* Rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.logout-button:hover {
+    background-color: #cc0000; /* Rojo más oscuro al pasar el mouse */
 }
 

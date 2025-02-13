@@ -47,10 +47,16 @@ if (isset($_SESSION['mensaje'])) {
             <footer>
                 <ul>
                     <li><a href="#">Sobre nosotros</a></li>
-                    <li><a href="#">Política de privacidad</a></li>
+                    <li><a href="#">Política de privacidad</a></li> 
                     <li><a href="#">Contacto</a></li>
                 </ul>
             </footer>
+        </div>
+             <!-- Botón de Log Out -->
+             <div class="logout-container">
+        <form action="logout.php" method="POST">
+            <button type="submit" class="logout-button">Cerrar Sesión</button>
+        </form>
         </div>
     </div>
 </body>
