@@ -35,20 +35,20 @@ public class FormularioLogin {
 
 		//////////////////// USUARIO \\\\\\\\\\\\\\\\\\\\
 		JLabel labelUsuario = new JLabel("Nombre de Usuario");
-		labelUsuario.setBounds(300, 250, 150, 25);
+		labelUsuario.setBounds(461, 387, 114, 25);
 		panel.add(labelUsuario);
 
 		JTextField textUsuario = new JTextField();
-		textUsuario.setBounds(450, 250, 150, 25);
+		textUsuario.setBounds(611, 387, 211, 25);
 		panel.add(textUsuario);
 
 		//////////////////// CONTRASEÑA \\\\\\\\\\\\\\\\\\\\
 		JLabel labelPassword = new JLabel("Contraseña");
-		labelPassword.setBounds(300, 300, 150, 25);
+		labelPassword.setBounds(461, 437, 114, 25);
 		panel.add(labelPassword);
 
 		JPasswordField textPassword = new JPasswordField();
-		textPassword.setBounds(450, 300, 150, 25);
+		textPassword.setBounds(611, 437, 211, 25);
 		panel.add(textPassword);
 
 		/////////////////////// MOSTRAR/OCULTAR CONTRASEÑA \\\\\\\\\\\\\\\\\\\\\\\
@@ -58,7 +58,7 @@ public class FormularioLogin {
 		Image abiertoEscalado = ojoAbierto.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 		Image cerradoEscalado = ojoCerrado.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 
-		mostrarOcultarContrasenya.setBounds(600, 300, 27, 25);
+		mostrarOcultarContrasenya.setBounds(835, 437, 32, 25);
 		mostrarOcultarContrasenya.setIcon(new ImageIcon(cerradoEscalado));
 		mostrarOcultarContrasenya.setFocusPainted(false); // Quitar el borde de foco
 		mostrarOcultarContrasenya.setContentAreaFilled(false); // Quitar el fondo del botón
@@ -82,7 +82,7 @@ public class FormularioLogin {
 
 		//////////////////// BOTON PARA INICIAR SESIÓN \\\\\\\\\\\\\\\\\\\\
 		JButton btnLogin = new JButton("Iniciar Sesión");
-		btnLogin.setBounds(300, 365, 120, 25);
+		btnLogin.setBounds(461, 502, 114, 25);
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -103,7 +103,7 @@ public class FormularioLogin {
 
 		//////////////////// BOTON PARA CREAR NUEVA AGENCIA \\\\\\\\\\\\\\\\\\\\
 		JButton btnNuevaAgencia = new JButton("Crear Nueva Agencia");
-		btnNuevaAgencia.setBounds(450, 365, 160, 25);
+		btnNuevaAgencia.setBounds(611, 502, 211, 25);
 		btnNuevaAgencia.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -116,10 +116,10 @@ public class FormularioLogin {
 		//////////////////////////// Fondo del panel \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 		JLabel labelFondoLogin = new JLabel();
-		Color colorFondoLabel = new Color(238, 238, 238);
+		Color colorFondoLabel = new Color(238, 238, 238,225);
 		labelFondoLogin.setBackground(colorFondoLabel);
 		labelFondoLogin.setOpaque(true);
-		labelFondoLogin.setBounds(0, 150, 900, 300);
+		labelFondoLogin.setBounds(0, 292, 1300, 300);
 		panel.add(labelFondoLogin);
 
 		ImageIcon bienvenida = new ImageIcon("src/agenciaViajes/vista/img/bienvenida.jpg");

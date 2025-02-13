@@ -31,12 +31,12 @@ public class Bienvenida {
 		//////////////////////////// TEXTO DEL FONDO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 		JLabel labelBienvenida = new JLabel("PULSE PARA AVANZAR");
-		Font fuenteTexto = new Font("Lucida Sans Unicode", Font.PLAIN, 24);
+		Font fuenteTexto = new Font("Lucida Sans Unicode", Font.PLAIN, 30);
 		labelBienvenida.setFont(fuenteTexto);
-		Color colorFondoLabel = new Color(255, 255, 255, 100);
+		Color colorFondoLabel = new Color(255, 255, 255, 80);
 		labelBienvenida.setBackground(colorFondoLabel);
 		labelBienvenida.setOpaque(true);
-		labelBienvenida.setBounds(300, 300, 265, 24);
+		labelBienvenida.setBounds(483, 423, 326, 56);
 		panel.add(labelBienvenida);
 
 		//////////////////////////// FONDO DEL PANEL \\\\\\\\\\\\\\\\\\\\\\\\\\\\

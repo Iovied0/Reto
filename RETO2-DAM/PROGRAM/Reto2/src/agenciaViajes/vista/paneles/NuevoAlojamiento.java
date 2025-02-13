@@ -39,7 +39,7 @@ public class NuevoAlojamiento {
 
 		JLabel labelTitulo = new JLabel("INTRODUZCA LOS PARÁMETROS DEL NUEVO ALOJAMIENTO");
 		labelTitulo.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 20));
-		labelTitulo.setBounds(25, 40, 600, 35);
+		labelTitulo.setBounds(25, 40, 615, 35);
 		panel.add(labelTitulo);
 
 		JLabel lblViaje = new JLabel("Seleccione Viaje");
@@ -126,7 +126,7 @@ public class NuevoAlojamiento {
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanelInicio = new JDatePanelImpl(modelInicio, p);
 		JDatePickerImpl datePickerInicio = new JDatePickerImpl(datePanelInicio, new DateLabelFormatter());
-		datePickerInicio.setBounds(178, 421, 150, 25);
+		datePickerInicio.setBounds(178, 421, 150, 35);
 		panel.add(datePickerInicio);
 
 		// Fecha salida
@@ -137,7 +137,7 @@ public class NuevoAlojamiento {
 		UtilDateModel modelFin = new UtilDateModel();
 		JDatePanelImpl datePanelFin = new JDatePanelImpl(modelFin, p);
 		JDatePickerImpl datePickerFin = new JDatePickerImpl(datePanelFin, new DateLabelFormatter());
-		datePickerFin.setBounds(178, 479, 250, 25);
+		datePickerFin.setBounds(178, 479, 250, 35);
 		panel.add(datePickerFin);
 
 		JButton btnConfirmar = new JButton("GUARDAR");

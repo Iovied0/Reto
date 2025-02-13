@@ -61,7 +61,7 @@ public class ViajesErrekamari extends JFrame {
 		frame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		menuBar.setBounds(0, 0, 900, 22);
+		menuBar.setBounds(0, 0, 1284, 22);
 		frame.getContentPane().add(menuBar);
 		menuBar.setVisible(false);
 
@@ -142,9 +142,9 @@ public class ViajesErrekamari extends JFrame {
 	////////////////////// Cambio de panel por función \\\\\\\\\\\\\\\\\\\\\\
 
 	public void logOut() {
-		paneles.get(0).setVisible(true); // Mostrar el panel principal
-		paneles.get(1).setVisible(false); // Ocultar el panel de login
-		paneles.get(2).setVisible(false); // Ocultar el panel de "Nueva Agencia"
+		paneles.get(0).setVisible(true);
+		paneles.get(1).setVisible(false);
+		paneles.get(2).setVisible(false);
 
 		// Eliminar cualquier panel extra
 		while (paneles.size() > 3) {
@@ -154,10 +154,6 @@ public class ViajesErrekamari extends JFrame {
 
 		menuBar.setVisible(false);
 		agenciaLogin = null;
-
-		// Actualizar la ventana
-		frame.revalidate();
-		frame.repaint();
 	}
 
 	public void gotoFormLogin() {
@@ -189,6 +185,7 @@ public class ViajesErrekamari extends JFrame {
 		NuevoViaje nuevoViaje = new NuevoViaje(paneles, this);
 		JPanel panelNuevoViaje = nuevoViaje.getPanel();
 
+		menuBar.setVisible(false);
 		gestionarPaneles(panelNuevoViaje);
 
 	}
@@ -198,6 +195,7 @@ public class ViajesErrekamari extends JFrame {
 		NuevoVuelo nuevoVuelo = new NuevoVuelo(paneles, this);
 		JPanel panelNuevoVuelo = nuevoVuelo.getPanel();
 
+		menuBar.setVisible(false);
 		gestionarPaneles(panelNuevoVuelo);
 
 	}
@@ -207,6 +205,7 @@ public class ViajesErrekamari extends JFrame {
 		NuevoAlojamiento nuevoAlojamiento = new NuevoAlojamiento(paneles, this);
 		JPanel panelNuevoAlojamiento = nuevoAlojamiento.getPanel();
 
+		menuBar.setVisible(false);
 		gestionarPaneles(panelNuevoAlojamiento);
 
 	}
@@ -216,6 +215,7 @@ public class ViajesErrekamari extends JFrame {
 		NuevaActividad nuevaActividad = new NuevaActividad(paneles, this);
 		JPanel panelNuevaActividad = nuevaActividad.getPanel();
 
+		menuBar.setVisible(false);
 		gestionarPaneles(panelNuevaActividad);
 
 	}

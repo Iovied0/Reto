@@ -113,15 +113,15 @@ public class ViajesyEventos {
 
 		// Buttons
 		generateOfferButton = new JButton("Generar oferta cliente");
-		generateOfferButton.setBounds(350, 800, 200, 25);
+		generateOfferButton.setBounds(532, 802, 200, 25);
 		panel.add(generateOfferButton);
 
 		btnBorrarEvento = new JButton("Borrar Evento");
-		btnBorrarEvento.setBounds(150, 800, 200, 25);
+		btnBorrarEvento.setBounds(200, 802, 200, 25);
 		panel.add(btnBorrarEvento);
 
 		btnBorrarViaje = new JButton("Borrar Viaje");
-		btnBorrarViaje.setBounds(550, 800, 200, 25);
+		btnBorrarViaje.setBounds(860, 802, 200, 25);
 		panel.add(btnBorrarViaje);
 
 		// Action Listeners

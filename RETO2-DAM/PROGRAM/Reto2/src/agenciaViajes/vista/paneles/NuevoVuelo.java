@@ -85,9 +85,9 @@ public class NuevoVuelo {
 //		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
 		String seleccionadoOrigen = (String) AeropuertoOrigenCombo.getSelectedItem();
 
-        // Usar una expresión regular para extraer el código entre paréntesis
-        String codigoOrigen= seleccionadoOrigen.replaceAll(".*\\((\\w{3})\\)$", "$1");
-        System.out.println(codigoOrigen);
+		// Usar una expresión regular para extraer el código entre paréntesis
+		String codigoOrigen = seleccionadoOrigen.replaceAll(".*\\((\\w{3})\\)$", "$1");
+		System.out.println(codigoOrigen);
 
 		JLabel AeropuertoDestino = new JLabel("Aeropuerto Destino");
 		AeropuertoDestino.setBounds(33, 316, 150, 25);
@@ -105,9 +105,9 @@ public class NuevoVuelo {
 //		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
 		String seleccionadoDestino = (String) AeropuertoDestinoCombo.getSelectedItem();
 
-        String codigoDestino= seleccionadoDestino.replaceAll(".*\\((\\w{3})\\)$", "$1");
-        System.out.println(codigoDestino);
-        
+		String codigoDestino = seleccionadoDestino.replaceAll(".*\\((\\w{3})\\)$", "$1");
+		System.out.println(codigoDestino);
+
 		JLabel labelFechaInicio = new JLabel("Fecha Ida");
 		labelFechaInicio.setBounds(33, 368, 150, 25);
 		panel.add(labelFechaInicio);
@@ -514,16 +514,14 @@ public class NuevoVuelo {
 		btnGuardar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		        // Obtener el viaje seleccionado
-		        Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
-		        int idViaje = viajeSeleccionado.getId();
-		        		       
-		        // Convertir fechas
+				// Obtener el viaje seleccionado
+				Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
+				int idViaje = viajeSeleccionado.getId();
+
+				// Convertir fechas
 				java.util.Date fechaUtil = modelIda.getValue();
 				Date fechaIda = new Date(fechaUtil.getTime());
 
-
-				
 				// Convertir hora salida y duracion
 				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 				java.util.Date date1 = null;
@@ -537,68 +535,35 @@ public class NuevoVuelo {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				Time horaSalida = new Time(date1.getTime());				
+
+				Time horaSalida = new Time(date1.getTime());
 				Time duracion = new Time(date2.getTime());
-				
 
-
-				//Aeroline
+				// Aeroline
 				Aerolineas aerolineaIda = AerolineasIda.get(comboAerolineasIda.getSelectedIndex());
 
-                
 				if (trayectoCombo.getSelectedIndex() == 0) {
-					//Precio
+					// Precio
 					double precio = Double.parseDouble(txtPrecio.getText());
-					
-			        controlador.insertVuelo(//Vuelo de ida
-			        		trayectoCombo.getSelectedItem().toString(),
-			        		txtCodigoVueloIda.getText(),
-			        		fechaIda,
-			        		horaSalida, 
-			        		duracion, 
-			        		aerolineaIda.getCodigo(),
-			        		codigoOrigen,
-			        		codigoDestino,
-			        		idViaje, 
-			        		precio, 
-			        		null,
-			        		frame);
+					// Vuelo de ida
+					controlador.insertVuelo(trayectoCombo.getSelectedItem().toString(), txtCodigoVueloIda.getText(),
+							fechaIda, horaSalida, duracion, aerolineaIda.getCodigo(), codigoOrigen, codigoDestino,
+							idViaje, precio, null, frame);
 				} else {
 					java.util.Date fechaUtil2 = modelVuelta.getValue();
 					Date fechaVuelta = new Date(fechaUtil2.getTime());
-										
+
 					double precioTotal = Double.parseDouble(txtPrecioTotal.getText());
-	                double precioMitad = precioTotal / 2;
-	                
-	                Aerolineas aerolineaVuelta = AerolineasVuelta.get(comboAerolineasVuelta.getSelectedIndex());
-	                
-			        controlador.insertVuelo(//Vuelo de ida
-			        		"IDA",
-			        		txtCodigoVueloIda.getText(),
-			        		fechaIda,
-			        		horaSalida, 
-			        		duracion, 
-			        		aerolineaIda.getCodigo(),
-			        		codigoOrigen,
-			        		codigoDestino,
-			        		idViaje, 
-			        		precioMitad, 
-			        		null,
-			        		frame);
-					controlador.insertVuelo(//Vuelo de vuelta
-							"VUELTA",
-							txtCodigoVueloVuelta.getText(),
-							fechaVuelta,
-							horaSalida,
-							duracion,
-							aerolineaVuelta.getCodigo(),
-							codigoDestino,
-			        		codigoOrigen,
-							idViaje,
-							precioTotal,
-			        		txtCodigoVueloIda.getText(),
-							frame);
+					double precioMitad = precioTotal / 2;
+
+					Aerolineas aerolineaVuelta = AerolineasVuelta.get(comboAerolineasVuelta.getSelectedIndex());
+					// Vuelo de ida
+					controlador.insertVuelo("IDA", txtCodigoVueloIda.getText(), fechaIda, horaSalida, duracion,
+							aerolineaIda.getCodigo(), codigoOrigen, codigoDestino, idViaje, precioMitad, null, frame);
+					// Vuelo de vuelta
+					controlador.insertVuelo("VUELTA", txtCodigoVueloVuelta.getText(), fechaVuelta, horaSalida, duracion,
+							aerolineaVuelta.getCodigo(), codigoDestino, codigoOrigen, idViaje, precioTotal,
+							txtCodigoVueloIda.getText(), frame);
 				}
 
 			}

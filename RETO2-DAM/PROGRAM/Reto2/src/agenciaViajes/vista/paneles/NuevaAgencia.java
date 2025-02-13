@@ -53,20 +53,20 @@ public class NuevaAgencia {
 
 		//////////////////////////// NOMBRE DE AGENCIA \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelUsuario = new JLabel("Nombre de Agencia");
-		labelUsuario.setBounds(30, 100, 150, 25);
+		labelUsuario.setBounds(241, 227, 141, 25);
 		panel.add(labelUsuario);
 
 		JTextField textUsuario = new JTextField();
-		textUsuario.setBounds(175, 100, 150, 25);
+		textUsuario.setBounds(386, 227, 150, 25);
 		panel.add(textUsuario);
 
 		//////////////////////////// CONTRASEÑA \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelContrasenya = new JLabel("Contraseña");
-		labelContrasenya.setBounds(400, 100, 150, 25);
+		labelContrasenya.setBounds(611, 227, 90, 25);
 		panel.add(labelContrasenya);
 
 		JPasswordField textoContrasenya = new JPasswordField();
-		textoContrasenya.setBounds(500, 100, 150, 25);
+		textoContrasenya.setBounds(711, 227, 150, 25);
 		panel.add(textoContrasenya);
 
 		/////////////////////// MOSTRAR/OCULTAR CONTRASEÑA \\\\\\\\\\\\\\\\\\\\\\\
@@ -76,7 +76,7 @@ public class NuevaAgencia {
 		Image abiertoEscalado = ojoAbierto.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 		Image cerradoEscalado = ojoCerrado.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 
-		mostrarOcultarContrasenya.setBounds(650, 100, 27, 25);
+		mostrarOcultarContrasenya.setBounds(861, 227, 27, 25);
 		mostrarOcultarContrasenya.setIcon(new ImageIcon(cerradoEscalado));
 		mostrarOcultarContrasenya.setFocusPainted(false); // Quitar el borde de foco
 		mostrarOcultarContrasenya.setContentAreaFilled(false); // Quitar el fondo del botón
@@ -100,22 +100,22 @@ public class NuevaAgencia {
 
 		//////////////////////////// COLOR DE MARCA \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelColorMarca = new JLabel("Color de marca");
-		labelColorMarca.setBounds(30, 170, 150, 25);
+		labelColorMarca.setBounds(241, 297, 141, 25);
 		panel.add(labelColorMarca);
 
 		JTextField textoColorHexadecimal = new JTextField("#RRGGBB"); // PLACEHOLDER
 		textoColorHexadecimal.setForeground(Color.LIGHT_GRAY);// CAMBIA EL COLOR DEL PLACEHOLDER
-		textoColorHexadecimal.setBounds(175, 170, 70, 25);
+		textoColorHexadecimal.setBounds(386, 297, 70, 25);
 		panel.add(textoColorHexadecimal);
 
 		JLabel colorSeleccionado = new JLabel("");
 		colorSeleccionado.setBackground(Color.white);
 		colorSeleccionado.setOpaque(true);
-		colorSeleccionado.setBounds(275, 170, 70, 25);
+		colorSeleccionado.setBounds(486, 297, 70, 25);
 		panel.add(colorSeleccionado);
 
 		JButton btnColorPicker = new JButton("Color picker!");
-		btnColorPicker.setBounds(400, 170, 120, 25);
+		btnColorPicker.setBounds(611, 297, 120, 25);
 		btnColorPicker.setFocusPainted(false); // se quita ese cuadrado horrible al seleccionar con el tabulador
 		panel.add(btnColorPicker);
 		Border defaultBorder = btnColorPicker.getBorder(); // Guarda el borde por defecto
@@ -172,7 +172,7 @@ public class NuevaAgencia {
 
 		//////////////////////////// NÚMERO DE EMPLEADOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelNumeroEmpleados = new JLabel("Numero de empleados");
-		labelNumeroEmpleados.setBounds(30, 240, 150, 25);
+		labelNumeroEmpleados.setBounds(241, 367, 141, 25);
 		panel.add(labelNumeroEmpleados);
 
 		JComboBox<String> numeroEmpleadosCombo;
@@ -185,12 +185,12 @@ public class NuevaAgencia {
 		for (NumeroEmpleados numeroEmpleados : arrayNumeroEmpleados) {
 			numeroEmpleadosCombo.addItem(numeroEmpleados.getNumeroEmpleados());
 		}
-		numeroEmpleadosCombo.setBounds(175, 240, 190, 25);
+		numeroEmpleadosCombo.setBounds(386, 367, 190, 25);
 		panel.add(numeroEmpleadosCombo);
 
 		//////////////////////////// TIPO DE AGENCIA \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelTipoAgencia = new JLabel("Tipo de agencia");
-		labelTipoAgencia.setBounds(30, 320, 150, 25);
+		labelTipoAgencia.setBounds(241, 447, 141, 25);
 		panel.add(labelTipoAgencia);
 
 		JComboBox<String> tipoAgenciaCombo;
@@ -203,20 +203,20 @@ public class NuevaAgencia {
 		for (TiposAgencia tipoAgencia : arrayTipoAgencia) {
 			tipoAgenciaCombo.addItem(tipoAgencia.getDescripcion());
 		}
-		tipoAgenciaCombo.setBounds(175, 320, 190, 25);
+		tipoAgenciaCombo.setBounds(386, 447, 190, 25);
 		panel.add(tipoAgenciaCombo);
 
 		//////////////////////////// LOGO \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JLabel labelLogo = new JLabel("Logo");
-		labelLogo.setBounds(30, 400, 150, 25);
+		labelLogo.setBounds(241, 527, 141, 25);
 		panel.add(labelLogo);
 
 		JTextField textLogo = new JTextField();
-		textLogo.setBounds(175, 400, 400, 25);
+		textLogo.setBounds(386, 527, 400, 25);
 		panel.add(textLogo);
 
 		JButton btnVerLogo = new JButton("Comprueba el logo!");
-		btnVerLogo.setBounds(600, 400, 150, 25);
+		btnVerLogo.setBounds(811, 527, 150, 25);
 		panel.add(btnVerLogo);
 
 //		**************************** ACTION LISTENERS LOGO ****************************
@@ -241,7 +241,7 @@ public class NuevaAgencia {
 
 		//////////////////////////// BOTON CONFIRMAR \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setBounds(120, 500, 150, 25);
+		btnConfirmar.setBounds(331, 627, 150, 25);
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -310,7 +310,7 @@ public class NuevaAgencia {
 
 		//////////////////////////// BOTON CANCELAR \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(400, 500, 150, 25);
+		btnCancelar.setBounds(611, 627, 150, 25);
 		btnCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
