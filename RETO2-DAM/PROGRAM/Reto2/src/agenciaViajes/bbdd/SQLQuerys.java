@@ -81,6 +81,8 @@ public class SQLQuerys {
 	
 	public static final String INSERT_NEW_VUELO = "INSERT INTO Vuelo (tipo_vuelo, codigo_vuelo, fecha, hora_salida, duracion, aerolinea, aeropuerto_origen, aeropuerto_destino, id_viaje, precio_total, codigo_asociado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String INSERT_NEW_VIAJE = "INSERT INTO Viaje (nombreViaje, descViaje, inicioViaje, finViaje, servNoIncluidos, id_agencia, tipo_viaje, pais_destino) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";

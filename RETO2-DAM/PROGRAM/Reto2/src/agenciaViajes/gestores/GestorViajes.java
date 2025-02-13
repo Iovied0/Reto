@@ -1,6 +1,7 @@
 package agenciaViajes.gestores;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,6 +78,41 @@ public class GestorViajes {
 		}
 		return ret;
 	}
+	
+	
+	public void insertViaje(String nombreViaje, String descViaje , Date inicioViaje, Date finViaje,
+			String servNoIncluidos, int id_agencia, String tipo_viaje, String pais_destino ) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            Class.forName(DBUtils.DRIVER);
+            connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+            statement = connection.prepareStatement(SQLQuerys.INSERT_NEW_VIAJE);
+            statement.setString(1, nombreViaje);
+            statement.setString(2, descViaje);
+            statement.setDate(3, inicioViaje);
+            statement.setDate(4, finViaje);
+            statement.setString(5, servNoIncluidos);
+            statement.setInt(6, id_agencia);
+            statement.setString(7, tipo_viaje);
+            statement.setString(8, pais_destino);
+            statement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.out.println("Error con la BBDD - " + sqle.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error generico - " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (Exception e) {
+                // No hace falta manejarlo
+            }
+        }
+    }
 	/**
 	 * Retorna de BBDD todos los Viajes almacenados en la BBDD filtrados por
 	 * ID_agencia

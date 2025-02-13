@@ -546,9 +546,18 @@ public class NuevoVuelo {
 					// Precio
 					double precio = Double.parseDouble(txtPrecio.getText());
 					// Vuelo de ida
-					controlador.insertVuelo(trayectoCombo.getSelectedItem().toString(), txtCodigoVueloIda.getText(),
-							fechaIda, horaSalida, duracion, aerolineaIda.getCodigo(), codigoOrigen, codigoDestino,
-							idViaje, precio, null, frame);
+					controlador.insertVuelo(
+							trayectoCombo.getSelectedItem().toString(), 
+							txtCodigoVueloIda.getText(),
+							fechaIda, horaSalida, 
+							duracion, 
+							aerolineaIda.getCodigo(), 
+							codigoOrigen, 
+							codigoDestino,
+							idViaje, 
+							precio, 
+							null, 
+							frame);
 				} else {
 					java.util.Date fechaUtil2 = modelVuelta.getValue();
 					Date fechaVuelta = new Date(fechaUtil2.getTime());
