@@ -8,6 +8,7 @@ if ($conn->connect_error) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@ if ($conn->connect_error) {
     <title>Registrar Servicio</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
     <div class="background">
         <div class="cajaCentro">
@@ -50,19 +52,19 @@ if ($conn->connect_error) {
                 <div id="seccionHospedaje">
                     <label for="hotel">Nombre del hotel:</label>
                     <input type="text" id="hotel" name="hotel">
-                    
+
                     <label for="ciudad">Ciudad:</label>
                     <input type="text" id="ciudad" name="ciudad">
-                    
+
                     <label for="precio">Precio (€):</label>
                     <input type="number" id="precio" name="precio">
-                    
+
                     <label for="entrada">Fecha de entrada:</label>
                     <input type="date" id="entrada" name="entrada">
-                    
+
                     <label for="salida">Fecha de salida:</label>
                     <input type="date" id="salida" name="salida">
-                    
+
                     <label for="tipoHabitacion">Tipo de habitación:</label>
                     <select id="tipoHabitacion" name="tipoHabitacion">
                         <option value="">--Seleccionar--</option>
@@ -74,80 +76,113 @@ if ($conn->connect_error) {
 
                 <!-- Sección de Vuelo -->
                 <div id="seccionVuelo">
-                    <div class="column">
-                        <label for="tipoVuelo">Tipo de vuelo:</label>
-                        <select id="tipoVuelo" name="tipoVuelo">
-                            <option value="ida">Ida</option>
-                            <option value="ida_vuelta">Ida y vuelta</option>
-                        </select>
-                        
+                    <div id="opcionesVuelo">
+                        <button type="button" id="btnIda">Ida</button>
+                        <button type="button" id="btnIdaVuelta">Ida y Vuelta</button>
+                    </div>
+
+                    <!-- Formulario de Ida -->
+                    <div id="formularioIda" class="column">
+                        <h3>Detalles del Vuelo (Ida)</h3>
+
                         <label for="origen">Aeropuerto de origen:</label>
                         <select id="origen" name="origen" required>
-                        <option value="">--Seleccionar--</option> <!-- Consulta en la base de datos para generar opciones en este select-->
-                        <?php
-                        $sql = "SELECT aeropuerto.codigo, ciudad.nombre 
-                                FROM aeropuerto 
-                                JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id";
-                        $result = $conn->query($sql);
-
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo']   . "</option>";
-                            }
-                        }
-                        ?>
-                    </select>
-                        
-                        <label for="destino">Aeropuerto de destino:</label>
-                        <select id="destino" name="destino" required>
-                        <option value="">--Seleccionar--</option>
+                            <option value="">--Seleccionar--</option>
                             <?php
-                            $sql = "SELECT aeropuerto.codigo, ciudad.nombre 
-                                    FROM aeropuerto 
-                                    JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id";
+                            $sql = "SELECT aeropuerto.codigo FROM aeropuerto";
                             $result = $conn->query($sql);
-
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] .  "</option>";
-                                }
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] . "</option>";
                             }
                             ?>
                         </select>
-                        
-                        <label for="codigoVuelo">Código del vuelo:</label>
-                        <select id="codigoVuelo" name="codigoVuelo">
 
-                        
+                        <label for="destino">Aeropuerto de destino:</label>
+                        <select id="destino" name="destino" required>
+                            <option value="">--Seleccionar--</option>
+                            <?php
+                            $result = $conn->query($sql);
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <label for="codigoVuelo">Código del vuelo:</label>
+                        <select id="codigoVuelo" name="codigoVuelo"></select>
+
                         <label for="aerolinea">Aerolínea:</label>
-                        <select id="aerolinea" name="aerolinea">
-                            <!-- Hacer lista desplegable-->
-                    </div>
-                    <div class="column">
+                        <select id="aerolinea" name="aerolinea"></select>
+
                         <label for="precioVuelo">Precio (€):</label>
                         <input type="number" id="precioVuelo" name="precioVuelo">
-                        
-                        <label for="fechaVuelo">Fecha del vuelo:</label>
-                        <input type="date" id="fechaVuelo" name="fechaVuelo">
-                        
+
+                        <label for="fechaIda">Fecha de ida:</label>
+                        <input type="date" id="fechaIda" name="fecha_ida">
+
                         <label for="horaVuelo">Hora del vuelo:</label>
                         <input type="time" id="horaVuelo" name="horaVuelo">
-                        
+
                         <label for="duracionVuelo">Duración (horas):</label>
                         <input type="number" id="duracionVuelo" name="duracionVuelo">
                     </div>
+
+                    <!-- Formulario de Vuelta (Solo si es ida y vuelta) -->
+                    <div id="formularioVuelta" class="column">
+                        <h3>Detalles del Vuelo (Vuelta)</h3>
+
+                        <label for="origenVuelta">Aeropuerto de origen:</label>
+                        <select id="origenVuelta" name="origen_vuelta">
+                            <option value="">--Seleccionar--</option>
+                            <?php
+                            $sql = "SELECT aeropuerto.codigo FROM aeropuerto";
+                            $result = $conn->query($sql);
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <label for="destinoVuelta">Aeropuerto de destino:</label>
+                        <select id="destinoVuelta" name="destino_vuelta">
+                            <option value="">--Seleccionar--</option>
+                            <?php
+                            $result = $conn->query($sql);
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['codigo'] . "'>" . $row['codigo'] . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <label for="codigoVueloVuelta">Código del vuelo (vuelta):</label>
+                        <select id="codigoVueloVuelta" name="codigoVueloVuelta"></select>
+
+                        <label for="aerolinea">Aerolínea:</label>
+                        <select id="aerolinea" name="aerolinea"></select>
+
+                        <label for="fechaVuelta">Fecha de vuelta:</label>
+                        <input type="date" id="fechaVuelta" name="fecha_vuelta">
+
+                        <label for="horaVuelta">Hora del vuelo (vuelta):</label>
+                        <input type="time" id="horaVuelta" name="horaVuelta">
+
+                        <label for="duracionVuelta">Duración (horas):</label>
+                        <input type="number" id="duracionVuelta" name="duracionVuelta">
+                    </div>
                 </div>
+
+
                 <!-- Sección de Otros Servicios -->
                 <div id="seccionOtros">
                     <label for="nombreServicio">Nombre del servicio:</label>
                     <input type="text" id="nombreServicio" name="nombreServicio">
-                    
+
                     <label for="fechaServicio">Fecha:</label>
                     <input type="date" id="fechaServicio" name="fechaServicio">
-                    
+
                     <label for="descripcion">Descripción:</label>
                     <textarea id="descripcion" name="descripcion"></textarea>
-                    
+
                     <label for="precioServicio">Precio (€):</label>
                     <input type="number" id="precioServicio" name="precioServicio">
                 </div>
@@ -167,6 +202,7 @@ if ($conn->connect_error) {
 
     <script src="../js/script.js"></script>
 </body>
+
 </html>
 
 <?php

@@ -34,24 +34,24 @@ if (isset($_SESSION['mensaje'])) {
 
 <body>
     <div class="background">
-            <div class="cajaCentro">
+        <div class="cajaCentro">
             <img src="<?php echo $logo; ?>" alt="Logo" class="logo">
             <main>
-                    <h2>Bienvenido a la página principal de <?php echo $_SESSION['agencia']; ?>!</h2>
-                    <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
-                    <nav>
-                        <a href="../php/bidaia.php"><button class=botonRegistro>Registrar Viaje</button></a>
-                        <a href="../php/zerbitzuak.php"><button class=botonRegistro>Registrar Servicios</button></a>
-                    </nav>
-                </main>
-            </div>
-                <footer>
-                    <ul>
-                        <li><a href="#">Sobre nosotros</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                        <li><a href="#">Contacto</a></li>
-                    </ul>
-                </footer>        
+                <h2>Bienvenido a la página principal de <?php echo $_SESSION['agencia']; ?>!</h2>
+                <p>Desde aquí puedes gestionar los viajes y otros datos importantes.</p>
+                <nav>
+                    <a href="../php/bidaia.php"><button class=botonRegistro>Registrar Viaje</button></a>
+                    <a href="../php/zerbitzuak.php"><button class=botonRegistro>Registrar Servicios</button></a>
+                </nav>
+            </main>
+            <footer>
+                <ul>
+                    <li><a href="#">Sobre nosotros</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </footer>
+        </div>
     </div>
 </body>
 

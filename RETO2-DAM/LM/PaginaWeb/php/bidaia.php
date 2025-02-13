@@ -161,6 +161,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <button type="submit">Guardar</button>
             </form>
+
+            
+            <footer>
+                <ul>
+                    <li><a href="#">Sobre nosotros</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </footer>
+            
         </div>
     </div>
 </body>

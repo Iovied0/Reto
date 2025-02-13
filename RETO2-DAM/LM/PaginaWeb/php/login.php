@@ -30,20 +30,19 @@ $result = $stmt->get_result();
 // Verificar si el usuario existe
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc(); // Obtener los datos en una sola llamada
-        
+     
     // Guardar datos en la sesion para usarlos en bidaia.php
     $_SESSION["id_agencia"] = $row["id"];  
     $_SESSION['agencia'] = $row['nombre'];
     $_SESSION['logo'] = $row['logo']; 
 
-   
+    $stmt->close(); // Cerrar la sentencia preparada
+    $conn->close(); // Cerrar la conexión antes de redirigir
     header("Location: ../php/menua.php");
     exit();
 } else {
+    $stmt->close(); // Cerrar la sentencia preparada
+    $conn->close(); // Cerrar la conexión antes de redirigir
     header("Location: ../html/index.html?errorea=1");
     exit();
 }
-
-// Cerrar conexion
-$conn->close();
-?>

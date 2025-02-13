@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,43 +8,45 @@
     <title>Página de Login</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
     <div class="background">
         <div class="login">
             <div class="cajaCentro">
                 <h1>Login</h1>
-                
-               <!-- Mostrar mensaje de error si existe -->
+
+                <!-- Mostrar mensaje de error si existe -->
                 <div id="mensajeError">
-                Usuario o contraseña incorrectos.
+                    Usuario o contraseña incorrectos.
                 </div>
 
                 <!-- Formulario de login -->
                 <form action="../php/login.php" method="POST">
-                <div>
+                    <div>
                         <label for="nombre">Usuario:</label>
-                        <input type="text" id="nombre" name="nombre"  placeholder="Usuario" required>
+                        <input type="text" id="nombre" name="nombre" placeholder="Usuario" required>
                     </div>
-    
+
                     <div>
                         <label for="contraseña">Contraseña:</label>
                         <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
                     </div>
-    
+
                     <div>
                         <button class="botonLogin" type="submit">Iniciar sesión</button>
                     </div>
                 </form>
+                <footer>
+                    <ul>
+                        <li><a href="#">Sobre nosotros</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </footer>
             </div>
         </div>
-        <footer>
-            <ul>
-                <li><a href="#">Sobre nosotros</a></li>
-                <li><a href="#">Política de privacidad</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
-        </footer>
     </div>
     <script src="../js/script.js"></script>
 </body>
+
 </html>
