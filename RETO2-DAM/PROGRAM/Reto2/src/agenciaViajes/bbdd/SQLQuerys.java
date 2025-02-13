@@ -1,7 +1,5 @@
 package agenciaViajes.bbdd;
 
-import java.sql.Date;
-
 /**
  * Esta clase contiene las sentencias SQL del proyecto
  */
@@ -14,19 +12,19 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_PAISES = "select * from pais";
 
 	public static final String SELECT_TODOS_AEROLINEAS_WHERE_CODIGO = "SELECT * FROM aerolineas WHERE codigo = ?";
-	
+
 	public static final String SELECT_TODOS_AEROLINEAS = "SELECT * FROM aerolineas";
 
 	public static final String SELECT_TODOS_AEROPUERTO_WHERE_CODIGO = "SELECT * FROM aeropuerto WHERE codigo = ?";
 
 	public static final String SELECT_TODOS_AEROPUERTO_WHERE_ID = "SELECT * FROM aeropuerto WHERE id_ciudad = ?";
-	
+
 	public static final String SELECT_TODOS_AEROPUERTO_Y_COD_CIUDAD = "SELECT aeropuerto.codigo, ciudad.nombre FROM aeropuerto JOIN ciudad ON aeropuerto.id_ciudad = ciudad.id ORDER BY ciudad.nombre ASC";
 
 	public static final String SELECT_TODOS_CIUDAD_WHERE_ID = "SELECT * FROM ciudad WHERE id = ?";
 
 	public static final String SELECT_TODOS_VIAJES_WHERE_IDAGENCIA = "SELECT * from viaje where id_agencia = ?";
-	
+
 	public static final String SELECT_TODOS_VIAJES = "SELECT * from viaje";
 
 	public static final String SELECT_TODOS_VIAJES_WHERE_ID = "SELECT * from viaje where id = ?";
@@ -42,7 +40,7 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_ALOJAMIENTO_WHERE_CODIGO_DORMITORIO = "SELECT * from alojamiento where tipo_dormitorio = ?";
 
 	public static final String SELECT_TODOS_VUELO_ID = "SELECT * FROM `vuelo` where id_viaje = ?";
-	
+
 	public static final String SELECT_TODOS_VUELO = "SELECT * FROM vuelo";
 
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS = "select * from numeroempleados";
@@ -66,28 +64,25 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_DESCRIPCION = "select * from tipoviaje where descripcion = ?";
 
 	public static final String SELECT_TODOS_TIPOS_VIAJE_WHERE_CODIGO = "select * from tipoviaje where codigo = ?";
-	
-	public static final String SELECT_TODOS_TIPOS_DORMITORIO = "select * from tipodormitorio";
 
-	
+	public static final String SELECT_TODOS_TIPOS_DORMITORIO = "select * from tipodormitorio";
 
 	// INSERTS
 
 	public static final String INSERT_NEW_ACTIVIDAD = "insert into actividad (nombre, descripcion, fecha, precio, id_viaje) VALUES (?, ?, ?, ?, ? )";
 
 	public static final String INSERT_NEW_AGENCIA = "INSERT INTO Agencia (nombre, logo, color, contraseña, numero_empleados, tipo_agencia) VALUES (?, ?, ?, ?, ?, ?)";
-	
+
 	public static final String INSERT_NEW_ALOJAMIENTO = "INSERT INTO Alojamiento (nombre_hotel, fecha_entrada, fecha_salida, precio, id_viaje, id_ciudad, tipo_dormitorio) VALUES (?, ?, ?, ?, ?, ?, ?)";
-	
+
 	public static final String INSERT_NEW_VUELO = "INSERT INTO Vuelo (tipo_vuelo, codigo_vuelo, fecha, hora_salida, duracion, aerolinea, aeropuerto_origen, aeropuerto_destino, id_viaje, precio_total, codigo_asociado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String INSERT_NEW_VIAJE = "INSERT INTO Viaje (nombreViaje, descViaje, inicioViaje, finViaje, servNoIncluidos, id_agencia, tipo_viaje, pais_destino) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-	
+
 	public static final String SEPARATOR = "', '";
 
 	public static final String END_BLOCK = "')";
 
-	
 //	public static final String INSERT_NEW_ALUMNO = "insert into alumnos (dni, nombre, apellidos, grupo) VALUES ('";
 //
 //	public static final String INSERT_NEW_NOTA = "insert into calificaciones (dni, CodAsignatura, nota) VALUES ('";
@@ -97,20 +92,20 @@ public class SQLQuerys {
 //	public static final String UPDATE_MEDIA_ALUMNO_BY_DNI = "update alumnos set grupo = ? where dni = ?";
 
 	// DELETES
-	
+
 	public static final String DELETE_ALL_VIAJE_WHERE_ID = "delete from viaje where id = ?";
-	
+
 	public static final String DELETE_ALL_ACTIVIDAD_WHERE_VIAJE = "delete from actividad where id_viaje = ?";
-	
+
 	public static final String DELETE_ALL_VUELO_WHERE_VIAJE = "delete from vuelo where id_viaje = ?";
-	
+
 	public static final String DELETE_ALL_ALOJAMIENTO_WHERE_VIAJE = "delete from alojamiento where id_viaje = ?";
-	
+
 	public static final String DELETE_ALL_ACTIVIDAD_WHERE_NOMBRE = "delete from actividad where nombre = ?";
-	
+
 	public static final String DELETE_ALL_VUELO_WHERE_CODIGO = "delete from vuelo where codigo_vuelo = ?";
-	
+
 	public static final String DELETE_ALL_ALOJAMIENTO_WHERE_ID = "delete from alojamiento where id = ?";
-	
+
 //	public static final String DELETE_ALL_NOTAS = "delete from calificaciones";
 }

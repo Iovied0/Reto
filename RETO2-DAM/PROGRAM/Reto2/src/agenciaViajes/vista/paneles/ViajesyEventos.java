@@ -130,25 +130,10 @@ public class ViajesyEventos {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = travelTable.getSelectedRow();
 				if (selectedRow != -1) {
-					String nombre = (String) travelTable.getValueAt(selectedRow, 0);
-					String tipo = (String) travelTable.getValueAt(selectedRow, 1);
-					String dias = (String) travelTable.getValueAt(selectedRow, 2);
-					String fechaInicio = (String) travelTable.getValueAt(selectedRow, 3);
-					String fechaFin = (String) travelTable.getValueAt(selectedRow, 4);
-					String pais = (String) travelTable.getValueAt(selectedRow, 5);
-
-					try (PrintWriter writer = new PrintWriter("oferta.txt", "UTF-8")) {
-						writer.println("Oferta de Viaje:");
-						writer.println("Nombre: " + nombre);
-						writer.println("Tipo: " + tipo);
-						writer.println("Días: " + dias);
-						writer.println("Fecha Inicio: " + fechaInicio);
-						writer.println("Fecha Fin: " + fechaFin);
-						writer.println("País: " + pais);
-						JOptionPane.showMessageDialog(null, "Oferta generada exitosamente.");
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Error al generar la oferta: " + ex.getMessage());
-					}
+					Viaje viaje = viajes.get(selectedRow);
+					Controlador controlador = Controlador.getInstanceControlador();
+					controlador.generarOfertaClientePdf(viaje);
+					controlador.generarOfertaClienteTxt(viaje);
 				} else {
 					JOptionPane.showMessageDialog(null, "Por favor, selecciona un viaje primero.");
 				}

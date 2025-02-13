@@ -168,54 +168,43 @@ public class NuevoViaje {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				
-//				// Comprobamos que el nombre del viaje no se encuentre en uso
-//				for (Viaje viaje : viajes) {
-//					if (txtNombreViaje.getText().equals(viaje.getNombreViaje())) {
-//						JOptionPane.showMessageDialog(null, "El nombre proporcionado ya está en uso actualmente",
-//								"Nombre en uso", JOptionPane.ERROR_MESSAGE);
-//						return;
-//					}
-//				}
+
+				// Comprobamos que el nombre del viaje no se encuentre en uso
+				for (Viaje viaje : viajes) {
+					if (txtNombreViaje.getText().equals(viaje.getNombreViaje())) {
+						JOptionPane.showMessageDialog(null, "El nombre proporcionado ya está en uso actualmente",
+								"Nombre en uso", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
 
 				// Obtenemos los valores de los campos
 				String nombreViaje = txtNombreViaje.getText();
 				String descViaje = textDescripcion.getText();
 				String serviciosNocluidos = textServicios.getText();
-				
+
 				// Convertimos fechas de java.util.Date a java.sql.Date
 				java.util.Date fechaInicioUtil = modelInicio.getValue();
 				Date inicioViaje = new Date(fechaInicioUtil.getTime());
-				
+
 				java.util.Date fechaFinUtil = modelFin.getValue();
-				Date finViaje = new Date(fechaFinUtil.getTime());			
-				
-				int numeroDias = Integer.parseInt(textDuracion.getText());
-				
-				// Obtenemos el tipo de viaje seleccionado 
-                TipoViaje tipo_viaje = tiposViaje.get(comboTipoViaje.getSelectedIndex());	
-                String tipoViaje = tipo_viaje.getCodigo();
-				
+				Date finViaje = new Date(fechaFinUtil.getTime());
+
+				// Obtenemos el tipo de viaje seleccionado
+				TipoViaje tipo_viaje = tiposViaje.get(comboTipoViaje.getSelectedIndex());
+				String tipoViaje = tipo_viaje.getCodigo();
+
 				// Obtenemos el pais seleccionado
 				Pais paisSeleccionado = paises.get(comboPais.getSelectedIndex());
 				String pais_seleccionado = paisSeleccionado.getCodigo();
-				
+
 				Agencia agencia = controlador.getInstanceAgencia();
-				
-				controlador.insertViaje(
-						nombreViaje, 
-						descViaje, 
-						inicioViaje, 
-						finViaje, 
-						serviciosNocluidos,
-						agencia.getId(),
-						tipoViaje,
-						pais_seleccionado,
-						frame
-						);
+
+				controlador.insertViaje(nombreViaje, descViaje, inicioViaje, finViaje, serviciosNocluidos,
+						agencia.getId(), tipoViaje, pais_seleccionado, frame);
 				JOptionPane.showMessageDialog(null, "Viaje creado con exito", "Nuevo Viaje",
 						JOptionPane.INFORMATION_MESSAGE);
-				
+
 			}
 		});
 		panel.add(btnConfirmar);

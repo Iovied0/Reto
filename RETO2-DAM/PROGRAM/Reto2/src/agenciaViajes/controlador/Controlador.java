@@ -345,14 +345,24 @@ public class Controlador {
 		return ret;
 	}
 
-////////////////////////////FUNCIONES GESTOR NUEVO VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	public void insertViaje(String nombreViaje, String descViaje , Date inicioViaje, Date finViaje,
-			String servNoIncluidos, int id_agencia, String tipo_viaje, String paisSeleccionado, ViajesErrekamari frame) {
+//////////////////////////// FUNCIONES GESTOR NUEVO VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public void insertViaje(String nombreViaje, String descViaje, Date inicioViaje, Date finViaje,
+			String servNoIncluidos, int id_agencia, String tipo_viaje, String paisSeleccionado,
+			ViajesErrekamari frame) {
 		GestorViajes gestorViajes = new GestorViajes();
-		gestorViajes.insertViaje(nombreViaje, descViaje, inicioViaje, finViaje, servNoIncluidos, id_agencia, tipo_viaje, paisSeleccionado);
+		gestorViajes.insertViaje(nombreViaje, descViaje, inicioViaje, finViaje, servNoIncluidos, id_agencia, tipo_viaje,
+				paisSeleccionado);
 		frame.gotoViajes();
 	}
+
+//////////////////////////// FUNCIONES GESTOR FICHEROS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	public void generarOfertaClientePdf(Viaje viaje) {
+		GestorFicheros gestorFicheros = new GestorFicheros();
+		gestorFicheros.generarOfertaClientePdf(viaje);
+	}
 	
-	
+	public void generarOfertaClienteTxt(Viaje viaje) {
+		GestorFicheros gestorFicheros = new GestorFicheros();
+		gestorFicheros.generarOfertaClienteTxt(viaje);
+	}
 }

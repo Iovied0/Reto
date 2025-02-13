@@ -101,6 +101,7 @@ public class GestorVuelos {
 				vuelo.setAeropuertoDestino(aeropuertoDestino);
 				vuelo.setViaje(viaje);
 				vuelo.setPrecio(resultSet.getDouble("precio_total"));
+				vuelo.setCodigoAsociado(resultSet.getString("codigo_asociado"));
 				ret.add(vuelo);
 			}
 		} catch (SQLException sqle) {
