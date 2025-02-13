@@ -26,6 +26,7 @@ public class GestorTipoViaje {
 
 			while (resultSet.next()) {
 				TipoViaje tipoViaje = new TipoViaje();
+				tipoViaje.setCodigo(resultSet.getString("codigo"));
 				tipoViaje.setDescripcion(resultSet.getString("descripcion"));
 				ret.add(tipoViaje);
 			}
