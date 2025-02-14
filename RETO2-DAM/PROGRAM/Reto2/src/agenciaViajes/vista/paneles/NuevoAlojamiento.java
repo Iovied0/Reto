@@ -73,9 +73,9 @@ public class NuevoAlojamiento {
 		ArrayList<TipoDormitorio> tipoDormitorios = controlador.getTipoDormitorio();
 
 		for (TipoDormitorio tipoDormitorio : tipoDormitorios) {
-		    //"Código - Descripción"
-		    String item = tipoDormitorio.getCodigo() + " - " + tipoDormitorio.getDescripcion();
-		    tipoDormitorioComboBox.addItem(item); 
+			// "Código - Descripción"
+			String item = tipoDormitorio.getCodigo() + " - " + tipoDormitorio.getDescripcion();
+			tipoDormitorioComboBox.addItem(item);
 		}
 		tipoDormitorioComboBox.setBounds(178, 245, 250, 25);
 		panel.add(tipoDormitorioComboBox);
@@ -113,7 +113,7 @@ public class NuevoAlojamiento {
 		});
 		textPrecio.setBounds(178, 366, 150, 27);
 		panel.add(textPrecio);
-		
+
 		// Fecha entrada
 		JLabel labelFechaInicio = new JLabel("Fecha de entrada");
 		labelFechaInicio.setBounds(33, 421, 150, 25);
@@ -145,39 +145,59 @@ public class NuevoAlojamiento {
 		btnConfirmar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		        // Obtener el viaje seleccionado
-		        Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
-		        int idViaje = viajeSeleccionado.getId();
 
-		        // Obtener la ciudad seleccionada
-		        Ciudad ciudadSeleccionada = ciudades.get(ciudadComboBox.getSelectedIndex());
-		        int idCiudad = ciudadSeleccionada.getId();
-		        
-		        // Obtener el tipo de dormitorio seleccionado
-		        String itemSeleccionado = (String) tipoDormitorioComboBox.getSelectedItem();
-		        
-		        // Extraer el código (la parte antes del guion "-")
-		        String codigoTipoDormitorio = itemSeleccionado.split(" - ")[0];
-		        
-		        // Convertir fechas
+				// validar nombre
+				if (nombreHotelField.getText().replace(" ", "").length()== 0) {
+					JOptionPane.showMessageDialog(null, "Introduce un nombre", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				// validar precio
+
+				if (textPrecio.getText().length() == 0) {
+					JOptionPane.showMessageDialog(null, "Introduce un precio", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				} else if (validarPrecio(textPrecio.getText()) == false) {
+					JOptionPane.showMessageDialog(null, "El formato del precio no es válido", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				// Obtener el viaje seleccionado
+				Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
+				int idViaje = viajeSeleccionado.getId();
+
+				// Obtener la ciudad seleccionada
+				Ciudad ciudadSeleccionada = ciudades.get(ciudadComboBox.getSelectedIndex());
+				int idCiudad = ciudadSeleccionada.getId();
+
+				// Obtener el tipo de dormitorio seleccionado
+				String itemSeleccionado = (String) tipoDormitorioComboBox.getSelectedItem();
+
+				// Extraer el código (la parte antes del guion "-")
+				String codigoTipoDormitorio = itemSeleccionado.split(" - ")[0];
+
+				// Convertir fechas
 				java.util.Date fechaUtil = modelInicio.getValue();
+				if (fechaUtil == null) {
+					JOptionPane.showMessageDialog(null, "Seleccione una fecha de entrada", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				Date fechaSql1 = new Date(fechaUtil.getTime());
 
 				java.util.Date fechaUtil2 = modelFin.getValue();
+				if (fechaUtil2 == null) {
+					JOptionPane.showMessageDialog(null, "Seleccione una fecha de salida", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				Date fechaSql2 = new Date(fechaUtil2.getTime());
 
-				//	Convertir string a double
+				// Convertir string a double
 				Double precio = Double.parseDouble(textPrecio.getText());
-				
-				controlador.insertAlojamiento(
-						nombreHotelField.getText(), 
-						fechaSql1, 
-						fechaSql2, 
-						precio,
-						idViaje,
-						idCiudad, 
-						codigoTipoDormitorio, 
-						frame);
+
+				controlador.insertAlojamiento(nombreHotelField.getText(), fechaSql1, fechaSql2, precio, idViaje,
+						idCiudad, codigoTipoDormitorio, frame);
 				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -199,6 +219,28 @@ public class NuevoAlojamiento {
 
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	public boolean validarPrecio(String precio) {
+		// Validar precio
+		String texto = precio;
+
+		// Validar cada posición del carácter
+		for (int posicion = 0; posicion < texto.length(); posicion++) {
+			char caracterIntroducido = texto.charAt(posicion);
+
+			boolean numeroValido = caracterIntroducido >= '0' && caracterIntroducido <= '9';
+			boolean punto = caracterIntroducido == '.';
+
+			if (!(numeroValido || punto)) {
+				return false;
+			}
+			// evita que se pueda meter mas de un punto
+			if (punto && texto.indexOf('.') != texto.lastIndexOf('.')) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@SuppressWarnings("serial")

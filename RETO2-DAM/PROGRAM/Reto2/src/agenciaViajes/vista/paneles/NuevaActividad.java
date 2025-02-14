@@ -67,6 +67,7 @@ public class NuevaActividad {
 		panel.add(labelDescripcion);
 
 		JTextArea textDescripcion = new JTextArea();
+		textDescripcion.setLineWrap(true); // Salto de línea automático
 		textDescripcion.setBounds(178, 245, 250, 100);
 		panel.add(textDescripcion);
 
@@ -112,18 +113,41 @@ public class NuevaActividad {
 				Viaje viaje = viajes.get(comboViaje.getSelectedIndex());
 
 				java.util.Date fechaUtil = modelInicio.getValue();
+				if (fechaUtil == null) {
+					JOptionPane.showMessageDialog(null, "Seleccione una fecha de evento", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				Date fechaSql = new Date(fechaUtil.getTime());
+
+				// validar nombre
+				if (textNombre.getText().replace(" ", "").length() == 0) {
+					JOptionPane.showMessageDialog(null, "Introduce un nombre", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				// validar descripcion
+				if (textDescripcion.getText().replace(" ", "").length() == 0) {
+					JOptionPane.showMessageDialog(null, "Introduce una descripción", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				// validar precio
+
+				if (textPrecio.getText().replace(" ", "").length() == 0) {
+					JOptionPane.showMessageDialog(null, "Introduce un precio", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				} else if (validarPrecio(textPrecio.getText()) == false) {
+					JOptionPane.showMessageDialog(null, "El formato del precio no es válido", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
 				// Convertir precio a double
 				double precio = Double.parseDouble(textPrecio.getText());
-				
-				controlador.insertActividad(
-						textNombre.getText(), 
-						textDescripcion.getText(), 
-						fechaSql,
-						precio,
-						viaje.getId(),
-						frame);
+
+				controlador.insertActividad(textNombre.getText(), textDescripcion.getText(), fechaSql, precio,
+						viaje.getId(), frame);
 				JOptionPane.showMessageDialog(null, "Actividad creada con exito", "Nueva actividad",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -164,5 +188,27 @@ public class NuevaActividad {
 			}
 			return "";
 		}
+	}
+
+	public boolean validarPrecio(String precio) {
+		// Validar precio
+		String texto = precio;
+
+		// Validar cada posición del carácter
+		for (int posicion = 0; posicion < texto.length(); posicion++) {
+			char caracterIntroducido = texto.charAt(posicion);
+
+			boolean numeroValido = caracterIntroducido >= '0' && caracterIntroducido <= '9';
+			boolean punto = caracterIntroducido == '.';
+
+			if (!(numeroValido || punto)) {
+				return false;
+			}
+			// evita que se pueda meter mas de un punto
+			if (punto && texto.indexOf('.') != texto.lastIndexOf('.')) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
