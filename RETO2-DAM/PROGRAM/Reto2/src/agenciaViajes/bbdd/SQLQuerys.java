@@ -40,8 +40,8 @@ public class SQLQuerys {
 	public static final String SELECT_TODOS_ALOJAMIENTO_WHERE_CODIGO_DORMITORIO = "SELECT * from alojamiento where tipo_dormitorio = ?";
 
 	public static final String SELECT_TODOS_VUELO_ID = "SELECT * FROM `vuelo` where id_viaje = ?";
-
-	public static final String SELECT_TODOS_VUELO = "SELECT * FROM vuelo";
+	
+	public static final String SELECT_TODOS_CODIGO_VUELO = "SELECT codigo_vuelo FROM `vuelo`";
 
 	public static final String SELECT_TODOS_NUMERO_EMPLEADOS = "select * from numeroempleados";
 

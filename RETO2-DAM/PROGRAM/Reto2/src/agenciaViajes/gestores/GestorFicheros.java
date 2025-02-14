@@ -6,13 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import agenciaViajes.bbdd.pojos.Actividad;
@@ -56,22 +59,6 @@ public class GestorFicheros {
 		// Calculamos el precio total
 		double precioTotal = 0;
 
-		if (vuelos != null) {
-			for (Vuelo vuelo : vuelos) {
-				precioTotal += vuelo.getPrecio();
-			}
-		}
-		if (alojamientos != null) {
-			for (Alojamiento alojamiento : alojamientos) {
-				precioTotal += alojamiento.getPrecio();
-			}
-		}
-		if (actividades != null) {
-			for (Actividad actividad : actividades) {
-				precioTotal += actividad.getPrecio();
-			}
-		}
-
 		System.out.println("Vamos a escribir en el fichero " + NOMBRE_FICHERO + " en la ruta " + RUTA_FICHERO);
 
 		// Si no existe la carpeta, la crea
@@ -88,7 +75,7 @@ public class GestorFicheros {
 			document.open();
 
 			// Rellenamos el PDF con los datos
-			crearPdf(document, agencia, vuelos, alojamientos, actividades, precioTotal);
+			crearPdf(document, agencia, vuelos, alojamientos, actividades, precioTotal, viaje);
 
 			document.close();
 			System.out.println("El fichero " + NOMBRE_FICHERO + " se ha guardado correctamente.");
@@ -125,17 +112,7 @@ public class GestorFicheros {
 		// Calculamos el precio total
 		double precioTotal = 0;
 
-		for (Vuelo vuelo : vuelos) {
-			precioTotal += vuelo.getPrecio();
-		}
-		for (Alojamiento alojamiento : alojamientos) {
-			precioTotal += alojamiento.getPrecio();
-		}
-		for (Actividad actividad : actividades) {
-			precioTotal += actividad.getPrecio();
-		}
-
-		String texto = crearTexto(agencia, vuelos, alojamientos, actividades, precioTotal);
+		String texto = crearTexto(agencia, vuelos, alojamientos, actividades, precioTotal, viaje);
 
 		System.out.println("Vamos a escribir en el fichero " + NOMBRE_FICHERO + " en la ruta " + RUTA_FICHERO);
 
@@ -151,9 +128,6 @@ public class GestorFicheros {
 		try {
 			// Asignamos el fichero que vamos a escribir
 			fileWriter = new FileWriter(f);
-
-			// Si preferimos que el fichero se actualice a final...
-			// fileWriter = new FileWriter(RUTA_FICHERO + NOMBRE_FICHERO, true);
 
 			printWriter = new PrintWriter(fileWriter);
 
@@ -176,35 +150,139 @@ public class GestorFicheros {
 	}
 
 	private void crearPdf(Document document, Agencia agencia, ArrayList<Vuelo> vuelos,
-			ArrayList<Alojamiento> alojamientos, ArrayList<Actividad> actividades, double precioTotal) {
+			ArrayList<Alojamiento> alojamientos, ArrayList<Actividad> actividades, double precioTotal, Viaje viaje) {
+
+		// Creamos una tabla con 2 columnas para poner la imagen de la agencia y el
+		// titulo alineados
+		PdfPTable tablaHeader = new PdfPTable(2);
+		tablaHeader.setWidthPercentage(100);
+		tablaHeader.setSpacingBefore(10f);
+		tablaHeader.setSpacingAfter(10f);
+
+		// Obtenemos los colores de la agencia
+		// El caracter 0 es el #, por eso empezamos en 1
+		int colorAgenciaRojo = Integer.parseInt(agencia.getColor().substring(1, 3), 16);
+		int colorAgenciaVerde = Integer.parseInt(agencia.getColor().substring(3, 5), 16);
+		int colorAgenciaAzul = Integer.parseInt(agencia.getColor().substring(5, 7), 16);
 
 		// Creamos un título con formato para que se vea bonito en el PDF
-		Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22);
-		Paragraph title = new Paragraph("Oferta de cliente para la agencia: " + agencia.getNombre(), titleFont);
+		Font fuenteTituloMain = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22);
+		// Cambiamos el color de la fuente al color de la agencia
+		fuenteTituloMain.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+		Paragraph tituloMain = new Paragraph("Oferta de cliente para la agencia: " + agencia.getNombre(),
+				fuenteTituloMain);
+
+		// Añadimos el titulo a la tabla invisible de la cabecera
+		PdfPCell celdaTitulo = new PdfPCell(tituloMain);
+		celdaTitulo.setBorder(PdfPCell.NO_BORDER);
+		celdaTitulo.setVerticalAlignment(Element.ALIGN_BOTTOM);
+		tablaHeader.addCell(celdaTitulo);
+
+		// Obtenemos la imagen de la agencia para ponerla en la tabla
+		try {
+			Image logo = Image.getInstance(agencia.getLogo());
+			logo.scaleToFit(100, 100);
+			PdfPCell celdaLogo = new PdfPCell(logo);
+			celdaLogo.setBorder(PdfPCell.NO_BORDER);
+			celdaLogo.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			tablaHeader.addCell(celdaLogo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		try {
-			document.add(title);
+			document.add(tablaHeader);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 
-		String texto1 = "\nDatos de la Agencia:" + "\nNombre: %s" + "\nLogo: %s" + "\nColor: %s"
-				+ "\nNumero de empleados: %s" + "\nTipo de Agencia: %s";
+		// Creamos un título con formato para que se vea bonito en el PDF
+		Font fuenteAgencia = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+		// Cambiamos el color de la fuente al color de la agencia
+		fuenteAgencia.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+		Paragraph tituloAgencia = new Paragraph("\nDatos de la Agencia:", fuenteAgencia);
+		try {
+			document.add(tituloAgencia);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
 
-		String combiAgencia = String.format(texto1, agencia.getNombre(), agencia.getLogo(), agencia.getColor(),
-				agencia.getNumeroEmpleados().getNumeroEmpleados(), agencia.getTipoAgencia().getDescripcion());
+		// Añadimos los datos de la Agencia en una tabla de 5 columnas
+		PdfPTable tablaAgencia = new PdfPTable(5);
+		tablaAgencia.setWidthPercentage(100);
+		tablaAgencia.setSpacingBefore(10f);
+		tablaAgencia.setSpacingAfter(10f);
+
+		// Añadimos los encabezados de la tabla
+		tablaAgencia.addCell("Nombre");
+		tablaAgencia.addCell("Logo");
+		tablaAgencia.addCell("Color");
+		tablaAgencia.addCell("Numero de empleados");
+		tablaAgencia.addCell("Tipo de Agencia");
+
+		tablaAgencia.addCell(agencia.getNombre());
+		tablaAgencia.addCell(agencia.getLogo());
+		tablaAgencia.addCell(agencia.getColor());
+		tablaAgencia.addCell(agencia.getNumeroEmpleados().getNumeroEmpleados());
+		tablaAgencia.addCell(agencia.getTipoAgencia().getDescripcion());
+		try {
+			document.add(tablaAgencia);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		// Creamos un título con formato para que se vea bonito en el PDF
+		Font fuenteViaje = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+		// Cambiamos el color de la fuente al color de la agencia
+		fuenteViaje.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+		Paragraph tituloViaje = new Paragraph("Datos del Viaje:", fuenteViaje);
 
 		try {
-			document.add(new Paragraph(combiAgencia));
-		} catch (Exception e) {
+			document.add(tituloViaje);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		// Añadimos los datos del viaje en una tabla de 8 columnas
+		PdfPTable tablaViaje = new PdfPTable(8);
+		tablaViaje.setWidthPercentage(100);
+		tablaViaje.setSpacingBefore(10f);
+		tablaViaje.setSpacingAfter(10f);
+
+		// Añadimos los encabezados de la tabla
+		tablaViaje.addCell("Nombre del Viaje");
+		tablaViaje.addCell("Descripcion del Viaje");
+		tablaViaje.addCell("Fecha Inicio");
+		tablaViaje.addCell("Fecha Fin");
+		tablaViaje.addCell("Numero de días");
+		tablaViaje.addCell("Servicios no incluidos");
+		tablaViaje.addCell("Tipo de Viaje");
+		tablaViaje.addCell("Pais de Destino");
+
+		tablaViaje.addCell(viaje.getNombreViaje());
+		tablaViaje.addCell(viaje.getDescViaje());
+		tablaViaje.addCell(String.valueOf(viaje.getInicioViaje()));
+		tablaViaje.addCell(String.valueOf(viaje.getFinViaje()));
+		tablaViaje.addCell(String.valueOf(viaje.getNumeroDias()));
+		tablaViaje.addCell(viaje.getServNoIncluidos());
+		tablaViaje.addCell(viaje.getTipoViaje().getDescripcion());
+		tablaViaje.addCell(viaje.getPais().getNombre());
+		try {
+			document.add(tablaViaje);
+		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 
 		// Añadimos los datos de los vuelos
 		if (vuelos != null) {
-			String tituloVuelos = "\nVuelos:";
+			// Creamos un título con formato para que se vea bonito en el PDF
+			Font fuenteVuelo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+			// Cambiamos el color de la fuente al color de la agencia
+			fuenteVuelo.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+			Paragraph tituloVuelo = new Paragraph("Datos del Vuelo:", fuenteVuelo);
+
 			try {
-				document.add(new Paragraph(tituloVuelos));
+				document.add(tituloVuelo);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -247,9 +325,14 @@ public class GestorFicheros {
 		}
 		// Añadimos los datos de los alojamientos
 		if (alojamientos != null) {
-			String tituloAlojamientos = "\nAlojamientos:";
+			// Creamos un título con formato para que se vea bonito en el PDF
+			Font fuenteAlojamiento = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+			// Cambiamos el color de la fuente al color de la agencia
+			fuenteAlojamiento.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+			Paragraph tituloAlojamiento = new Paragraph("Datos del Alojamiento:", fuenteAlojamiento);
+
 			try {
-				document.add(new Paragraph(tituloAlojamientos));
+				document.add(tituloAlojamiento);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -284,9 +367,14 @@ public class GestorFicheros {
 		}
 		// Añadimos los datos de las actividades
 		if (actividades != null) {
-			String tituloActividades = "\nActividades:";
+			// Creamos un título con formato para que se vea bonito en el PDF
+			Font fuenteActividad = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+			// Cambiamos el color de la fuente al color de la agencia
+			fuenteActividad.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
+			Paragraph tituloActividad = new Paragraph("Datos de la Actividad:", fuenteActividad);
+
 			try {
-				document.add(new Paragraph(tituloActividades));
+				document.add(tituloActividad);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -329,7 +417,7 @@ public class GestorFicheros {
 	}
 
 	private String crearTexto(Agencia agencia, ArrayList<Vuelo> vuelos, ArrayList<Alojamiento> alojamientos,
-			ArrayList<Actividad> actividades, double precioTotal) {
+			ArrayList<Actividad> actividades, double precioTotal, Viaje viaje) {
 		String ret = new String();
 
 		// Creamos el texto con los datos de la agencia
@@ -341,6 +429,18 @@ public class GestorFicheros {
 		// Añadimos el texto a ret
 		ret += format1;
 
+		// Añadimos los datos del viaje
+		String tituloViaje = "\n\n///////////////////// VIAJE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n";
+		ret += tituloViaje;
+
+		String textoViaje = "\n\nDatos del Viaje:" + "\nNombre del Viaje: %s" + "\nDescripcion del Viaje: %s"
+				+ "\nFecha Inicio: %s" + "\nFecha Fin: %s" + "\nNumero de días: %s" + "\nServicios no incluidos: %s"
+				+ "\nTipo de Viaje: %s" + "\nPais de Destino: %s";
+		String format2 = String.format(textoViaje, viaje.getNombreViaje(), viaje.getDescViaje(), viaje.getInicioViaje(),
+				viaje.getFinViaje(), viaje.getNumeroDias(), viaje.getServNoIncluidos(),
+				viaje.getTipoViaje().getDescripcion(), viaje.getPais().getNombre());
+		ret += format2;
+
 		// Añadimos los datos de los vuelos si hay alguno
 		if (vuelos != null) {
 
@@ -351,12 +451,12 @@ public class GestorFicheros {
 				String txtVuelo = "\nTipo: %s" + "\nCodigo: %s" + "\nFecha: %s" + "\nHora Salida: %s" + "\nDuración: %s"
 						+ "\nAerolinea: %s" + "\nAeropuerto Origen: %s" + "\nAeropuerto Destino: %s" + "\nPrecio: %s"
 						+ "\nVuelo Asociado: %s" + "\n";
-				String format2 = String.format(txtVuelo, vuelo.getTipoVuelo(), vuelo.getCodigo(), vuelo.getFecha(),
+				String format3 = String.format(txtVuelo, vuelo.getTipoVuelo(), vuelo.getCodigo(), vuelo.getFecha(),
 						vuelo.getHoraSalida(), vuelo.getDuracion(), vuelo.getAerolinea().getCodigo(),
 						vuelo.getAeropuertoOrigen().getCodigo(), vuelo.getAeropuertoDestino().getCodigo(),
 						vuelo.getPrecio(), vuelo.getCodigoAsociado());
 				precioTotal += vuelo.getPrecio();
-				ret += format2;
+				ret += format3;
 			}
 		}
 
@@ -368,12 +468,12 @@ public class GestorFicheros {
 			for (Alojamiento alojamiento : alojamientos) {
 				String txtAlojamiento = "\nNombre: %s" + "\nCiudad: %s" + "\nFecha Entrada: %s" + "\nFecha Salida: %s"
 						+ "\nTipo Dormitorio: %s" + "\nPrecio: %s" + "\n";
-				String format3 = String.format(txtAlojamiento, alojamiento.getNombreHotel(),
+				String format4 = String.format(txtAlojamiento, alojamiento.getNombreHotel(),
 						alojamiento.getCiudad().getNombre(), alojamiento.getFechaEntrada(),
 						alojamiento.getFechaSalida(), alojamiento.getTipoDormitorio().getDescripcion(),
 						alojamiento.getPrecio());
 				precioTotal += alojamiento.getPrecio();
-				ret += format3;
+				ret += format4;
 			}
 		}
 
@@ -384,10 +484,10 @@ public class GestorFicheros {
 
 			for (Actividad actividad : actividades) {
 				String txtActividad = "\nNombre: %s" + "\nDescripción: %s" + "\nFecha: %s" + "\nPrecio: %s" + "\n";
-				String format4 = String.format(txtActividad, actividad.getNombre(), actividad.getDescripcion(),
+				String format5 = String.format(txtActividad, actividad.getNombre(), actividad.getDescripcion(),
 						actividad.getFecha(), actividad.getPrecio());
 				precioTotal += actividad.getPrecio();
-				ret += format4;
+				ret += format5;
 			}
 		}
 		String total = "\n\n///////////////////// TOTAL A PAGAR \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n";

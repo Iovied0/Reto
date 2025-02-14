@@ -10,10 +10,13 @@ import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.Time;
 import java.net.URI;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,6 +32,7 @@ import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Aerolineas;
 import agenciaViajes.bbdd.pojos.Aeropuerto;
 import agenciaViajes.bbdd.pojos.Viaje;
+import agenciaViajes.bbdd.pojos.Vuelo;
 import agenciaViajes.controlador.Controlador;
 
 public class NuevoVuelo {
@@ -85,10 +89,8 @@ public class NuevoVuelo {
 //		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
 		String seleccionadoOrigen = (String) AeropuertoOrigenCombo.getSelectedItem();
 
-		// Usar una expresión regular para extraer el código entre paréntesis
+		// Usamos una expresión regular para extraer el código del aeropuerto
 		String codigoOrigen = seleccionadoOrigen.replaceAll(".*\\((\\w{3})\\)$", "$1");
-		System.out.println(codigoOrigen);
-
 		JLabel AeropuertoDestino = new JLabel("Aeropuerto Destino");
 		AeropuertoDestino.setBounds(33, 316, 150, 25);
 		panel.add(AeropuertoDestino);
@@ -104,10 +106,8 @@ public class NuevoVuelo {
 
 //		OBTENER CODIGO DEL AEROPUERTO SELECCIONADO
 		String seleccionadoDestino = (String) AeropuertoDestinoCombo.getSelectedItem();
-
+		// Usamos una expresión regular para extraer el código del aeropuerto
 		String codigoDestino = seleccionadoDestino.replaceAll(".*\\((\\w{3})\\)$", "$1");
-		System.out.println(codigoDestino);
-
 		JLabel labelFechaInicio = new JLabel("Fecha Ida");
 		labelFechaInicio.setBounds(33, 368, 150, 25);
 		panel.add(labelFechaInicio);
@@ -126,6 +126,60 @@ public class NuevoVuelo {
 		lblCodigoVueloIda.setBounds(33, 421, 150, 25);
 		panel.add(lblCodigoVueloIda);
 		JTextField txtCodigoVueloIda = new JTextField();
+		txtCodigoVueloIda.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracterIntroducido = e.getKeyChar();
+				String texto = txtCodigoVueloIda.getText();
+
+				boolean minuscula = caracterIntroducido >= 'a' && caracterIntroducido <= 'z';
+				boolean mayuscula = caracterIntroducido >= 'A' && caracterIntroducido <= 'Z';
+				boolean numero = caracterIntroducido >= '0' && caracterIntroducido <= '9';
+
+				// Longitud máxima de 6 caracteres
+				if (texto.length() == 6) {
+					e.consume(); // Evita que se escriba el carácter
+					return;
+				}
+
+				// Validar cada posición del carácter
+				int posicion = texto.length();
+				switch (posicion) {
+				case 0: // Primer carácter: a-Z
+					if (!(mayuscula || minuscula)) {
+						e.consume();
+					}
+					break;
+				case 1:
+					// Segundo carácter:a-Z
+					if (!(mayuscula || minuscula)) {
+						e.consume();
+					}
+					break;
+				case 2: // Tercer carácter: número
+					if (!numero) {
+						e.consume();
+					}
+					break;
+				case 3: // Cuarto carácter: número
+					if (!numero) {
+						e.consume();
+					}
+					break;
+				case 4: // Quinto carácter: número
+					if (!numero) {
+						e.consume();
+					}
+					break;
+				case 5: // Sexto carácter: número
+					if (!numero) {
+						e.consume();
+					}
+					break;
+				}
+			}
+		});
+
 		txtCodigoVueloIda.setBounds(178, 421, 150, 25);
 		panel.add(txtCodigoVueloIda);
 
@@ -285,9 +339,7 @@ public class NuevoVuelo {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				Abrir el enlace en el navegador predeterminado
 				try {
-
 					// ABRE LA WEB SKYSCANNER EN EL NAVEGADOR PREDETERMINADO
 					Desktop.getDesktop().browse(new URI("https://www.skyscanner.es"));
 
@@ -315,7 +367,7 @@ public class NuevoVuelo {
 				boolean mayuscula = caracterIntroducido >= 'A' && caracterIntroducido <= 'Z';
 				boolean numero = caracterIntroducido >= '0' && caracterIntroducido <= '9';
 
-				// Longitud máxima de 5 caracteres
+				// Longitud máxima de 6 caracteres
 				if (texto.length() == 6) {
 					e.consume(); // Evita que se escriba el carácter
 					return;
@@ -330,29 +382,32 @@ public class NuevoVuelo {
 					}
 					break;
 				case 1:
-					// Segundo carácter: 0-9 pero si el primer caracter es 2, el segundo no puede
-					// ser mayor que 3
+					// Segundo carácter:a-Z
 					if (!(mayuscula || minuscula)) {
 						e.consume();
 					}
 					break;
-				case 2: // Tercer carácter: ':'
-					if (caracterIntroducido != ':') {
+				case 2: // Tercer carácter: número
+					if (!numero) {
 						e.consume();
 					}
 					break;
-				case 3: // Cuarto carácter: 0-5
-					if (caracterIntroducido < '0' || caracterIntroducido > '5') {
+				case 3: // Cuarto carácter: número
+					if (!numero) {
 						e.consume();
 					}
 					break;
-				case 4: // Quinto carácter: 0-9
-					if (caracterIntroducido < '0' || caracterIntroducido > '9') {
+				case 4: // Quinto carácter: número
+					if (!numero) {
+						e.consume();
+					}
+					break;
+				case 5: // Sexto carácter: número
+					if (!numero) {
 						e.consume();
 					}
 					break;
 				}
-
 			}
 		});
 		txtCodigoVueloVuelta.setBounds(693, 421, 150, 25);
@@ -514,64 +569,245 @@ public class NuevoVuelo {
 		btnGuardar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				// Obtener el viaje seleccionado
 				Viaje viajeSeleccionado = viajes.get(comboViaje.getSelectedIndex());
 				int idViaje = viajeSeleccionado.getId();
 
-				// Convertir fechas
-				java.util.Date fechaUtil = modelIda.getValue();
-				Date fechaIda = new Date(fechaUtil.getTime());
-
-				// Convertir hora salida y duracion
-				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-				java.util.Date date1 = null;
-				java.util.Date date2 = null;
-
-				try {
-					date1 = timeFormat.parse(txtHorarioSalidaIda.getText());
-					date2 = timeFormat.parse(txtDuracionIda.getText());
-
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				Time horaSalida = new Time(date1.getTime());
-				Time duracion = new Time(date2.getTime());
-
 				// Aeroline
 				Aerolineas aerolineaIda = AerolineasIda.get(comboAerolineasIda.getSelectedIndex());
 
-				if (trayectoCombo.getSelectedIndex() == 0) {
+				if (trayectoCombo.getSelectedIndex() == 0) { // Trayecto ida
+
+					// Validar campos ida
+					if (txtCodigoVueloIda.getText().isEmpty() || txtHorarioSalidaIda.getText().isEmpty()
+							|| txtDuracionIda.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Rellene todos los campos", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					if (validarCodigo(txtCodigoVueloIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato del código no es válido", "Formato no válido",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						ArrayList<Vuelo> vuelos = controlador.getCodVuelos();
+						for (Vuelo vuelo : vuelos) {
+							if (txtCodigoVueloIda.getText().equals(vuelo.getCodigo())) {
+								JOptionPane.showMessageDialog(null,
+										"El código proporcionado ya está en uso actualmente", "Código en uso",
+										JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						}
+					}
+
+					// Validar y convertir fechaIda
+					java.util.Date fechaUtil = modelIda.getValue();
+					if (fechaUtil == null) {
+						JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					Date fechaIda = new Date(fechaUtil.getTime());
+
+					// validar y convertir hora salida y duracion
+					SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+					java.util.Date date1 = null;
+					java.util.Date date2 = null;
+
+					// lo valido de esta forma porque el try catch acepta valores que no debería
+					if (validarHora(txtHorarioSalidaIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la hora no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date1 = timeFormat.parse(txtHorarioSalidaIda.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+					}
+					if (validarHora(txtDuracionIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la duración no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date2 = timeFormat.parse(txtDuracionIda.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+
+					}
+
+					Time horaSalida = new Time(date1.getTime());
+					Time duracion = new Time(date2.getTime());
+
 					// Precio
+					if (validarPrecio(txtPrecio.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato del precio no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					// Para que el precio se muestre con dos decimales separados por un punto
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+					DecimalFormat df = new DecimalFormat("#.00", symbols);
 					double precio = Double.parseDouble(txtPrecio.getText());
+					precio = Double.parseDouble(df.format(precio));
 					// Vuelo de ida
-					controlador.insertVuelo(
-							trayectoCombo.getSelectedItem().toString(), 
-							txtCodigoVueloIda.getText(),
-							fechaIda, horaSalida, 
-							duracion, 
-							aerolineaIda.getCodigo(), 
-							codigoOrigen, 
-							codigoDestino,
-							idViaje, 
-							precio, 
-							null, 
-							frame);
-				} else {
+					controlador.insertVuelo(trayectoCombo.getSelectedItem().toString(), txtCodigoVueloIda.getText(),
+							fechaIda, horaSalida, duracion, aerolineaIda.getCodigo(), codigoOrigen, codigoDestino,
+							idViaje, precio, null, frame);
+
+				} else { // Trayecto ida y vuelta
+
+					// Validar campos ida
+					if (txtCodigoVueloIda.getText().isEmpty() || txtHorarioSalidaIda.getText().isEmpty()
+							|| txtDuracionIda.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Rellene todos los campos", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					if (validarCodigo(txtCodigoVueloIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato del código no es válido", "Formato no válido",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						ArrayList<Vuelo> vuelos = controlador.getCodVuelos();
+						for (Vuelo vuelo : vuelos) {
+							if (txtCodigoVueloIda.getText().equals(vuelo.getCodigo())) {
+								JOptionPane.showMessageDialog(null,
+										"El código proporcionado ya está en uso actualmente", "Código en uso",
+										JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						}
+					}
+
+					// Validar y convertir fechaIda
+					java.util.Date fechaUtil = modelIda.getValue();
+					if (fechaUtil == null) {
+						JOptionPane.showMessageDialog(null, "Seleccione una fecha", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					Date fechaIda = new Date(fechaUtil.getTime());
+
+					// validar y convertir hora salida y duracion
+					SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+					java.util.Date date1 = null;
+					java.util.Date date2 = null;
+
+					// lo valido de esta forma porque el try catch acepta valores que no debería
+					if (validarHora(txtHorarioSalidaIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la hora no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date1 = timeFormat.parse(txtHorarioSalidaIda.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+					}
+					if (validarHora(txtDuracionIda.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la duración no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date2 = timeFormat.parse(txtDuracionIda.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+
+					}
+
+					Time horaSalida = new Time(date1.getTime());
+					Time duracion = new Time(date2.getTime());
+
+					// Validar campos de vuelta
+					if (txtCodigoVueloIda.getText().isEmpty() || txtHorarioSalidaIda.getText().isEmpty()
+							|| txtDuracionIda.getText().isEmpty() || txtCodigoVueloVuelta.getText().isEmpty()
+							|| txtHorarioSalidaVuelta.getText().isEmpty() || txtDuracionVuelta.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Rellene todos los campos", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					if (validarCodigo(txtCodigoVueloVuelta.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato del código de vulta no es válido",
+								"Formato no válido", JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						ArrayList<Vuelo> vuelos = controlador.getCodVuelos();
+						for (Vuelo vuelo : vuelos) {
+							if (txtCodigoVueloVuelta.getText().equals(vuelo.getCodigo())) {
+								JOptionPane.showMessageDialog(null,
+										"El código de vuelta proporcionado ya está en uso actualmente", "Código en uso",
+										JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						}
+
+					}
+
 					java.util.Date fechaUtil2 = modelVuelta.getValue();
+					if (fechaUtil2 == null) {
+						JOptionPane.showMessageDialog(null, "Seleccione una fecha de vuelta", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					Date fechaVuelta = new Date(fechaUtil2.getTime());
 
+					// Validar y convertir hora salida y duracion
+					SimpleDateFormat timeFormat2 = new SimpleDateFormat("HH:mm");
+					java.util.Date date3 = null;
+					java.util.Date date4 = null;
+
+					// lo valido de esta forma porque el try catch acepta valores que no debería
+					if (validarHora(txtHorarioSalidaVuelta.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la hora de vuelta no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date3 = timeFormat2.parse(txtHorarioSalidaVuelta.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+					}
+					if (validarHora(txtDuracionVuelta.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "El formato de la duración de vuelta no es válido", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					} else {
+						try {
+							date4 = timeFormat2.parse(txtDuracionVuelta.getText());
+						} catch (ParseException e1) {
+							e1.printStackTrace();
+						}
+
+					}
+
+					Time horaSalida2 = new Time(date3.getTime());
+					Time duracion2 = new Time(date4.getTime());
+
+					// Para que el precio se muestre con dos decimales separados por un punto
+					DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+					DecimalFormat df = new DecimalFormat("#.00", symbols);
 					double precioTotal = Double.parseDouble(txtPrecioTotal.getText());
-					double precioMitad = precioTotal / 2;
+					precioTotal = Double.parseDouble(df.format(precioTotal));
+					double precioMitad = Double.parseDouble(df.format(precioTotal / 2));
 
 					Aerolineas aerolineaVuelta = AerolineasVuelta.get(comboAerolineasVuelta.getSelectedIndex());
 					// Vuelo de ida
 					controlador.insertVuelo("IDA", txtCodigoVueloIda.getText(), fechaIda, horaSalida, duracion,
 							aerolineaIda.getCodigo(), codigoOrigen, codigoDestino, idViaje, precioMitad, null, frame);
 					// Vuelo de vuelta
-					controlador.insertVuelo("VUELTA", txtCodigoVueloVuelta.getText(), fechaVuelta, horaSalida, duracion,
-							aerolineaVuelta.getCodigo(), codigoDestino, codigoOrigen, idViaje, precioTotal,
+					controlador.insertVuelo("VUELTA", txtCodigoVueloVuelta.getText(), fechaVuelta, horaSalida2,
+							duracion2, aerolineaVuelta.getCodigo(), codigoDestino, codigoOrigen, idViaje, precioMitad,
 							txtCodigoVueloIda.getText(), frame);
 				}
 
@@ -582,6 +818,7 @@ public class NuevoVuelo {
 
 		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.gotoViajes();
@@ -655,6 +892,126 @@ public class NuevoVuelo {
 			}
 			return "";
 		}
+	}
+
+	public boolean validarPrecio(String precio) {
+		// Validar precio
+		String texto = precio;
+
+		// Validar cada posición del carácter
+		for (int posicion = 0; posicion < texto.length(); posicion++) {
+			char caracterIntroducido = texto.charAt(posicion);
+
+			boolean numeroValido = caracterIntroducido >= '0' && caracterIntroducido <= '9';
+			boolean punto = caracterIntroducido == '.';
+
+			if (!(numeroValido || punto)) {
+				return false;
+			}
+			// evita que se pueda meter mas de un punto
+			if (punto && texto.indexOf('.') != texto.lastIndexOf('.')) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean validarCodigo(String texto) {
+
+		if (texto.length() != 6) {
+
+			return false;
+		}
+
+		// Validar cada posición del carácter
+		for (int posicion = 0; posicion < texto.length(); posicion++) {
+			boolean minuscula = texto.charAt(posicion) >= 'a' && texto.charAt(posicion) <= 'z';
+			boolean mayuscula = texto.charAt(posicion) >= 'A' && texto.charAt(posicion) <= 'Z';
+			boolean numero = texto.charAt(posicion) >= '0' && texto.charAt(posicion) <= '9';
+
+			switch (posicion) {
+			case 0: // Primer carácter: a-Z
+				if (!(mayuscula || minuscula)) {
+
+					return false;
+				}
+				break;
+			case 1:
+				// Segundo carácter:a-Z
+				if (!(mayuscula || minuscula)) {
+
+					return false;
+				}
+				break;
+			case 2: // Tercer carácter: número
+				if (!numero) {
+
+					return false;
+				}
+				break;
+			case 3: // Cuarto carácter: número
+				if (!numero) {
+
+					return false;
+				}
+				break;
+			case 4: // Quinto carácter: número
+				if (!numero) {
+
+					return false;
+				}
+				break;
+			case 5: // Sexto carácter: número
+				if (!numero) {
+
+					return false;
+				}
+				break;
+			}
+		}
+		return true;
+	}
+
+	public boolean validarHora(String texto) {
+		// Validar hora
+		String hora = texto;
+
+		if (hora.length() < 5 || hora.length() > 5) {
+
+			return false;
+		}
+
+		// Validar cada posición del carácter
+		for (int posicion = 0; posicion < hora.length(); posicion++) {
+			char caracterIntroducido = hora.charAt(posicion);
+
+			if (posicion == 0) {
+				// Si la longitud es 1 o 2, solo se validan los números
+				if (caracterIntroducido > '2') {
+					return false;
+				}
+			} else if (posicion == 1 && hora.charAt(0) == '2') {
+
+				if (caracterIntroducido > '4') {
+					return false;
+				}
+
+			} else if (posicion == 2) {
+				if (caracterIntroducido != ':') {
+					return false;
+				}
+			} else if (posicion == 3) {
+				if (caracterIntroducido > '5') {
+					return false;
+				}
+			} else if (posicion == 4) {
+				if (caracterIntroducido > '9') {
+					return false;
+				}
+			}
+
+		}
+		return true;
 	}
 
 }

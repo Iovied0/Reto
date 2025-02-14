@@ -3,13 +3,11 @@ package agenciaViajes.vista.paneles;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import agenciaViajes.ViajesErrekamari;
 import agenciaViajes.bbdd.pojos.Actividad;
 import agenciaViajes.bbdd.pojos.Agencia;

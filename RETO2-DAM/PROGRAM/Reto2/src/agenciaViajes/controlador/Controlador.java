@@ -222,6 +222,13 @@ public class Controlador {
 		ret = gestorVuelos.getVuelosPorIdViaje(viaje);
 		return ret;
 	}
+	
+	public ArrayList<Vuelo> getCodVuelos() {
+		ArrayList<Vuelo> ret = null;
+		GestorVuelos gestorVuelos = new GestorVuelos();
+		ret = gestorVuelos.getCodVuelos();
+		return ret;
+	}
 
 	public void deleteVuelosPorIdViaje(Viaje viaje) {
 		GestorVuelos gestorVuelos = new GestorVuelos();

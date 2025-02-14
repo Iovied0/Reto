@@ -6,10 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import agenciaViajes.bbdd.*;
 import agenciaViajes.bbdd.pojos.*;
-import agenciaViajes.controlador.Controlador;
 
 public class GestorTipoDormitorio {
 
@@ -38,10 +36,6 @@ public class GestorTipoDormitorio {
 				ret = new TipoDormitorio();
 				ret.setCodigo(resultSet.getString("codigo"));
 				ret.setDescripcion(resultSet.getString("descripcion"));
-//				Controlador controlador = Controlador.getInstanceControlador();
-//				Alojamiento alojamiento = controlador.getAlojamientoPorCodigoDormitorio(resultSet.getString("codigo"));
-//				ret.setAlojamiento(alojamiento);
-
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
