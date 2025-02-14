@@ -166,7 +166,7 @@ public class GestorFicheros {
 		int colorAgenciaAzul = Integer.parseInt(agencia.getColor().substring(5, 7), 16);
 
 		// Creamos un título con formato para que se vea bonito en el PDF
-		Font fuenteTituloMain = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22);
+		Font fuenteTituloMain = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 19);
 		// Cambiamos el color de la fuente al color de la agencia
 		fuenteTituloMain.setColor(new BaseColor(colorAgenciaRojo, colorAgenciaVerde, colorAgenciaAzul));
 		Paragraph tituloMain = new Paragraph("Oferta de cliente para la agencia: " + agencia.getNombre(),
@@ -187,7 +187,11 @@ public class GestorFicheros {
 			celdaLogo.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			tablaHeader.addCell(celdaLogo);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("no se ha encontrado el logo");
+			  // Añade una celda vacia por si no se encuentra el logo
+		    PdfPCell celdaVacia = new PdfPCell();
+		    celdaVacia.setBorder(PdfPCell.NO_BORDER);
+		    tablaHeader.addCell(celdaVacia);
 		}
 
 		try {
